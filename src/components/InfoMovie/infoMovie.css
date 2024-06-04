@@ -1,0 +1,140 @@
+.hero {
+    background-image: url(../../assets/img/fondo_buscador.webp);
+    height: 35vh;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+.hero-text {
+    font-size: clamp(2rem, 3vw, 7rem);
+    text-wrap: balance;
+    padding: 0 15px;
+}
+
+.buscar {
+    background-color: #016391;
+    border: none;
+}
+
+.buscar:hover {
+    background-color: #024768;
+}
+
+#buscador {
+    letter-spacing: 1px;
+    font-size: 1.5rem;
+}
+
+.buscar {
+    font-size: 1.7rem !important;
+}
+
+.botones-paginacion {
+    padding: 5px;
+    font-size: 1.5rem;
+    margin: 50px 15px 0px 0px;
+    border: none;
+}
+
+.modal-movie {
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    height: 80vh;
+    filter: drop-shadow(0 0 8px #ffffff73);
+
+}
+
+.modal-movie::before {
+    position: absolute;
+    content: "";
+    background-blend-mode: soft-light;
+    background-color: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
+    inset: 0;
+}
+
+.modal-title {
+    font-size: clamp(2rem, 3vw, 3.4rem);
+    text-wrap: pretty;
+}
+
+.modal-title h1 {
+    padding: 0;
+    margin: 0;
+}
+
+.imagen-modal {
+    width: clamp(10rem, 20vh, 20rem);
+}
+
+.data-extra {
+    color: rgb(158, 158, 158)
+}
+
+.bloque-derecho-modal {
+    max-width: 800px;
+
+}
+
+.texto-modal {
+    text-wrap: pretty;
+}
+
+.modal-backdrop.show {
+    opacity: 0.8;
+    background-color: rgba(0, 0, 0, 0.85);
+}
+
+.puntaje-verde {
+    color: #fff;
+    background-color: rgb(48, 150, 1);
+    border-radius: 10px;
+    padding-right: 8px;
+    padding-left: 8px;
+}
+
+.puntaje-amarillo {
+    color: #222;
+    background-color: rgb(214, 193, 1);
+    border-radius: 10px;
+    padding-right: 8px;
+    padding-left: 8px;
+}
+
+.puntaje-rojo {
+    color: #fff;
+    background-color: rgb(173, 0, 0);
+    border-radius: 10px;
+    padding-right: 8px;
+    padding-left: 8px;
+}
+
+.icono-modal {
+    width: 1.5rem;
+}
+
+.subtitle-modal {
+    font-size: 2.7rem;
+}
+
+
+.modal-body::-webkit-scrollbar {
+    width: 12px;
+    /* width of the entire scrollbar */
+}
+
+.modal-body::-webkit-scrollbar-track {
+    background: rgb(168, 168, 168);
+    /* color of the tracking area */
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+    background-color: #016391;
+    /* color of the scroll thumb */
+
+    /* roundness of the scroll thumb */
+
+    /* creates padding around scroll thumb */
+}

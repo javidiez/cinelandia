@@ -1,0 +1,54 @@
+/* Estilo general para la tarjeta */
+p{
+    margin: 0;
+    padding: 0;
+}
+
+.card {
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+    width: 18rem;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+
+.film-card {
+    position: relative;
+    padding-top: 150%; /* Relación de aspecto para asegurar una altura consistente */
+}
+
+.card-img-top {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Asegura que la imagen cubra todo el contenedor */
+    transition: opacity 0.3s ease;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.85); /* Fondo oscuro */
+    color: white;
+    opacity: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.3s ease;
+    padding: 15px;
+    font-size: 1.4rem;
+}
+
+.film-card:hover .overlay {
+    opacity: 1; /* Muestra la superposición */
+}

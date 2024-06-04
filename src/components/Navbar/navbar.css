@@ -1,0 +1,17 @@
+.logo {
+    width: clamp(3rem, 75%, 6rem);
+    filter: drop-shadow(0 0 8px #ffffff96);
+}
+
+.text-logo {
+    font-style: italic;
+}
+
+.buscador{
+    border-radius: 6px 0 0 6px; /* Esquinas: superior izquierda, superior derecha, inferior derecha, inferior izquierda */
+
+}
+
+.btn-lupa{
+    border-radius: 0px 6px 6px 0px; /* Esquinas: superior izquierda, superior derecha, inferior derecha, inferior izquierda */
+}
