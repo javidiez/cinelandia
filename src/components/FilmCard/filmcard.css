@@ -6,9 +6,10 @@ p{
 
 .card {
     position: relative;
-    overflow: hidden;
+    overflow: visible;
     transition: transform 0.3s ease;
     width: 18rem;
+    border-radius: 7px;
 }
 
 .card:hover {
@@ -20,7 +21,7 @@ p{
     padding-top: 150%; /* Relación de aspecto para asegurar una altura consistente */
 }
 
-.card-img-top {
+.search-img-top {
     position: absolute;
     top: 0;
     left: 0;
@@ -29,6 +30,7 @@ p{
     height: 100%;
     object-fit: cover; /* Asegura que la imagen cubra todo el contenedor */
     transition: opacity 0.3s ease;
+    border-radius: 7px;
 }
 
 .overlay {
@@ -51,4 +53,33 @@ p{
 
 .film-card:hover .overlay {
     opacity: 1; /* Muestra la superposición */
+    border-radius: 7px;
 }
+
+.top-movie{
+    background-color: rgb(236, 201, 1);
+    padding: 0px 5px 0 6px;
+    top: 0;
+    right: 0;
+    border-radius: 5px;
+    font-weight: 500;
+    filter: drop-shadow(0 0 5px #f19d00a9);
+    color: #000000;
+    z-index: 10;
+    margin: -15px; /* Ajusta este valor según sea necesario */
+
+} 
+
+.prox-estreno{
+        background-color: rgb(199, 0, 0);
+        padding: 0px 5px 0 6px;
+        top: 0;
+        right: 0;
+        border-radius: 5px;
+        font-weight: 500;
+        filter: drop-shadow(0 0 5px #ff0808);
+        color: #ffffff;
+        z-index: 10;
+        margin: -15px; /* Ajusta este valor según sea necesario */
+    
+    } 
