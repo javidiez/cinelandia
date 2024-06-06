@@ -38,15 +38,25 @@ export const Novedades = () => {
             },
         });
         setSelectedMovie(data);
+        const modal = bootstrap.Modal.getOrCreateInstance(`#modalNovedad-${id}`);
+        modal.show();
     };
 
-    const selectMovie = (movie) => {
-        fetchMovie(movie.id);
+    const selectMovie = async (movie) => {
+        await fetchMovie(movie.id);
     };
 
     useEffect(() => {
         fetchNowPlaying(currentPage);
     }, [currentPage]);
+
+
+    useEffect(() => {
+        if (selectedMovie) {
+            const modal = new bootstrap.Modal(document.getElementById(`modalNovedad-${selectedMovie.id}`));
+            modal.show();
+        }
+    }, [selectedMovie]);
 
     const goToPreviousPage = () => {
         if (currentPage > 1) {
@@ -69,6 +79,7 @@ export const Novedades = () => {
         const year = date.getFullYear();
         return `${day}/${month}/${year}`;
     };
+
 
     return (
         <>
@@ -101,6 +112,7 @@ export const Novedades = () => {
                             revenue={new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'USD' }).format(selectedMovie.revenue)}
                             estrella={estrella}
                             lapiz={lapiz}
+
                         />
                     )}
                 </main>
@@ -122,16 +134,18 @@ export const Novedades = () => {
                                 title={movie.title}
                                 overview={movie.overview}
                                 releaseDate={formatDate(movie.release_date)}
-                                vote_average={(movie.vote_average * 10).toFixed(2)}
+                                voteAverage={(movie.vote_average * 10).toFixed(2)}
                                 onclick={() => selectMovie(movie)}
-                                dataBstoggle="modal"
-                                dataBsTarget={`#modalNovedad-${movie.id}`}
-                                topMovie={movie.vote_average > 7.75 && movie.vote_count > 49 ? "Top movie" : ''}
+                                movieType={movie.title ? 'Película' : 'Serie'}
+                                classMovieType={movie.title ? 'movie-type-movie' : 'movie-type-serie'}
+                                topMovie={movie.vote_average > 7.75 && movie.vote_count > 99 ? "Destacada" : ''}
                                 proxEstreno={isUpcoming}
                             />
                         );
                     })}
                 </div>
+
+                
             </div>
             <div className="text-center container pb-5">
                 <button onClick={goToPreviousPage} disabled={currentPage === 1} className='btn btn-dark botones-paginacion ps-3 pe-3'>Anterior</button>

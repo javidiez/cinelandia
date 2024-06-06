@@ -1,5 +1,5 @@
 /* Estilo general para la tarjeta */
-p{
+p {
     margin: 0;
     padding: 0;
 }
@@ -18,7 +18,8 @@ p{
 
 .film-card {
     position: relative;
-    padding-top: 150%; /* Relación de aspecto para asegurar una altura consistente */
+    padding-top: 150%;
+    /* Relación de aspecto para asegurar una altura consistente */
 }
 
 .search-img-top {
@@ -28,7 +29,8 @@ p{
     display: block;
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Asegura que la imagen cubra todo el contenedor */
+    object-fit: cover;
+    /* Asegura que la imagen cubra todo el contenedor */
     transition: opacity 0.3s ease;
     border-radius: 7px;
 }
@@ -39,7 +41,8 @@ p{
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.85); /* Fondo oscuro */
+    background-color: rgba(0, 0, 0, 0.85);
+    /* Fondo oscuro */
     color: white;
     opacity: 0;
     display: flex;
@@ -52,11 +55,12 @@ p{
 }
 
 .film-card:hover .overlay {
-    opacity: 1; /* Muestra la superposición */
+    opacity: 1;
+    /* Muestra la superposición */
     border-radius: 7px;
 }
 
-.top-movie{
+.top-movie {
     background-color: rgb(236, 201, 1);
     padding: 0px 5px 0 6px;
     top: 0;
@@ -66,20 +70,44 @@ p{
     filter: drop-shadow(0 0 5px #f19d00a9);
     color: #000000;
     z-index: 10;
-    margin: -15px; /* Ajusta este valor según sea necesario */
+    margin: -15px;
+    /* Ajusta este valor según sea necesario */
 
-} 
+}
 
-.prox-estreno{
-        background-color: rgb(199, 0, 0);
-        padding: 0px 5px 0 6px;
-        top: 0;
-        right: 0;
-        border-radius: 5px;
-        font-weight: 500;
-        filter: drop-shadow(0 0 5px #ff0808);
-        color: #ffffff;
-        z-index: 10;
-        margin: -15px; /* Ajusta este valor según sea necesario */
-    
-    } 
+.prox-estreno {
+    background-color: rgb(199, 0, 0);
+    padding: 0px 5px 0 6px;
+    top: 0;
+    right: 0;
+    border-radius: 5px;
+    font-weight: 500;
+    filter: drop-shadow(0 0 5px #ff0808);
+    color: #ffffff;
+    z-index: 10;
+    margin: -15px;
+    /* Ajusta este valor según sea necesario */
+
+}
+
+.movie-type-serie {
+    position: absolute;
+    background-color: #0ea700;
+    font-size: 1.2rem;
+    top: 10px;
+    left: 10px;
+    font-weight: 500;
+    padding: 0 7px;
+    border-radius: 5px;
+}
+
+.movie-type-movie {
+    position: absolute;
+    background-color: #0072a7;
+    font-size: 1.2rem;
+    top: 10px;
+    left: 10px;
+    font-weight: 500;
+    padding: 0 7px;
+    border-radius: 5px;
+}
