@@ -55,6 +55,10 @@
     inset: 0;
 }
 
+.modal-header{
+    padding-bottom: 0;
+}
+
 .modal-title {
     font-size: clamp(2rem, 3vw, 3.4rem);
     text-wrap: pretty;

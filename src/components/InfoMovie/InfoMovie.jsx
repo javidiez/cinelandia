@@ -1,7 +1,8 @@
 
 import { useEffect } from 'react';
 import axios from 'axios'
-import { SearchCard } from '../SearchCard/SearchCard';
+import { FilmCard } from '../FilmCard/FilmCard';
+import { Modal } from '../Modal/Modal';
 import { useState } from 'react';
 import './infoMovie.css'
 import estrella from '../../assets/img/estrella.png'
@@ -30,12 +31,11 @@ function InfoMovie() {
   // funcion para realizar la peticion get a la api
   const fetchMovies = async (searchKey = "", page = 1) => {
     const type = searchKey ? "search" : "";
-    const { data: { results, total_pages } } = await axios.get(`${API_URL}/${type}/movie`, {
+    const { data: { results, total_pages } } = await axios.get(`${API_URL}/${type}/multi?include_adult=false&language=es-ES`, {
       params: {
         api_key: API_KEY,
         query: searchKey,
         include_adult: false,
-        language: "es-ES",
         page: page,
       },
     });
@@ -50,34 +50,26 @@ function InfoMovie() {
   };
 
 
+  const fetchMovie = async (id, mediaType) => {
+    try {
+      const { data } = await axios.get(`${API_URL}/${mediaType}/${id}?language=es-ES`, {
+        params: {
+          api_key: API_KEY,
+        },
+      });
 
-
-
-
-  // funcion para la peticion de un solo objeto y mostrar en reproductor de videos
-  const fetchMovie = async (id) => {
-    const { data } = await axios.get(`${API_URL}/movie/${id}?language=es-ES`, {
-      params: {
-        api_key: API_KEY,
-      },
-    });
-    //return data
-    setMovie(data);
+      setMovie(data);
+      const modal = bootstrap.Modal.getOrCreateInstance(`#searchModal`);
+      modal.show();
+    } catch (error) {
+      console.error("Error fetching movie/series data:", error);
+    }
   };
-
 
   const selectMovie = async (movie) => {
-    // const data = await fetchMovie(movie.id)
-    // console.log(data);
-    // setSelectedMovie(movie)
-    fetchMovie(movie.id);
-
+    fetchMovie(movie.id, movie.media_type);
     setMovie(movie);
   };
-
-
-
-
 
 
   // funcion para buscar peliculas
@@ -107,12 +99,15 @@ function InfoMovie() {
   const goToPreviousPage = () => {
     if (currentPage > 1) {
       fetchMovies(searchKey, currentPage - 1);
+      window.scrollTo(0, 500)
     }
+
   };
 
   const goToNextPage = () => {
     if (currentPage < totalPages) {
       fetchMovies(searchKey, currentPage + 1);
+      window.scrollTo(0, 500)
     }
   };
 
@@ -131,7 +126,7 @@ function InfoMovie() {
 
 
       <div className="hero d-flex flex-column align-items-center justify-content-center">
-        <h2 className="hero-text text-center text-light pb-4">Todas tus películas favoritas</h2>
+        <h2 className="hero-text text-center text-light pb-4">Todas tus películas y series favoritas</h2>
         <form className="container w-50 d-flex flex-column gap-2 input-group-lg" role="search" onSubmit={searchMovies}>
           <input className="form-control me-2" type="search" placeholder="Buscar" aria-label="Search" id="buscador" onChange={(e) => setSearchKey(e.target.value)} />
           <button className="btn btn-primary w-100 fw-bold buscar" type="submit">BUSCAR</button>
@@ -141,15 +136,16 @@ function InfoMovie() {
 
       <div>
         <main>
-          {movie ? (
+          {movie.title ? (
             <>
-              <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div className="modal fade" id="searchModal" tabIndex="-1" aria-labelledby="searchModal" aria-hidden="true">
                 <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl modal-block">
                   <div className="modal-content modal-movie" style={{
-                    backgroundImage: `url("${IMAGE_PATH}${movie.poster_path}")`,
+                    backgroundImage: movie.poster_path ? `url("${IMAGE_PATH}${movie.poster_path}")` : `url("${fondoNotFound}")`,
                   }}>
+
                     <div className="modal-header text-light border-0">
-                      <h1 className="modal-title position-relative text-light" id="exampleModalLabel">{movie.title}</h1>
+                      <h1 className="modal-title position-relative text-light" id="searchModal1">{movie.title}</h1>
                       <button type="button" className="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div className="modal-body pt-0 text-light position-relative">
@@ -164,39 +160,34 @@ function InfoMovie() {
                       <div className='d-flex gap-4 pt-3 flex-wrap'>
                         <div>
                           <img src={`${IMAGE_PATH}${movie.poster_path}`} className='imagen-modal' onError={(e) => {
-            e.target.onerror = null; 
-            e.target.src = fondoNotFound
-          }}/>
+                            e.target.onerror = null;
+                            e.target.src = fondoNotFound
+                          }} />
                         </div>
                         <div className='bloque-derecho-modal'>
                           <p className='fs-4 texto-modal pb-1'>{movie.overview}</p>
-                          <p className='fs-4 pt-4 d-flex align-items-baseline gap-2'><img className='icono-modal' src={estrella}/><span className='fw-bold'>Puntuación de usuarios:</span><span className={`${movie.vote_average * 10 >= 80 ? 'puntaje-verde' : movie.vote_average * 10 > 60 ? 'puntaje-amarillo' : 'puntaje-rojo'}`}> {(movie.vote_average *10).toFixed(2)}%</span>
+                          <p className='fs-4 pt-4 d-flex align-items-baseline gap-2'><img className='icono-modal' src={estrella} /><span className='fw-bold'>Puntuación de usuarios:</span><span className={`${movie.vote_average * 10 >= 80 ? 'puntaje-verde' : movie.vote_average * 10 > 60 ? 'puntaje-amarillo' : 'puntaje-rojo'}`}> {(movie.vote_average * 10).toFixed(2)}%</span>
                           </p>
-                          <p className='fs-4 pt-1 d-flex align-items-baseline gap-2'><img className='icono-modal' src={lapiz}/><span className='fw-bold'>Valoraciones:</span> {movie.vote_count}</p>
+                          <p className='fs-4 pt-1 d-flex align-items-baseline gap-2'><img className='icono-modal' src={lapiz} /><span className='fw-bold'>Valoraciones:</span> {movie.vote_count}</p>
                         </div>
-                        </div>
-                        <div>
-                          <h2 className='pt-4 text-info subtitle-modal'>Datos de la película</h2>
-                          
-                          <p className='fs-4 '><span className='fw-bold'>Productora: </span>
+                      </div>
+                      <div>
+                        <h2 className='pt-4 text-primary subtitle-modal'>Más información</h2>
+
+                        <p className='fs-4 '><span className='fw-bold'>Productora: </span>
                           {movie && movie.production_companies && movie.production_companies.map((companies, index) => (
-                          <span className='ps-2' key={companies.id}>{companies.name}{index < movie.production_companies.length -1 ? ', ' : ''}</span>
+                            <span className='ps-2' key={companies.id}>{companies.name}{index < movie.production_companies.length - 1 ? ', ' : ''}</span>
                           ))}</p>
-                          <p className='fs-4'>
-                            <span className='fw-bold pe-2'>País:
-                            </span>
-                            {movie && movie.production_countries && movie.production_countries.map((countries, index) => (
-                            <span>{countries.name}{index < movie.production_companies.length -1 ? ', ' : ''}</span> ))}
-                              </p>
-                          <p className='fs-4'><span className='fw-bold'>Presupuesto: </span>{new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'USD' }).format(movie.budget)}</p>
-                          <p className='fs-4'><span className='fw-bold'>Recaudación: </span>{new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'USD' }).format(movie.revenue)}</p>
+                        <p className='fs-4'>
+                          <span className='fw-bold pe-2'>País:
+                          </span>
+                          {movie && movie.production_countries && movie.production_countries.map((countries, index) => (
+                            <span>{countries.name}{index < movie.production_countries.length - 1 ? ', ' : ''}</span>))}
+                        </p>
+                        <p className='fs-4'><span className='fw-bold'>Presupuesto: </span>{new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'USD' }).format(movie.budget)}</p>
+                        <p className='fs-4'><span className='fw-bold'>Recaudación: </span>{new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'USD' }).format(movie.revenue)}</p>
 
-                          
-
-
-                          {/* <p className='fs-4'><span className='fw-bold'>Recaudación: </span> ${movie.revenue}</p> */}
-                          {/* <p className='fs-4'>Sitio web: <a target="_blank" href={movie.homepage}>{movie.title}</a></p> */}
-                        </div>
+                      </div>
 
                     </div>
                     <div className="modal-footer position-relative border-0">
@@ -209,17 +200,88 @@ function InfoMovie() {
 
 
             </>
-          ) : null}
+          ) : (
+
+              <>
+                <div className="modal fade" id="searchModal" tabIndex="-1" aria-labelledby="searchModal" aria-hidden="true">
+                  <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl modal-block">
+                    <div className="modal-content modal-movie" style={{
+                      backgroundImage: movie.poster_path ? `url("${IMAGE_PATH}${movie.poster_path}")` : `url("${fondoNotFound}")`,
+                    }}>
+
+                      <div className="modal-header text-light border-0">
+                        <h1 className="modal-title position-relative text-light" id="searchModal1">{movie.name}</h1>
+                        <button type="button" className="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div className="modal-body pt-0 text-light position-relative">
+                        <div className='d-flex gap-2 data-extra flex-wrap align-items-center'>
+                          <p className='fs-4 d-flex align-items-center'>{movie.number_of_seasons > 1 ? `${movie.number_of_seasons} temporadas` : `${movie.number_of_seasons} temporada`}
+                          <span className='fw-bold fs-1 ps-2'>·</span></p>
+                          <p className='fs-4 d-flex align-items-center'>{movie.number_of_episodes} episodios
+                          <span className='fw-bold fs-1 ps-2'>·</span></p>
+                          {movie && movie.genres && movie.genres.map((genre, index) => (
+                            <p className='fs-4' key={genre.id}>{genre.name}{index < movie.genres.length - 1 ? ', ' : ''}</p>
+                          ))}
+                          <p className='fs-4 d-flex align-items-center'><span className='fw-bold fs-1 pe-2'>·</span> {formatDate(movie.first_air_date)}</p>
+                          <p className='fs-4 text-uppercase d-flex align-items-center'><span className='fw-bold fs-1 pe-2'>·</span> {movie.original_language}</p>
+                        </div>
+                        <div className='d-flex gap-4 pt-3 flex-wrap'>
+                          <div>
+                            <img src={`${IMAGE_PATH}${movie.poster_path}`} className='imagen-modal' onError={(e) => {
+                              e.target.onerror = null;
+                              e.target.src = fondoNotFound
+                            }} />
+                          </div>
+                          <div className='bloque-derecho-modal'>
+                            <p className='fs-4 texto-modal pb-1'>{movie.overview}</p>
+                            <p className='fs-4 pt-4 d-flex align-items-baseline gap-2'><img className='icono-modal' src={estrella} /><span className='fw-bold'>Puntuación de usuarios:</span><span className={`${movie.vote_average * 10 >= 80 ? 'puntaje-verde' : movie.vote_average * 10 > 60 ? 'puntaje-amarillo' : 'puntaje-rojo'}`}> {(movie.vote_average * 10).toFixed(2)}%</span>
+                            </p>
+                            <p className='fs-4 pt-1 d-flex align-items-baseline gap-2'><img className='icono-modal' src={lapiz} /><span className='fw-bold'>Valoraciones:</span> {movie.vote_count}</p>
+                          </div>
+                        </div>
+                        <div>
+                          <h2 className='pt-4 text-primary subtitle-modal'>Más información</h2>
+
+                          <p className='fs-4 '><span className='fw-bold'>Productora: </span>
+                            {movie && movie.production_companies && movie.production_companies.map((companies, index) => (
+                              <span className='ps-2' key={companies.id}>{companies.name}{index < movie.production_companies.length - 1 ? ', ' : ''}</span>
+                            ))}</p>
+                          <p className='fs-4'>
+                            <span className='fw-bold pe-2'>País:
+                            </span>
+                            {movie && movie.production_countries && movie.production_countries.map((countries, index) => (
+                              <span>{countries.name}{index < movie.production_countries.length - 1 ? ', ' : ''}</span>))}
+                          </p>
+                            <p className='fs-4'><span className='fw-bold'>Creador: </span>
+                              {movie && movie.created_by && movie.created_by.map((creator, index) => (
+                                <span className='ps-2' key={index}>{creator.name}{index < movie.created_by.length - 1 ? ', ' : ''}</span>
+                              ))}
+                            </p>
+                      
+                        </div>
+
+                      </div>
+                      <div className="modal-footer position-relative border-0">
+                        <button type="button" className="btn btn-secondary fw-bold" data-bs-dismiss="modal">CERRAR</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </>
+
+            )
+          }
         </main>
       </div>
 
       {movies.length > 0 ? (
         <>
 
-          <h2 className="hero-text text-center text-light pt-5">Resultados de la búsqueda </h2>
+          <h2 className="hero-text text-center text-light pt-5">Resultados de la búsqueda</h2>
           <div className="text-center container">
-            <button onClick={goToPreviousPage} disabled={currentPage === 1} className='btn btn-dark botones-paginacion'>Anterior</button>
-            <button onClick={goToNextPage} disabled={currentPage === totalPages} className='btn btn-dark botones-paginacion'>Siguiente</button>
+            <button onClick={goToPreviousPage} disabled={currentPage === 1} className='btn btn-dark botones-paginacion ps-3 pe-3'>Anterior</button>
+            <button onClick={goToNextPage} disabled={currentPage === totalPages} className='btn btn-dark botones-paginacion ps-3 pe-3'>Siguiente</button>
           </div>
         </>
 
@@ -229,17 +291,45 @@ function InfoMovie() {
 
       <div>
         {/* contenedor para mostrar los posters y las peliculas en la peticion a la api */}
-        <div className="row justify-content-center container-fluid mx-auto gap-5 mt-5 mb-5 novedades fs-5">
-          {movies.map((movie) => (
-            <>
-            
-            <SearchCard key={movie.id} image={movie.poster_path} title={movie.title} overview={movie.overview} releaseDate={formatDate(movie.release_date)} vote_average={movie.vote_average.toFixed(2)} onclick={() => selectMovie(movie)} dataBstoggle="modal" dataBsTarget="#exampleModal" topMovie={movie.vote_average > 7.75 ? "Top movie" : ''} />
-            </>
-          ))}
+        <div className="row justify-content-center container-fluid mx-auto gap-5 mt-5 novedades fs-5">
+          {movies.map((movie) => {
+
+            const releaseDate = new Date(movie.release_date);
+            const today = new Date();
+            const isUpcoming = releaseDate > today ? "Próximo estreno" : "";
+
+            return (
+              <FilmCard
+                key={movie.id}
+                image={movie.poster_path}
+                title={movie.title ? movie.title : movie.name}
+                overview={movie.overview}
+                releaseDate={movie.title ? formatDate(movie.release_date) : formatDate(movie.first_air_date)}
+                voteAverage={(movie.vote_average * 10).toFixed(2)}
+                onclick={() => selectMovie(movie)}
+                movieType={movie.title ? 'Película' : 'Serie'}
+                classMovieType={movie.title ? 'movie-type-movie' : 'movie-type-serie'}
+                topMovie={movie.vote_average > 7.75 && movie.vote_count > 99 ? "Destacada" : ''}
+                proxEstreno={isUpcoming}
+              />
+            );
+          })}
 
         </div>
 
       </div>
+
+      {movies.length > 0 ? (
+        <>
+          <div className="text-center container mb-5">
+            <button onClick={goToPreviousPage} disabled={currentPage === 1} className='btn btn-dark botones-paginacion ps-3 pe-3'>Anterior</button>
+            <button onClick={goToNextPage} disabled={currentPage === totalPages} className='btn btn-dark botones-paginacion ps-3 pe-3'>Siguiente</button>
+          </div>
+          <hr className="container border-2 border-top border-secondary mt-5" />
+        </>
+
+      ) : ""
+      }
 
 
 
