@@ -144,7 +144,7 @@ export const BloqueNovedades = () => {
                                 releaseDate={formatDate(movie.release_date)}
                                 voteAverage={(movie.vote_average * 10).toFixed(2)}
                                 onclick={() => selectMovie(movie)}
-                                movieType={movie.title ? 'Película' : 'Serie'}
+                                movieType={''}
                                 classMovieType={movie.title ? 'movie-type-movie' : 'movie-type-serie'}
                                 topMovie={movie.vote_average > 7.75 && movie.vote_count > 99 ? "Destacada" : ''}
                                 proxEstreno={isUpcoming}

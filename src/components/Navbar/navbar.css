@@ -41,6 +41,18 @@
     font-size: 2.5rem !important; /* Ajusta según el tamaño deseado al hacer scroll */
 }
 
+
+.dropdown-menu{
+    background-color: #023249;
+    font-size: 1.5rem;
+    border: 1px solid #fff;
+
+}
+.dropdown-item:hover{
+    background-color: #fff;
+    color: #023249 !important;
+}
+
 @media screen and (max-width: 575px){
     .logo{
         width: 4rem;
