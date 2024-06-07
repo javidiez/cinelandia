@@ -2,12 +2,12 @@ import React from "react";
 import './filmcard.css';
 import fondoNotFound from '../../assets/img/fondo-not-found.jpeg'
 
-export const FilmCard = ({ image, title, releaseDate, voteAverage, onclick, topMovie, proxEstreno, movieType, classMovieType }) => {
+export const FilmCard = ({ image, title, releaseDate, voteAverage, onclick, topMovie, proxEstreno, movieType, classMovieType, size }) => {
 
   return (
     <>
 
-      <div className="card p-0" style={{ width: '18rem' }}>
+      <div className="card p-0" style={size}>
         <div className="film-card">
 
           <img

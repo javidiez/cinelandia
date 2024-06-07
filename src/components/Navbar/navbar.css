@@ -3,15 +3,50 @@
     filter: drop-shadow(0 0 8px #ffffff96);
 }
 
-.text-logo {
+.btn-lupa{
+    
+    border-radius: 6px; /* Esquinas: superior izquierda, superior derecha, inferior derecha, inferior izquierda */
+}
+
+.navbar{
+    background-color: #023249;
+    transition: padding 0.3s ease-in-out, background-color 0.3s ease-in-out, max-width 0.3s ease-in-out;
+}
+
+.navbar.shrink {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    background-color: #023249; /* Cambiar el color de fondo si es necesario */
+    filter: drop-shadow(0 0 25px #000000);
+}
+
+.navbar .logo {
+    max-width: 8rem;
+    transition: max-width 0.5s ease-in-out;
+
+}
+
+.navbar.shrink .logo {
+    max-width: 4.2rem;
+}
+
+
+.navbar p {
+    font-size: 3rem !important; /* Ajusta según el tamaño inicial */
+    transition: font-size 0.5s ease-in-out;
     font-style: italic;
 }
 
-.buscador{
-    border-radius: 6px 0 0 6px; /* Esquinas: superior izquierda, superior derecha, inferior derecha, inferior izquierda */
-
+.navbar.shrink p {
+    font-size: 2.5rem !important; /* Ajusta según el tamaño deseado al hacer scroll */
 }
 
-.btn-lupa{
-    border-radius: 0px 6px 6px 0px; /* Esquinas: superior izquierda, superior derecha, inferior derecha, inferior izquierda */
+@media screen and (max-width: 575px){
+    .logo{
+        width: 4rem;
+    }
+    .navbar p {
+        font-size: 2rem !important; /* Ajusta según el tamaño inicial */
+        transition: font-size 0.5s ease-in-out;
+    }
 }

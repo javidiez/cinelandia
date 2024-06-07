@@ -5,11 +5,12 @@ import { Modal } from '../Modal/Modal';
 import estrella from '../../assets/img/estrella.png';
 import lapiz from '../../assets/img/lapiz.png';
 import fondoNotFound from '../../assets/img/fondo-not-found.jpeg';
-import './novedades.css';
+import '../Novedades/novedades.css';
 import '../FilmCard/filmcard.css';
 import '../InfoMovie/infoMovie.css'
+import './bloque_novedades.css'
 
-export const Novedades = () => {
+export const BloqueNovedades = () => {
     const API_URL = "https://api.themoviedb.org/3";
     const API_KEY = "4f5f43495afcc67e9553f6c684a82f84";
     const sixMonthsAgo = new Date();
@@ -66,14 +67,14 @@ export const Novedades = () => {
     const goToPreviousPage = () => {
         if (currentPage > 1) {
             fetchNowPlaying(currentPage - 1);
-            window.scrollTo(0, 0);
+            window.scrollTo(0, 500);
         }
     };
 
     const goToNextPage = () => {
         if (currentPage < totalPages) {
             fetchNowPlaying(currentPage + 1);
-            window.scrollTo(0, 0);
+            window.scrollTo(0, 500);
         }
     };
 
@@ -85,6 +86,7 @@ export const Novedades = () => {
         return `${day}/${month}/${year}`;
     };
 
+    const moviesToShow = movies.slice(0, 12);
 
     return (
         <>
@@ -123,15 +125,10 @@ export const Novedades = () => {
                 </main>
             </div>
 
-            <h2 className="text-center text-light novedades-title">Novedades</h2>
-
-            <div className="text-center container">
-                <button onClick={goToPreviousPage} disabled={currentPage === 1} className='btn btn-dark botones-paginacion ps-3 pe-3'>Anterior</button>
-                <button onClick={goToNextPage} disabled={currentPage === totalPages} className='btn btn-dark botones-paginacion ps-3 pe-3'>Siguiente</button>
-            </div>
+            <h2 className="text-center text-light snippet_novedades_title">Novedades</h2>
 
                 <div className="row justify-content-center mx-auto gap-5 mt-5 mb-3 novedades fs-5">
-                    {movies.map((movie) => {
+                    {moviesToShow.map((movie) => {
                         const releaseDate = new Date(movie.release_date);
                         const today = new Date();
                         const isUpcoming = releaseDate > today ? "Próximo estreno" : "";
@@ -140,14 +137,14 @@ export const Novedades = () => {
                         return (
                             <FilmCard
                                 key={movie.id}
-                                size={{ width: '18rem' }}
+                                size={{ width: '16rem' }}
                                 image={movie.poster_path}
                                 title={movie.title}
                                 overview={movie.overview}
                                 releaseDate={formatDate(movie.release_date)}
                                 voteAverage={(movie.vote_average * 10).toFixed(2)}
                                 onclick={() => selectMovie(movie)}
-                                movieType={''}
+                                movieType={movie.title ? 'Película' : 'Serie'}
                                 classMovieType={movie.title ? 'movie-type-movie' : 'movie-type-serie'}
                                 topMovie={movie.vote_average > 7.75 && movie.vote_count > 99 ? "Destacada" : ''}
                                 proxEstreno={isUpcoming}
@@ -156,9 +153,8 @@ export const Novedades = () => {
                     })}
                 </div>
 
-            <div className="text-center container pb-5">
-                <button onClick={goToPreviousPage} disabled={currentPage === 1} className='btn btn-dark botones-paginacion ps-3 pe-3'>Anterior</button>
-                <button onClick={goToNextPage} disabled={currentPage === totalPages} className='btn btn-dark botones-paginacion ps-3 pe-3'>Siguiente</button>
+            <div className="container pb-5 mt-5 text-center ">
+                <a href="novedades.html"><button className='btn btn-primary botones-ver-mas ps-3 pe-3'>Ver más</button></a>
             </div>
         </>
     );

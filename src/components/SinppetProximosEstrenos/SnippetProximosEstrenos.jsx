@@ -1,19 +1,23 @@
+import React from "react";
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { FilmCard } from '../FilmCard/FilmCard';
 import { Modal } from '../Modal/Modal';
+import { BloqueProximosEstrenos } from "./BloqueProximosEstrenos";
 import estrella from '../../assets/img/estrella.png';
 import lapiz from '../../assets/img/lapiz.png';
 import fondoNotFound from '../../assets/img/fondo-not-found.jpeg';
-import './novedades.css';
+import '../Novedades/novedades.css';
 import '../FilmCard/filmcard.css';
 import '../InfoMovie/infoMovie.css'
+import './snippet_pp.css'
 
-export const Novedades = () => {
+export const SnippetProximosEstrenos = () => {
+
     const API_URL = "https://api.themoviedb.org/3";
     const API_KEY = "4f5f43495afcc67e9553f6c684a82f84";
-    const sixMonthsAgo = new Date();
-    sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 2);
+    const IMAGE_PATH = "https://image.tmdb.org/t/p/original";
+    const today = new Date();
+    const formattedToday = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
 
     const [movies, setMovies] = useState([]);
     const [selectedMovie, setSelectedMovie] = useState(null);
@@ -26,14 +30,16 @@ export const Novedades = () => {
                 api_key: API_KEY,
                 language: 'es-ES',
                 sort_by: 'popularity',
-                'primary_release_date.gte': sixMonthsAgo.toISOString().split('T')[0],
+                'primary_release_date.gte': formattedToday,
                 page: page,
             },
         });
 
+        const sortedResults = results.sort((a, b) => new Date(a.release_date) - new Date(b.release_date));
+
         setCurrentPage(page);
         setTotalPages(total_pages);
-        setMovies(results);
+        setMovies(sortedResults);
     };
 
     const fetchMovie = async (id) => {
@@ -43,7 +49,7 @@ export const Novedades = () => {
             },
         });
         setSelectedMovie(data);
-        const modal = new bootstrap.Modal(document.getElementById(`modalNovedad-${id}`));
+        const modal = new bootstrap.Modal(document.getElementById(`modalEstrenos-${id}`));
         modal.show();
     };
 
@@ -58,24 +64,11 @@ export const Novedades = () => {
 
     useEffect(() => {
         if (selectedMovie) {
-            const modal = new bootstrap.Modal(document.getElementById(`modalNovedad-${selectedMovie.id}`));
+            const modal = new bootstrap.Modal(document.getElementById(`modalEstrenos-${selectedMovie.id}`));
             modal.show();
         }
     }, [selectedMovie]);
 
-    const goToPreviousPage = () => {
-        if (currentPage > 1) {
-            fetchNowPlaying(currentPage - 1);
-            window.scrollTo(0, 0);
-        }
-    };
-
-    const goToNextPage = () => {
-        if (currentPage < totalPages) {
-            fetchNowPlaying(currentPage + 1);
-            window.scrollTo(0, 0);
-        }
-    };
 
     const formatDate = (dateString) => {
         const date = new Date(dateString);
@@ -85,6 +78,7 @@ export const Novedades = () => {
         return `${day}/${month}/${year}`;
     };
 
+    const moviesToShow = movies.slice(0, 5);
 
     return (
         <>
@@ -93,7 +87,7 @@ export const Novedades = () => {
                     {selectedMovie && (
                         <Modal
                             key={selectedMovie.id}
-                            idModal={`modalNovedad-${selectedMovie.id}`}
+                            idModal={`modalEstrenos-${selectedMovie.id}`}
                             postherPad={selectedMovie.poster_path ? `https://image.tmdb.org/t/p/w500${selectedMovie.poster_path}` : fondoNotFound}
                             noImg={fondoNotFound}
                             title={selectedMovie.title}
@@ -114,7 +108,6 @@ export const Novedades = () => {
                                 <span key={country.iso_3166_1}>{country.name}{index < selectedMovie.production_countries.length - 1 ? ', ' : ''}</span>
                             ))}
                             budget={new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'USD' }).format(selectedMovie.budget)}
-                            revenue={new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'USD' }).format(selectedMovie.revenue)}
                             estrella={estrella}
                             lapiz={lapiz}
 
@@ -123,43 +116,43 @@ export const Novedades = () => {
                 </main>
             </div>
 
-            <h2 className="text-center text-light novedades-title">Novedades</h2>
 
-            <div className="text-center container">
-                <button onClick={goToPreviousPage} disabled={currentPage === 1} className='btn btn-dark botones-paginacion ps-3 pe-3'>Anterior</button>
-                <button onClick={goToNextPage} disabled={currentPage === totalPages} className='btn btn-dark botones-paginacion ps-3 pe-3'>Siguiente</button>
-            </div>
 
-                <div className="row justify-content-center mx-auto gap-5 mt-5 mb-3 novedades fs-5">
-                    {movies.map((movie) => {
+            <div>
+
+                <div className="d-flex flex-column container-fluid snippet_pp">
+
+                    <h2 className="text-center text-light snippet_pp_title">Próximos estrenos</h2>
+
+                    {moviesToShow.map((movie) => {
                         const releaseDate = new Date(movie.release_date);
                         const today = new Date();
                         const isUpcoming = releaseDate > today ? "Próximo estreno" : "";
 
 
                         return (
-                            <FilmCard
+                            <>
+                            <BloqueProximosEstrenos
                                 key={movie.id}
-                                size={{ width: '18rem' }}
-                                image={movie.poster_path}
+                                img={`${IMAGE_PATH}${movie.poster_path}`}
                                 title={movie.title}
-                                overview={movie.overview}
-                                releaseDate={formatDate(movie.release_date)}
-                                voteAverage={(movie.vote_average * 10).toFixed(2)}
+                                description={''}
+                                date={formatDate(movie.release_date)}
                                 onclick={() => selectMovie(movie)}
-                                movieType={''}
-                                classMovieType={movie.title ? 'movie-type-movie' : 'movie-type-serie'}
-                                topMovie={movie.vote_average > 7.75 && movie.vote_count > 99 ? "Destacada" : ''}
-                                proxEstreno={isUpcoming}
                             />
+                            <hr className="border-2 border-top border-secondary" />
+                            </>
                         );
                     })}
-                </div>
-
-            <div className="text-center container pb-5">
-                <button onClick={goToPreviousPage} disabled={currentPage === 1} className='btn btn-dark botones-paginacion ps-3 pe-3'>Anterior</button>
-                <button onClick={goToNextPage} disabled={currentPage === totalPages} className='btn btn-dark botones-paginacion ps-3 pe-3'>Siguiente</button>
+                <div className="text-center mb-5 mt-3 ">
+                <a href="./proximos_estrenos.html"><button className='btn btn-primary botones-ver-mas ps-3 pe-3'>Ver mas</button></a>
             </div>
+                </div>
+         
+            
+            </div>
+            
+         
         </>
     );
 };
