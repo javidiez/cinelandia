@@ -9,4 +9,17 @@
 
 .novedades-title{
     font-size: clamp(3rem, 4.5vw, 6rem);
+    text-wrap: balance;
+    padding: 20px 0px 0 5px;
+}
+
+.dropdown-menu{
+    background-color: #023249;
+    font-size: 1.5rem;
+    border: 1px solid #fff;
+    filter: drop-shadow(0 0 5px #ffffff73)
+}
+.dropdown-item:hover{
+    background-color: #fff;
+    color: #023249 !important;
 }

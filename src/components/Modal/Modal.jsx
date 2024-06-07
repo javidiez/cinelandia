@@ -1,5 +1,4 @@
 import React from 'react';
-import './modal.css';
 import '../Novedades/novedades.css'
 
 export const Modal = ({

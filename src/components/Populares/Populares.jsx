@@ -5,15 +5,14 @@ import { Modal } from '../Modal/Modal';
 import estrella from '../../assets/img/estrella.png';
 import lapiz from '../../assets/img/lapiz.png';
 import fondoNotFound from '../../assets/img/fondo-not-found.jpeg';
-import './novedades.css';
+import '../Novedades/novedades.css';
 import '../FilmCard/filmcard.css';
 import '../InfoMovie/infoMovie.css'
 
-export const Novedades = () => {
+export const Populares = () => {
     const API_URL = "https://api.themoviedb.org/3";
     const API_KEY = "4f5f43495afcc67e9553f6c684a82f84";
-    const sixMonthsAgo = new Date();
-    sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 2);
+    const IMAGE_PATH = "https://image.tmdb.org/t/p/original";
 
     const [movies, setMovies] = useState([]);
     const [selectedMovie, setSelectedMovie] = useState(null);
@@ -21,12 +20,9 @@ export const Novedades = () => {
     const [totalPages, setTotalPages] = useState(1);
 
     const fetchNowPlaying = async (page) => {
-        const { data: { results, total_pages } } = await axios.get(`${API_URL}/discover/movie`, {
+        const { data: { results, total_pages } } = await axios.get(`${API_URL}/movie/popular?language=es-ES`, {
             params: {
                 api_key: API_KEY,
-                language: 'es-ES',
-                sort_by: 'popularity',
-                'primary_release_date.gte': sixMonthsAgo.toISOString().split('T')[0],
                 page: page,
             },
         });
@@ -43,7 +39,7 @@ export const Novedades = () => {
             },
         });
         setSelectedMovie(data);
-        const modal = new bootstrap.Modal(document.getElementById(`modalNovedad-${id}`));
+        const modal = bootstrap.Modal.getOrCreateInstance(`#modalNovedad-${id}`);
         modal.show();
     };
 
@@ -88,6 +84,7 @@ export const Novedades = () => {
 
     return (
         <>
+        
             <div>
                 <main>
                     {selectedMovie && (
@@ -123,24 +120,23 @@ export const Novedades = () => {
                 </main>
             </div>
 
-            <h2 className="text-center text-light novedades-title">Novedades</h2>
+            <h2 className="text-center text-light novedades-title">Películas populares</h2>
 
             <div className="text-center container">
                 <button onClick={goToPreviousPage} disabled={currentPage === 1} className='btn btn-dark botones-paginacion ps-3 pe-3'>Anterior</button>
                 <button onClick={goToNextPage} disabled={currentPage === totalPages} className='btn btn-dark botones-paginacion ps-3 pe-3'>Siguiente</button>
             </div>
 
-                <div className="row justify-content-center mx-auto gap-5 mt-5 mb-3 novedades fs-5">
+            <div>
+                <div className="row justify-content-center container-fluid mx-auto gap-5 mt-5 mb-3 novedades fs-5">
                     {movies.map((movie) => {
                         const releaseDate = new Date(movie.release_date);
                         const today = new Date();
                         const isUpcoming = releaseDate > today ? "Próximo estreno" : "";
 
-
                         return (
                             <FilmCard
                                 key={movie.id}
-                                size={{ width: '18rem' }}
                                 image={movie.poster_path}
                                 title={movie.title}
                                 overview={movie.overview}
@@ -148,7 +144,7 @@ export const Novedades = () => {
                                 voteAverage={(movie.vote_average * 10).toFixed(2)}
                                 onclick={() => selectMovie(movie)}
                                 movieType={''}
-                                classMovieType={movie.title ? 'movie-type-movie' : 'movie-type-serie'}
+                                classMovieType={""}
                                 topMovie={movie.vote_average > 7.75 && movie.vote_count > 99 ? "Destacada" : ''}
                                 proxEstreno={isUpcoming}
                             />
@@ -156,6 +152,8 @@ export const Novedades = () => {
                     })}
                 </div>
 
+                
+            </div>
             <div className="text-center container pb-5">
                 <button onClick={goToPreviousPage} disabled={currentPage === 1} className='btn btn-dark botones-paginacion ps-3 pe-3'>Anterior</button>
                 <button onClick={goToNextPage} disabled={currentPage === totalPages} className='btn btn-dark botones-paginacion ps-3 pe-3'>Siguiente</button>

@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import axios from 'axios'
 import { FilmCard } from '../FilmCard/FilmCard';
 import { Modal } from '../Modal/Modal';
+import { Buscador } from '../Buscador/Buscador';
 import { useState } from 'react';
 import './infoMovie.css'
 import estrella from '../../assets/img/estrella.png'
@@ -14,9 +15,6 @@ function InfoMovie() {
   const API_URL = "https://api.themoviedb.org/3";
   const API_KEY = "4f5f43495afcc67e9553f6c684a82f84";
   const IMAGE_PATH = "https://image.tmdb.org/t/p/original";
-
-  // endpoint para las imagenes
-  const URL_IMAGE = "https://image.tmdb.org/t/p/original";
 
   // variables de estado
   const [movies, setMovies] = useState([]);
@@ -59,7 +57,7 @@ function InfoMovie() {
       });
 
       setMovie(data);
-      const modal = bootstrap.Modal.getOrCreateInstance(`#searchModal`);
+      const modal = new bootstrap.Modal(document.getElementById(`topModal`));
       modal.show();
     } catch (error) {
       console.error("Error fetching movie/series data:", error);
@@ -92,6 +90,16 @@ function InfoMovie() {
 
   useEffect(() => {
     fetchMovies();
+
+    if (window.location.hash === '#search-focus') {
+      const searchInput = document.querySelector('#buscador'); // Asegúrate de que el input del buscador tenga este id
+      if (searchInput) {
+        searchInput.focus();
+      }
+    }
+
+
+
   }, []);
 
 
@@ -124,21 +132,13 @@ function InfoMovie() {
 
       {/* el buscador */}
 
-
-      <div className="hero d-flex flex-column align-items-center justify-content-center">
-        <h2 className="hero-text text-center text-light pb-4">Todas tus películas y series favoritas</h2>
-        <form className="container w-50 d-flex flex-column gap-2 input-group-lg" role="search" onSubmit={searchMovies}>
-          <input className="form-control me-2" type="search" placeholder="Buscar" aria-label="Search" id="buscador" onChange={(e) => setSearchKey(e.target.value)} />
-          <button className="btn btn-primary w-100 fw-bold buscar" type="submit">BUSCAR</button>
-        </form>
-      </div>
-
+      <Buscador title="Todas tus películas y series favoritas" buttonText="BUSCAR" onChange={(e) => setSearchKey(e.target.value)} onSubmit={searchMovies} />
 
       <div>
         <main>
           {movie.title ? (
             <>
-              <div className="modal fade" id="searchModal" tabIndex="-1" aria-labelledby="searchModal" aria-hidden="true">
+              <div className="modal fade" id="topModal" tabIndex="-1" aria-labelledby="topModal" aria-hidden="true">
                 <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl modal-block">
                   <div className="modal-content modal-movie" style={{
                     backgroundImage: movie.poster_path ? `url("${IMAGE_PATH}${movie.poster_path}")` : `url("${fondoNotFound}")`,
@@ -203,14 +203,14 @@ function InfoMovie() {
           ) : (
 
               <>
-                <div className="modal fade" id="searchModal" tabIndex="-1" aria-labelledby="searchModal" aria-hidden="true">
+                <div className="modal fade" id="topModal" tabIndex="-1" aria-labelledby="topModal" aria-hidden="true">
                   <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl modal-block">
                     <div className="modal-content modal-movie" style={{
                       backgroundImage: movie.poster_path ? `url("${IMAGE_PATH}${movie.poster_path}")` : `url("${fondoNotFound}")`,
                     }}>
 
                       <div className="modal-header text-light border-0">
-                        <h1 className="modal-title position-relative text-light" id="searchModal1">{movie.name}</h1>
+                        <h1 className="modal-title position-relative text-light" id="topModal1">{movie.name}</h1>
                         <button type="button" className="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                       </div>
                       <div className="modal-body pt-0 text-light position-relative">
@@ -301,6 +301,7 @@ function InfoMovie() {
             return (
               <FilmCard
                 key={movie.id}
+                size={{ width: '18rem' }}
                 image={movie.poster_path}
                 title={movie.title ? movie.title : movie.name}
                 overview={movie.overview}
@@ -325,7 +326,7 @@ function InfoMovie() {
             <button onClick={goToPreviousPage} disabled={currentPage === 1} className='btn btn-dark botones-paginacion ps-3 pe-3'>Anterior</button>
             <button onClick={goToNextPage} disabled={currentPage === totalPages} className='btn btn-dark botones-paginacion ps-3 pe-3'>Siguiente</button>
           </div>
-          <hr className="container border-2 border-top border-secondary mt-5" />
+          <hr className="container-fluid border-2 border-top border-secondary mt-5 mb-5 pe-5 ps-5" />
         </>
 
       ) : ""
