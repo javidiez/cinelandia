@@ -1,0 +1,19 @@
+.table tr td{
+    background-color: transparent;
+    color: #fff;
+
+    padding-top: 10px;
+}
+.table span{
+    font-size: clamp(1rem,4.5vw,1.5rem);
+}
+
+.table th{
+    font-size: clamp(1rem,5vw,1.6rem);
+    background-color: transparent;
+    color: #fff
+}
+
+.table tr:hover{
+    background-color: #ffffff31;
+}

@@ -23,7 +23,7 @@ export const FilmCard = ({ image, title, releaseDate, voteAverage, onclick, topM
             <div className={classMovieType}>{movieType}</div>
             <p className="card-text fs-3 pb-4 fw-bold text-uppercase">{title}</p>
             <p className="card-text"><span className="fw-bold">Fecha: </span>{releaseDate}</p>
-            <p className="card-text"><span className="fw-bold">Valoración: </span>{voteAverage} %</p>
+            <p className="card-text"><span className="fw-bold"></span>{voteAverage}</p>
             <button className="btn btn-primary mt-4 fw-bold fs-5" onClick={onclick}>VER MÁS</button>
           </div>
         </div>

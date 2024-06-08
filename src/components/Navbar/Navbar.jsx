@@ -41,7 +41,7 @@ export const Navbar = () => {
                     <div className="collapse navbar-collapse" id="navbarNav">
                         <ul className="navbar-nav pe-3">
                             <li className="nav-item">
-                                <a className="nav-link text-light fs-3 fw-bold" aria-current="page" href="#">Home</a>
+                                <a className="nav-link text-light fs-3 fw-bold" aria-current="page" href="index.html">Home</a>
                             </li>
                             <li className="nav-item dropdown">
                                 <a className="nav-link dropdown-toggle text-light fs-3 fw-bold" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -59,9 +59,10 @@ export const Navbar = () => {
                                     Series
                                 </a>
                                 <ul className="dropdown-menu">
-                                    <li><a className="dropdown-item text-light" href="novedades.html">Novedades</a></li>
-                                    <li><a className="dropdown-item text-light" href="populares.html">Populares</a></li>
-                                    <li><a className="dropdown-item text-light" href="toprated.html">Mejor valoradas</a></li>
+                                    <li><a className="dropdown-item text-light" href="novedades_series.html">Novedades</a></li>
+                                    <li><a className="dropdown-item text-light" href="trending_series.html">Tendencias</a></li>
+                                    <li><a className="dropdown-item text-light" href="populares_series.html">Populares</a></li>
+                                    <li><a className="dropdown-item text-light" href="topratedserie.html">Mejor valoradas</a></li>
                                     <li><a className="dropdown-item text-light" href="proximos_estrenos.html">Próximos estrenos</a></li>
                                 </ul>
                             </li>

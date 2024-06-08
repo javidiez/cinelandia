@@ -175,9 +175,8 @@ export const TopRated = () => {
                                         image={movie.poster_path}
                                         title={movie.title}
                                         overview={movie.overview}
-                                        releaseDate={formatDate(movie.release_date)}
-                                        voteAverage={(movie.vote_average * 10).toFixed(2)}
-                                        onclick={() => selectMovie(movie)}
+                                        releaseDate={movie.release_date ? formatDate(movie.release_date) : 'Fecha no informada'}
+                                        voteAverage={isUpcoming ? '' : <><span className="fw-bold">Valoración:</span> {(movie.vote_average * 10).toFixed(2)}%</>}                                          onclick={() => selectMovie(movie)}
                                         movieType={''}
                                         classMovieType={""}
                                         topMovie={''}
