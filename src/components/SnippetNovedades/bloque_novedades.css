@@ -3,5 +3,11 @@
 }
 
 .botones-ver-mas{
-    font-size: 1.5rem
+    font-size: 1.5rem;
+    background-color: #0071a5;
+    border: none
+}
+
+.botones-ver-mas:hover{
+    background-color:  #005d88;;
 }

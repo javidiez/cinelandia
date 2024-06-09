@@ -14,53 +14,29 @@ export const TopRated = () => {
     const API_KEY = "4f5f43495afcc67e9553f6c684a82f84";
 
     const [movies, setMovies] = useState([]);
-    const [selectedMovie, setSelectedMovie] = useState(null); // Cambiar a null
+    const [selectedMovie, setSelectedMovie] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [loading, setLoading] = useState(true);
+    const [trailer, setTrailer] = useState(null);
+    const [playing, setPlaying] = useState(false);
 
-    const fetchAllTopRatedMovies = async () => {
+    const fetchTopRatedMovies = async (page) => {
         setLoading(true);
-        let allMovies = [];
-        let totalPages = 1;
-
         try {
-            // First request to get the total number of pages
-            const { data: { results, total_pages } } = await axios.get(`${API_URL}/movie/top_rated?language=es-ES`, {
+            const { data: { results, total_pages } } = await axios.get(`${API_URL}/movie/top_rated?adult=false`, {
                 params: {
                     api_key: API_KEY,
-                    page: 1,
+                    language: 'es-ES',
+                    page: page,
                 },
             });
-            allMovies = [...allMovies, ...results];
-            totalPages = total_pages;
 
-            // Create an array of promises for all subsequent pages
-            const pagePromises = [];
-            for (let page = 2; page <= totalPages; page++) {
-                pagePromises.push(
-                    axios.get(`${API_URL}/movie/top_rated?language=es-ES`, {
-                        params: {
-                            api_key: API_KEY,
-                            page: page,
-                        },
-                    })
-                );
-            }
-
-            // Resolve all promises in parallel
-            const pageResults = await Promise.all(pagePromises);
-            pageResults.forEach(pageResult => {
-                allMovies = [...allMovies, ...pageResult.data.results];
-            });
-
-            // Filter the movies by vote average
-            const filteredMovies = allMovies.filter(movie => movie.vote_average > 7.75);
-
-            // Sort the movies by release date
+            const filteredMovies = results.filter(movie => movie.vote_average > 7.75);
             filteredMovies.sort((a, b) => new Date(b.release_date) - new Date(a.release_date));
+            
             setMovies(filteredMovies);
-            setTotalPages(Math.ceil(filteredMovies.length / 20));
+            setTotalPages(total_pages);
         } catch (error) {
             console.error("Error fetching top rated movies:", error);
         } finally {
@@ -69,11 +45,20 @@ export const TopRated = () => {
     };
 
     const fetchMovie = async (id) => {
-        const { data } = await axios.get(`${API_URL}/movie/${id}?language=es-ES`, {
+        const { data } = await axios.get(`${API_URL}/movie/${id}`, {
             params: {
                 api_key: API_KEY,
+                language: 'es-ES',
+                append_to_response: 'videos'
             },
         });
+
+        if (data.videos && data.videos.results) {
+            const trailer = data.videos.results.find(
+                (vid) => vid.name === "Official Trailer"
+            );
+            setTrailer(trailer ? trailer : data.videos.results[0]);
+        }
         setSelectedMovie(data);
     };
 
@@ -82,8 +67,8 @@ export const TopRated = () => {
     };
 
     useEffect(() => {
-        fetchAllTopRatedMovies();
-    }, []);
+        fetchTopRatedMovies(currentPage);
+    }, [currentPage]);
 
     useEffect(() => {
         if (selectedMovie) {
@@ -112,6 +97,11 @@ export const TopRated = () => {
         const month = String(date.getMonth() + 1).padStart(2, '0');
         const year = date.getFullYear();
         return `${day}/${month}/${year}`;
+    };
+
+    const handleCloseModal = () => {
+        setPlaying(false); // Detiene el video
+        setSelectedMovie(null); // Cierra el modal
     };
 
     return (
@@ -145,6 +135,8 @@ export const TopRated = () => {
                             revenue={selectedMovie.revenue > 0 ? <><span className='fw-bold'>Recaudación:</span> {new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'USD' }).format(selectedMovie.revenue)}</> : <><span className='fw-bold'>Recaudación: </span>No informado</>}
                             estrella={estrella}
                             lapiz={lapiz}
+                            onClose={handleCloseModal}
+                            trailer={trailer}
                         />
                     )}
                 </main>
@@ -163,7 +155,7 @@ export const TopRated = () => {
 
                     <div>
                         <div className="row justify-content-center container-fluid mx-auto gap-5 mt-5 mb-3 novedades fs-5">
-                            {movies.slice((currentPage - 1) * 20, currentPage * 20).map((movie) => {
+                            {movies.map((movie) => {
                                 const releaseDate = new Date(movie.release_date);
                                 const today = new Date();
                                 const isUpcoming = releaseDate > today ? "Próximo estreno" : "";
@@ -175,7 +167,8 @@ export const TopRated = () => {
                                         title={movie.title}
                                         overview={movie.overview}
                                         releaseDate={movie.release_date ? formatDate(movie.release_date) : 'Fecha no informada'}
-                                        voteAverage={isUpcoming ? '' : <><span className="fw-bold">Valoración:</span> {(movie.vote_average * 10).toFixed(2)}%</>}                                          onclick={() => selectMovie(movie)}
+                                        voteAverage={isUpcoming ? '' : <><span className="fw-bold">Valoración:</span> {(movie.vote_average * 10).toFixed(2)}%</>}
+                                        onclick={() => selectMovie(movie)}
                                         movieType={''}
                                         classMovieType={""}
                                         topMovie={''}

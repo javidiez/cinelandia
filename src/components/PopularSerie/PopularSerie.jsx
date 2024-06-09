@@ -100,6 +100,10 @@ export const PopularesSerie = () => {
         return `${day}/${month}/${year}`;
     };
 
+    const handleCloseModal = () => {
+        setSelectedSerie(null); // Cierra el modal
+    };
+
     return (
         <>
             <div>
@@ -150,6 +154,8 @@ export const PopularesSerie = () => {
                             ))}
                             estrella={estrella}
                             lapiz={lapiz}
+                            onClose={handleCloseModal}
+
                         />
                     )}
                 </main>

@@ -56,7 +56,7 @@ export const ModalSerie = ({
     
         const rows = [];
         for (let i = 0; i < maxRows; i++) {
-            const estreno = mapSeasonsSeasonDate[i] === "01/01/1970" ? "En rodaje" : mapSeasonsSeasonDate[i];
+            const estreno = mapSeasonsSeasonDate[i] === "01/01/1970" ? "No informado" : mapSeasonsSeasonDate[i];
             rows.push(
                 <tr key={i}>
                     <td>{mapSeasonsSeasonName[i]}</td>
@@ -70,14 +70,13 @@ export const ModalSerie = ({
     };
 
     const closeModal = () => {
-        // Llama a la función onClose para cerrar el modal y detener el video
         onClose && onClose();
     };
 
 
 
     return (
-        <div className="modal fade" id={idModal} tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div className="modal fade" id={idModal} tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
             <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl modal-block">
                 <div className="modal-content modal-movie" style={{ backgroundImage }}>
                     <div className="modal-header text-light border-0">

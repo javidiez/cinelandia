@@ -19,6 +19,8 @@ export const ProximosEstrenos = () => {
     const [selectedMovie, setSelectedMovie] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
+    const [trailer, setTrailer] = useState(null);
+    const [playing, setPlaying] = useState(false);
 
     const fetchNowPlaying = async (page) => {
         const { data: { results, total_pages } } = await axios.get(`${API_URL}/discover/movie`, {
@@ -40,8 +42,17 @@ export const ProximosEstrenos = () => {
         const { data } = await axios.get(`${API_URL}/movie/${id}?language=es-ES`, {
             params: {
                 api_key: API_KEY,
+                append_to_response: 'videos'
             },
         });
+
+        if (data.videos && data.videos.results) {
+            const trailer = data.videos.results.find(
+                (vid) => vid.name === "Official Trailer"
+            );
+            setTrailer(trailer ? trailer : data.videos.results[0]);
+        }
+
         setSelectedMovie(data);
         const modal = new bootstrap.Modal(document.getElementById(`modalEstrenos-${id}`));
         modal.show();
@@ -85,6 +96,11 @@ export const ProximosEstrenos = () => {
         return `${day}/${month}/${year}`;
     };
 
+    const handleCloseModal = () => {
+        setPlaying(false); // Detiene el video
+        setSelectedMovie(null); // Cierra el modal
+    };
+
     return (
         <>
             <div>
@@ -116,7 +132,8 @@ export const ProximosEstrenos = () => {
                             revenue={selectedMovie.revenue > 0 ? <><span className='fw-bold'>Recaudación:</span> {new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'USD' }).format(selectedMovie.revenue)}</> : <><span className='fw-bold'>Recaudación: </span>No informado</>}
                             estrella={estrella}
                             lapiz={lapiz}
-
+                            onClose={handleCloseModal}
+                            trailer={trailer}
                         />
                     )}
                 </main>

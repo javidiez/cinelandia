@@ -22,9 +22,9 @@ export const Modal = ({
     revenue,
     estrella,
     lapiz,
-    viewTrailer,
     onClose,
-    trailer // Pasar el trailer como prop
+    trailer, // Pasar el trailer como prop
+    cast
 }) => {
     const videoContainerRef = useRef(null);
     const [playing, setPlaying] = useState(false);
@@ -73,8 +73,8 @@ export const Modal = ({
                             <p className='fs-4 d-flex align-items-center'>{runTime} minutos <span className='fw-bold fs-1 ps-2'>·</span></p>
                             {mapGenre}
                             <p className='fs-4 d-flex align-items-center'><span className='fw-bold fs-1 pe-2'>·</span> {releaseDate}</p>
-                            <p className='fs-4 text-uppercase d-flex align-items-center'><span className='fw-bold fs-1 pe-2'>·</span> {originalLanguage}</p>
-                            {!playing && (
+                            <p className='fs-4 text-uppercase d-flex align-items-center pe-3'><span className='fw-bold fs-1 pe-2'>·</span> {originalLanguage}</p>
+                            {!playing && trailer && (
                                 <button
                                     className="btn btn-success fw-bold ver-trailer"
                                     onClick={handlePlayTrailer}
@@ -136,6 +136,7 @@ export const Modal = ({
                             <h2 className='pt-4 text-primary subtitle-modal'>Más información</h2>
                             <p className='fs-4'><span className='fw-bold'>Productora: </span>{mapProductionCompanies}</p>
                             <p className='fs-4'><span className='fw-bold pe-2'>País: </span>{mapCountries}</p>
+                            <p className='fs-4'><span className='fw-bold pe-2'>Actores: </span>{cast}</p>
                             <p className='fs-4'>{budget}</p>
                             <p className='fs-4'>{revenue}</p>
                         </div>

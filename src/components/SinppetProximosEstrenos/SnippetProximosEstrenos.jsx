@@ -23,13 +23,15 @@ export const SnippetProximosEstrenos = () => {
     const [selectedMovie, setSelectedMovie] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
+    const [trailer, setTrailer] = useState(null);
+    const [playing, setPlaying] = useState(false);
 
     const fetchNowPlaying = async (page) => {
-        const { data: { results, total_pages } } = await axios.get(`${API_URL}/discover/movie?include_adult=false`, {
+        const { data: { results, total_pages } } = await axios.get(`${API_URL}/discover/movie?include_adult=false&popularity`, {
             params: {
                 api_key: API_KEY,
                 language: 'es-ES',
-                sort_by: 'popularity',
+                sort_by: 'popularity.desc',
                 'primary_release_date.gte': formattedToday,
                 page: page,
             },
@@ -46,8 +48,17 @@ export const SnippetProximosEstrenos = () => {
         const { data } = await axios.get(`${API_URL}/movie/${id}?language=es-ES`, {
             params: {
                 api_key: API_KEY,
+                append_to_response: 'videos'
             },
         });
+
+        if (data.videos && data.videos.results) {
+            const trailer = data.videos.results.find(
+                (vid) => vid.name === "Official Trailer"
+            );
+            setTrailer(trailer ? trailer : data.videos.results[0]);
+        }
+
         setSelectedMovie(data);
     };
 
@@ -76,7 +87,15 @@ export const SnippetProximosEstrenos = () => {
         return `${day}/${month}/${year}`;
     };
 
+    const releaseDate = new Date(movies.release_date);
+    const isUpcoming = releaseDate > today ? "Próximo estreno" : "";
+
     const moviesToShow = movies.slice(0, 5);
+
+    const handleCloseModal = () => {
+        setPlaying(false); // Detiene el video
+        setSelectedMovie(null); // Cierra el modal
+    };
 
     return (
         <>
@@ -105,10 +124,12 @@ export const SnippetProximosEstrenos = () => {
                             mapCountries={selectedMovie.production_countries && selectedMovie.production_countries.map((country, index) => (
                                 <span key={country.iso_3166_1}>{country.name}{index < selectedMovie.production_countries.length - 1 ? ', ' : ''}</span>
                             ))}
-                            budget={new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'USD' }).format(selectedMovie.budget)}
+                            budget={''}
                             revenue={''}
                             estrella={estrella}
                             lapiz={lapiz}
+                            onClose={handleCloseModal}
+                            trailer={trailer}
 
                         />
                     )}
@@ -123,10 +144,14 @@ export const SnippetProximosEstrenos = () => {
 
                     <h2 className="text-center text-light snippet_pp_title">Próximos estrenos</h2>
 
+                  
+                  
+             
+                        
+                        
+
                     {moviesToShow.map((movie) => {
-                        const releaseDate = new Date(movie.release_date);
-                        const today = new Date();
-                        const isUpcoming = releaseDate > today ? "Próximo estreno" : "";
+                        
 
 
                         return (

@@ -105,6 +105,10 @@ export const TopRatedSerie = () => {
         return `${day}/${month}/${year}`;
     };
 
+    const handleCloseModal = () => {
+        setSelectedSerie(null); // Cierra el modal
+    };
+
     return (
         <>
             <div>
@@ -155,6 +159,7 @@ export const TopRatedSerie = () => {
                             ))}
                             estrella={estrella}
                             lapiz={lapiz}
+                            onClose={handleCloseModal}
                         />
                     )}
                 </main>
@@ -163,7 +168,7 @@ export const TopRatedSerie = () => {
             <h2 className="text-center text-light novedades-title">Series mejor valoradas</h2>
 
             {loading ? (
-                <div className="text-center text-light mt-5 fs-1">Cargando...</div>
+                <div className="text-center text-light mt-5 fs-1">Cargando miles de series, aguarde unos segundos...</div>
             ) : (
                 <>
                     <div className="text-center container">

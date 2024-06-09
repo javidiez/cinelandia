@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import YouTube from 'react-youtube';
 import { FilmCard } from '../FilmCard/FilmCard';
 import { Modal } from '../Modal/Modal';
 import estrella from '../../assets/img/estrella.png';
@@ -22,6 +21,7 @@ export const BloqueNovedades = () => {
     const [selectedMovie, setSelectedMovie] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
     const [trailer, setTrailer] = useState(null);
+    const [cast, setCast] = useState(null);
     const [playing, setPlaying] = useState(false);
 
     const fetchNowPlaying = async (page) => {
@@ -43,7 +43,8 @@ export const BloqueNovedades = () => {
         const { data } = await axios.get(`${API_URL}/movie/${id}?language=es-ES`, {
             params: {
                 api_key: API_KEY,
-                append_to_response: 'videos'
+                append_to_response: 'videos',
+                append_to_response: 'credits'
             },
         });
 
@@ -54,7 +55,15 @@ export const BloqueNovedades = () => {
             setTrailer(trailer ? trailer : data.videos.results[0]);
         }
 
+        if (data.credits && data.credits.cast) {
+            // Extraer el elenco de la respuesta de la API
+            const castMembers = data.credits.cast.map((member) => member.name);
+            // Configurar el estado 'cast' con la lista de miembros del elenco
+            setCast(castMembers.slice(0, 5));
+        }
+
         setSelectedMovie(data);
+    
         const modal = new bootstrap.Modal(document.getElementById(`modalNovedad-${id}`));
         modal.show();
     };
@@ -121,7 +130,8 @@ export const BloqueNovedades = () => {
                             estrella={estrella}
                             lapiz={lapiz}
                             onClose={handleCloseModal}
-                            trailer={trailer} // Pasar el trailer como prop
+                            trailer={trailer}
+                            cast={cast}
                         />
                     )}
                 </main>

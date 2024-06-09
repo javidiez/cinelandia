@@ -87,6 +87,10 @@ export const NovedadesSerie = () => {
         return `${day}/${month}/${year}`;
     };
 
+    const handleCloseModal = () => {
+        setSelectedSerie(null); // Cierra el modal
+    };
+
 
     return (
         <>
@@ -138,6 +142,7 @@ export const NovedadesSerie = () => {
                             ))}
                             estrella={estrella}
                             lapiz={lapiz}
+                            onClose={handleCloseModal}
                         />
                     )}
                 </main>
