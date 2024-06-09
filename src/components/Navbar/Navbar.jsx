@@ -5,7 +5,7 @@ export const Navbar = () => {
 
     window.addEventListener('scroll', function () {
         const navbar = document.querySelector('.navbar');
-        if (window.scrollY > 50) {
+        if (window.scrollY > 0) {
             navbar.classList.add('shrink');
         } else {
             navbar.classList.remove('shrink');
@@ -63,7 +63,6 @@ export const Navbar = () => {
                                     <li><a className="dropdown-item text-light" href="trending_series.html">Tendencias</a></li>
                                     <li><a className="dropdown-item text-light" href="populares_series.html">Populares</a></li>
                                     <li><a className="dropdown-item text-light" href="topratedserie.html">Mejor valoradas</a></li>
-                                    <li><a className="dropdown-item text-light" href="proximos_estrenos.html">Próximos estrenos</a></li>
                                 </ul>
                             </li>
                             <li className="nav-item">

@@ -44,19 +44,17 @@ export const NovedadesSerie = () => {
         }
     }, [selectedSerie]);
 
-    const fetchMovie = async (id) => {
+    const fetchSerie = async (id) => {
         const { data } = await axios.get(`${API_URL}/tv/${id}?language=es-ES`, {
             params: {
                 api_key: API_KEY,
             },
         });
         setSelectedSerie(data);
-        const modal = new bootstrap.Modal(document.getElementById(`modalNovedadSerie-${selectedSerie.id}`));
-        modal.show();
     };
 
     const selectMovie = async (movie) => {
-        await fetchMovie(movie.id);
+        await fetchSerie(movie.id);
     };
 
     useEffect(() => {
@@ -100,7 +98,7 @@ export const NovedadesSerie = () => {
                             idModal={`modalNovedadSerie-${selectedSerie.id}`}
                             postherPad={selectedSerie.poster_path ? `https://image.tmdb.org/t/p/w500${selectedSerie.poster_path}` : fondoNotFound}
                             noImg={fondoNotFound}
-                            originalName={selectedSerie.original_name}
+                            originalName={selectedSerie.name}
                             seasons={selectedSerie.number_of_seasons > 1 ? `${selectedSerie.number_of_seasons} temporadas` : `${selectedSerie.number_of_seasons} temporada`}
                             episodes={`${selectedSerie.number_of_episodes} episodios`}
                             mapGenre={selectedSerie.genres && selectedSerie.genres.map((genre, index) => (
@@ -133,7 +131,7 @@ export const NovedadesSerie = () => {
                                 <span key={season.id}>{season.name}</span>
                             ))}
                             mapSeasonsSeasonDate={selectedSerie.seasons && selectedSerie.seasons.map((season, index) => (
-                                <span key={season.id}>{formatDate(season.air_date) == '01/01/1970' ? 'En rodaje' : formatDate(season.air_date)}</span>
+                                <span key={season.id}>{formatDate(season.air_date) == '01/01/1970' ? 'No informado' : formatDate(season.air_date)}</span>
                             ))}
                             mapSeasonsSeasonEpisodes={selectedSerie.seasons && selectedSerie.seasons.map((episodes, index) => (
                                 <span key={episodes.id}>{episodes.episode_count == 0 ? 'Sin definir' : episodes.episode_count}</span>

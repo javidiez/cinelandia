@@ -110,7 +110,7 @@ export const PopularesSerie = () => {
                             idModal={`modalPopularSerie-${selectedSerie.id}`}
                             postherPad={selectedSerie.poster_path ? `https://image.tmdb.org/t/p/w500${selectedSerie.poster_path}` : fondoNotFound}
                             noImg={fondoNotFound}
-                            originalName={selectedSerie.original_name}
+                            originalName={selectedSerie.name}
                             seasons={selectedSerie.number_of_seasons > 1 ? `${selectedSerie.number_of_seasons} temporadas` : `${selectedSerie.number_of_seasons} temporada`}
                             episodes={selectedSerie.number_of_episodes > 1 ? `${selectedSerie.number_of_episodes} episodios` : `${selectedSerie.number_of_episodes} episodio`}
                             mapGenre={selectedSerie.genres && selectedSerie.genres.map((genre, index) => (
@@ -143,7 +143,7 @@ export const PopularesSerie = () => {
                                 <span key={season.id}>{season.name}</span>
                             ))}
                             mapSeasonsSeasonDate={selectedSerie.seasons && selectedSerie.seasons.map((season, index) => (
-                                <span key={season.id}>{formatDate(season.air_date) == '01/01/1970' ? 'En rodaje' : formatDate(season.air_date)}</span>
+                                <span key={season.id}>{formatDate(season.air_date) == '01/01/1970' ? 'No informado' : formatDate(season.air_date)}</span>
                             ))}
                             mapSeasonsSeasonEpisodes={selectedSerie.seasons && selectedSerie.seasons.map((episodes, index) => (
                                 <span key={episodes.id}>{episodes.episode_count == 0 ? 'Sin definir' : episodes.episode_count}</span>

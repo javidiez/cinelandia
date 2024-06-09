@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import '../Novedades/novedades.css'
 import './modalserie.css'
 
@@ -25,9 +25,26 @@ export const ModalSerie = ({
     mapSeasonsSeasonDate,
     mapSeasonsSeasonEpisodes,
     estrella,
-    lapiz
+    lapiz,
+    onClose
 }) => {
     const backgroundImage = postherPad ? `url("${postherPad}")` : `url("${noImg}")`;
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            console.log("Click outside");
+            const modal = document.getElementById(idModal);
+            if (modal && !modal.contains(event.target)) {
+                onClose && onClose();
+            }
+        };
+    
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            console.log("Removing event listener");
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [idModal, onClose]);
 
     const mapSeasonsSeasonRows = () => {
         if (!mapSeasonsSeasonName || !mapSeasonsSeasonEpisodes || !mapSeasonsSeasonDate) {
@@ -52,6 +69,11 @@ export const ModalSerie = ({
         return rows;
     };
 
+    const closeModal = () => {
+        // Llama a la función onClose para cerrar el modal y detener el video
+        onClose && onClose();
+    };
+
 
 
     return (
@@ -60,7 +82,7 @@ export const ModalSerie = ({
                 <div className="modal-content modal-movie" style={{ backgroundImage }}>
                     <div className="modal-header text-light border-0">
                         <h1 className="modal-title position-relative text-light" id="exampleModalLabel">{originalName}</h1>
-                        <button type="button" className="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button onClick={closeModal} type="button" className="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div className="modal-body pt-0 text-light position-relative">
                         <div className='d-flex gap-2 data-extra flex-wrap align-items-center'>
@@ -117,7 +139,7 @@ export const ModalSerie = ({
                         </div>
                     </div>
                     <div className="modal-footer position-relative border-0">
-                        <button type="button" className="btn btn-secondary fw-bold" data-bs-dismiss="modal">CERRAR</button>
+                        <button type="button" className="btn btn-secondary fw-bold" data-bs-dismiss="modal" onClick={closeModal}>CERRAR</button>
                     </div>
                 </div>
             </div>

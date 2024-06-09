@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import axios from 'axios'
 import { FilmCard } from '../FilmCard/FilmCard';
 import { ModalSerie } from '../ModalSerie/ModalSerie';
+import { Modal } from '../Modal/Modal';
 import { Buscador } from '../Buscador/Buscador';
 import { useState } from 'react';
 import './infoMovie.css'
@@ -20,7 +21,7 @@ function InfoMovie() {
   const [movies, setMovies] = useState([]);
   const [searchKey, setSearchKey] = useState("");
   //const [selectedMovie, setSelectedMovie] = useState({})
-  const [movie, setMovie] = useState("");
+  const [selectedMovie, setMovie] = useState("");
 
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1); // Estado para almacenar el número total de páginas
@@ -33,7 +34,6 @@ function InfoMovie() {
       params: {
         api_key: API_KEY,
         query: searchKey,
-        include_adult: false,
         page: page,
       },
     });
@@ -57,7 +57,7 @@ function InfoMovie() {
       });
 
       setMovie(data);
-      const modal = new bootstrap.Modal(document.getElementById(`topModal`));
+      const modal = new bootstrap.Modal(document.getElementById(`topModal-${id}`));
       modal.show();
     } catch (error) {
       console.error("Error fetching movie/series data:", error);
@@ -136,114 +136,78 @@ function InfoMovie() {
 
       <div>
         <main>
-          {movie.title ? (
-            <>
-              <div className="modal fade" id="topModal" tabIndex="-1" aria-labelledby="topModal" aria-hidden="true">
-                <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl modal-block">
-                  <div className="modal-content modal-movie" style={{
-                    backgroundImage: movie.poster_path ? `url("${IMAGE_PATH}${movie.poster_path}")` : `url("${fondoNotFound}")`,
-                  }}>
-
-                    <div className="modal-header text-light border-0">
-                      <h1 className="modal-title position-relative text-light" id="searchModal1">{movie.title}</h1>
-                      <button type="button" className="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div className="modal-body pt-0 text-light position-relative">
-                      <div className='d-flex gap-2 data-extra flex-wrap align-items-center'>
-                        <p className='fs-4 d-flex align-items-center'>{movie.runtime} minutos <span className='fw-bold fs-1 ps-2'>·</span></p>
-                        {movie && movie.genres && movie.genres.map((genre, index) => (
-                          <p className='fs-4' key={genre.id}>{genre.name}{index < movie.genres.length - 1 ? ', ' : ''}</p>
-                        ))}
-                        <p className='fs-4 d-flex align-items-center'><span className='fw-bold fs-1 pe-2'>·</span> {formatDate(movie.release_date)}</p>
-                        <p className='fs-4 text-uppercase d-flex align-items-center'><span className='fw-bold fs-1 pe-2'>·</span> {movie.original_language}</p>
-                      </div>
-                      <div className='d-flex gap-4 pt-3 flex-wrap'>
-                        <div>
-                          <img src={`${IMAGE_PATH}${movie.poster_path}`} className='imagen-modal' onError={(e) => {
-                            e.target.onerror = null;
-                            e.target.src = fondoNotFound
-                          }} />
-                        </div>
-                        <div className='bloque-derecho-modal'>
-                          <p className='fs-4 texto-modal pb-1'>{movie.overview}</p>
-                          <p className='fs-4 pt-4 d-flex align-items-baseline gap-2'><img className='icono-modal' src={estrella} /><span className='fw-bold'>Puntuación de usuarios:</span><span className={`${movie.vote_average * 10 >= 80 ? 'puntaje-verde' : movie.vote_average * 10 > 60 ? 'puntaje-amarillo' : 'puntaje-rojo'}`}> {(movie.vote_average * 10).toFixed(2)}%</span>
-                          </p>
-                          <p className='fs-4 pt-1 d-flex align-items-baseline gap-2'><img className='icono-modal' src={lapiz} /><span className='fw-bold'>Valoraciones:</span> {movie.vote_count}</p>
-                        </div>
-                      </div>
-                      <div>
-                        <h2 className='pt-4 text-primary subtitle-modal'>Más información</h2>
-
-                        <p className='fs-4 '><span className='fw-bold'>Productora: </span>
-                          {movie && movie.production_companies && movie.production_companies.map((companies, index) => (
-                            <span className='ps-2' key={companies.id}>{companies.name}{index < movie.production_companies.length - 1 ? ', ' : ''}</span>
-                          ))}</p>
-                        <p className='fs-4'>
-                          <span className='fw-bold pe-2'>País:
-                          </span>
-                          {movie && movie.production_countries && movie.production_countries.map((countries, index) => (
-                            <span>{countries.name}{index < movie.production_countries.length - 1 ? ', ' : ''}</span>))}
-                        </p>
-                        <p className='fs-4'><span className='fw-bold'>Presupuesto: </span>{new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'USD' }).format(movie.budget)}</p>
-                        <p className='fs-4'><span className='fw-bold'>Recaudación: </span>{new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'USD' }).format(movie.revenue)}</p>
-
-                      </div>
-
-                    </div>
-                    <div className="modal-footer position-relative border-0">
-                      <button type="button" className="btn btn-secondary fw-bold" data-bs-dismiss="modal">CERRAR</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-
-
-            </>
+          {selectedMovie.title ? (
+                  <Modal
+                  key={selectedMovie.id}
+                  idModal={`topModal-${selectedMovie.id}`}
+                  postherPad={selectedMovie.poster_path ? `https://image.tmdb.org/t/p/w500${selectedMovie.poster_path}` : fondoNotFound}
+                  noImg={fondoNotFound}
+                  title={selectedMovie.title}
+                  runTime={selectedMovie.runtime}
+                  mapGenre={selectedMovie.genres && selectedMovie.genres.length > 0 ? selectedMovie.genres.map((genre, index) => (
+                    <p className='fs-4' key={genre.id}>{genre.name}{index < selectedMovie.genres.length - 1 ? ', ' : ''}</p>
+                  )) : <p className='fs-4'>Género no informado</p>}
+                  releaseDate={selectedMovie.release_date ? formatDate(selectedMovie.release_date) : 'Fecha no informada'}
+                  originalLanguage={selectedMovie.original_language}
+                  overview={selectedMovie.overview}
+                  classPuntaje={`${selectedMovie.vote_average * 10 >= 80 ? 'puntaje-verde' : selectedMovie.vote_average * 10 > 60 ? 'puntaje-amarillo' : 'puntaje-rojo'}`}
+                  voteAverage={(selectedMovie.vote_average * 10).toFixed(2)}
+                  voteCount={selectedMovie.vote_count}
+                  mapProductionCompanies={selectedMovie.production_companies && selectedMovie.production_companies.length > 0 ? selectedMovie.production_companies.map((company, index) => (
+                      <span className='ps-2' key={company.id}>{company.name}{index < selectedMovie.production_companies.length - 1 ? ', ' : ''}</span>
+                  )) : 'No informado'}
+                  mapCountries={selectedMovie.production_countries && selectedMovie.production_countries.length > 0 ? selectedMovie.production_countries.map((country, index) => (
+                      <span key={country.iso_3166_1}>{country.name}{index < selectedMovie.production_countries.length - 1 ? ', ' : ''}</span>
+                  )) : 'No informado'}
+                  budget={selectedMovie.budget > 0 ? <><span className='fw-bold'>Presupuesto:</span> {new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'USD' }).format(selectedMovie.budget)}</> : <><span className='fw-bold'>Presupuesto: </span>No informado</>}
+                  revenue={selectedMovie.revenue > 0 ? <><span className='fw-bold'>Recaudación:</span> {new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'USD' }).format(selectedMovie.revenue)}</> : <><span className='fw-bold'>Recaudación: </span>No informado</>}
+                  estrella={estrella}
+                  lapiz={lapiz}
+              />
           ) : (
 
             <ModalSerie
-              key={movie.id}
-              idModal={`topModal`}
-              postherPad={movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : fondoNotFound}
+              key={selectedMovie.id}
+              idModal={`topModal-${selectedMovie.id}`}
+              postherPad={selectedMovie.poster_path ? `https://image.tmdb.org/t/p/w500${selectedMovie.poster_path}` : fondoNotFound}
               noImg={fondoNotFound}
-              originalName={movie.original_name}
-              seasons={movie.number_of_seasons > 1 ? `${movie.number_of_seasons} temporadas` : `${movie.number_of_seasons} temporada`}
-              episodes={movie.number_of_episodes > 1 ? `${movie.number_of_episodes} episodios` : `${movie.number_of_episodes} episodio`}
-              mapGenre={movie.genres && movie.genres.length > 0 ? movie.genres.map((genre, index) => (
-                <p className='fs-4' key={genre.id}>{genre.name}{index < movie.genres.length - 1 ? ', ' : ''}</p>
-              )) : <p className='fs-4'>Genero no informado</p>}
-              firstAirDate={formatDate(movie.first_air_date)}
-              lastAirDate={formatDate(movie.last_air_date)}
-              originalLanguage={movie.original_language}
-              overview={movie.overview}
-              classPuntaje={`${movie.vote_average * 10 >= 80 ? 'puntaje-verde' : movie.vote_average * 10 > 60 ? 'puntaje-amarillo' : 'puntaje-rojo'}`}
-              voteAverage={(movie.vote_average * 10).toFixed(2)}
-              voteCount={movie.vote_count}
-              mapProductionCompanies={movie.production_companies && movie.production_companies.length ? movie.production_companies.map((company, index) => (
-                <span className='ps-2' key={company.id}>{company.name}{index < movie.production_companies.length - 1 ? ', ' : ''}</span>
+              originalName={selectedMovie.name}
+              seasons={selectedMovie.number_of_seasons > 1 ? `${selectedMovie.number_of_seasons} temporadas` : `${selectedMovie.number_of_seasons} temporada`}
+              episodes={selectedMovie.number_of_episodes > 1 ? `${selectedMovie.number_of_episodes} episodios` : `${selectedMovie.number_of_episodes} episodio`}
+              mapGenre={selectedMovie.genres && selectedMovie.genres.length > 0 ? selectedMovie.genres.map((genre, index) => (
+                <p className='fs-4' key={genre.id}>{genre.name}{index < selectedMovie.genres.length - 1 ? ', ' : ''}</p>
+              )) : <p className='fs-4'>Género no informado</p>}
+              firstAirDate={formatDate(selectedMovie.first_air_date)}
+              lastAirDate={formatDate(selectedMovie.last_air_date)}
+              originalLanguage={selectedMovie.original_language}
+              overview={selectedMovie.overview}
+              classPuntaje={`${selectedMovie.vote_average * 10 >= 80 ? 'puntaje-verde' : selectedMovie.vote_average * 10 > 60 ? 'puntaje-amarillo' : 'puntaje-rojo'}`}
+              voteAverage={(selectedMovie.vote_average * 10).toFixed(2)}
+              voteCount={selectedMovie.vote_count}
+              mapProductionCompanies={selectedMovie.production_companies && selectedMovie.production_companies.length > 0 ? selectedMovie.production_companies.map((company, index) => (
+                <span className='ps-2' key={company.id}>{company.name}{index < selectedMovie.production_companies.length - 1 ? ', ' : ''}</span>
               )) : 'No informado'}
-              mapCountries={movie.production_countries && movie.production_countries.length > 0 ? movie.production_countries.map((country, index) => (
-                <span key={country.iso_3166_1}>{country.name}{index < movie.production_countries.length - 1 ? ', ' : ''}</span>
+              mapCountries={selectedMovie.production_countries && selectedMovie.production_countries.length > 0 ? selectedMovie.production_countries.map((country, index) => (
+                <span key={country.iso_3166_1}>{country.name}{index < selectedMovie.production_countries.length - 1 ? ', ' : ''}</span>
               )) : 'No informado'}
-              mapCreatedBy={movie.created_by && movie.created_by.length > 0
-                ? movie.created_by.map((createdBy, index) => (
+              mapCreatedBy={selectedMovie.created_by && selectedMovie.created_by.length > 0
+                ? selectedMovie.created_by.map((createdBy, index) => (
                   <span className='ps-2' key={createdBy.id}>
-                    {createdBy.name}{index < movie.created_by.length - 1 ? ', ' : ''}
+                    {createdBy.name}{index < selectedMovie.created_by.length - 1 ? ', ' : ''}
                   </span>
                 ))
                 : 'No informado'}
-              mapNextEpisodeToAir={movie.next_episode_to_air && movie.next_episode_to_air.length > 0 ? movie.next_episode_to_air.map((nextEpisode, index) => (
+              mapNextEpisodeToAir={selectedMovie.next_episode_to_air && selectedMovie.next_episode_to_air.length > 0 ? selectedMovie.next_episode_to_air.map((nextEpisode, index) => (
                 <span className='ps-2' key={nextEpisode.id}>{nextEpisode.air_date}{nextEpisode.episode_number}</span>
               )) : 'No'}
-              mapSeasonsSeasonName={movie.seasons && movie.seasons.map((season, index) => (
-                <tr><td><span key={season.id}>{season.name}</span></td></tr>
+              mapSeasonsSeasonName={selectedMovie.seasons && selectedMovie.seasons.map((season, index) => (
+                <span key={season.id}>{season.name}</span>
               ))}
-              mapSeasonsSeasonDate={movie.seasons && movie.seasons.map((season, index) => (
-                <tr><td><span  key={season.id}>{formatDate(season.air_date)}</span></td></tr>
+              mapSeasonsSeasonDate={selectedMovie.seasons && selectedMovie.seasons.map((season, index) => (
+               <span key={season.id}>{formatDate(season.air_date)}</span>
               ))}
-              mapSeasonsSeasonEpisodes={movie.seasons && movie.seasons.map((episodes, index) => (
-                <tr> <td><span key={episodes.id}>{episodes.episode_count}</span></td></tr>
+              mapSeasonsSeasonEpisodes={selectedMovie.seasons && selectedMovie.seasons.map((episodes, index) => (
+               <span key={episodes.id}>{episodes.episode_count}</span>
               ))}
               estrella={estrella}
               lapiz={lapiz}
@@ -283,7 +247,7 @@ function InfoMovie() {
                 image={movie.poster_path}
                 title={movie.title ? movie.title : movie.name}
                 overview={movie.overview}
-                releaseDate={movie.title ? formatDate(movie.release_date) : formatDate(movie.first_air_date)}
+                releaseDate={movie.title && movie.release_date ? formatDate(movie.release_date) : movie.name ? formatDate(movie.first_air_date) : 'no informada'}
                 voteAverage={isUpcoming ? '' : <><span className="fw-bold">Valoración:</span> {(movie.vote_average * 10).toFixed(2)}%</>}
                 onclick={() => selectMovie(movie)}
                 movieType={movie.title ? 'Película' : 'Serie'}

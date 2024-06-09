@@ -14,7 +14,6 @@ export const TopRated = () => {
     const API_KEY = "4f5f43495afcc67e9553f6c684a82f84";
 
     const [movies, setMovies] = useState([]);
-    const [searchKey, setSearchKey] = useState("");
     const [selectedMovie, setSelectedMovie] = useState(null); // Cambiar a null
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
@@ -142,8 +141,8 @@ export const TopRated = () => {
                             mapCountries={selectedMovie.production_countries && selectedMovie.production_countries.map((country, index) => (
                                 <span key={country.iso_3166_1}>{country.name}{index < selectedMovie.production_countries.length - 1 ? ', ' : ''}</span>
                             ))}
-                            budget={new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'USD' }).format(selectedMovie.budget)}
-                            revenue={new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'USD' }).format(selectedMovie.revenue)}
+                            budget={selectedMovie.budget > 0 ? <><span className='fw-bold'>Presupuesto:</span> {new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'USD' }).format(selectedMovie.budget)}</> : <><span className='fw-bold'>Presupuesto: </span>No informado</>}
+                            revenue={selectedMovie.revenue > 0 ? <><span className='fw-bold'>Recaudación:</span> {new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'USD' }).format(selectedMovie.revenue)}</> : <><span className='fw-bold'>Recaudación: </span>No informado</>}
                             estrella={estrella}
                             lapiz={lapiz}
                         />
@@ -154,7 +153,7 @@ export const TopRated = () => {
             <h2 className="text-center text-light novedades-title">Películas mejor valoradas</h2>
 
             {loading ? (
-                <div className="text-center text-light mt-5 fs-1">Cargando...</div>
+                <div className="text-center text-light mt-5 fs-1">Cargando miles de películas...</div>
             ) : (
                 <>
                     <div className="text-center container">

@@ -25,7 +25,7 @@ export const SnippetProximosEstrenos = () => {
     const [totalPages, setTotalPages] = useState(1);
 
     const fetchNowPlaying = async (page) => {
-        const { data: { results, total_pages } } = await axios.get(`${API_URL}/discover/movie`, {
+        const { data: { results, total_pages } } = await axios.get(`${API_URL}/discover/movie?include_adult=false`, {
             params: {
                 api_key: API_KEY,
                 language: 'es-ES',
@@ -49,8 +49,6 @@ export const SnippetProximosEstrenos = () => {
             },
         });
         setSelectedMovie(data);
-        const modal = new bootstrap.Modal(document.getElementById(`modalEstrenos-${id}`));
-        modal.show();
     };
 
     const selectMovie = async (movie) => {
@@ -108,6 +106,7 @@ export const SnippetProximosEstrenos = () => {
                                 <span key={country.iso_3166_1}>{country.name}{index < selectedMovie.production_countries.length - 1 ? ', ' : ''}</span>
                             ))}
                             budget={new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'USD' }).format(selectedMovie.budget)}
+                            revenue={''}
                             estrella={estrella}
                             lapiz={lapiz}
 

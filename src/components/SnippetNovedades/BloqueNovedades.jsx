@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import YouTube from 'react-youtube';
 import { FilmCard } from '../FilmCard/FilmCard';
 import { Modal } from '../Modal/Modal';
 import estrella from '../../assets/img/estrella.png';
@@ -7,8 +8,9 @@ import lapiz from '../../assets/img/lapiz.png';
 import fondoNotFound from '../../assets/img/fondo-not-found.jpeg';
 import '../Novedades/novedades.css';
 import '../FilmCard/filmcard.css';
-import '../InfoMovie/infoMovie.css'
-import './bloque_novedades.css'
+import '../InfoMovie/infoMovie.css';
+import './bloque_novedades.css';
+import '../Modal/modal.css';
 
 export const BloqueNovedades = () => {
     const API_URL = "https://api.themoviedb.org/3";
@@ -19,7 +21,8 @@ export const BloqueNovedades = () => {
     const [movies, setMovies] = useState([]);
     const [selectedMovie, setSelectedMovie] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
-    const [totalPages, setTotalPages] = useState(1);
+    const [trailer, setTrailer] = useState(null);
+    const [playing, setPlaying] = useState(false);
 
     const fetchNowPlaying = async (page) => {
         const { data: { results, total_pages } } = await axios.get(`${API_URL}/discover/movie`, {
@@ -33,7 +36,6 @@ export const BloqueNovedades = () => {
         });
 
         setCurrentPage(page);
-        setTotalPages(total_pages);
         setMovies(results);
     };
 
@@ -41,8 +43,17 @@ export const BloqueNovedades = () => {
         const { data } = await axios.get(`${API_URL}/movie/${id}?language=es-ES`, {
             params: {
                 api_key: API_KEY,
+                append_to_response: 'videos'
             },
         });
+
+        if (data.videos && data.videos.results) {
+            const trailer = data.videos.results.find(
+                (vid) => vid.name === "Official Trailer"
+            );
+            setTrailer(trailer ? trailer : data.videos.results[0]);
+        }
+
         setSelectedMovie(data);
         const modal = new bootstrap.Modal(document.getElementById(`modalNovedad-${id}`));
         modal.show();
@@ -56,27 +67,12 @@ export const BloqueNovedades = () => {
         fetchNowPlaying(currentPage);
     }, [currentPage]);
 
-
     useEffect(() => {
         if (selectedMovie) {
             const modal = new bootstrap.Modal(document.getElementById(`modalNovedad-${selectedMovie.id}`));
             modal.show();
         }
     }, [selectedMovie]);
-
-    const goToPreviousPage = () => {
-        if (currentPage > 1) {
-            fetchNowPlaying(currentPage - 1);
-            window.scrollTo(0, 500);
-        }
-    };
-
-    const goToNextPage = () => {
-        if (currentPage < totalPages) {
-            fetchNowPlaying(currentPage + 1);
-            window.scrollTo(0, 500);
-        }
-    };
 
     const formatDate = (dateString) => {
         const date = new Date(dateString);
@@ -87,6 +83,11 @@ export const BloqueNovedades = () => {
     };
 
     const moviesToShow = movies.slice(0, 12);
+
+    const handleCloseModal = () => {
+        setPlaying(false); // Detiene el video
+        setSelectedMovie(null); // Cierra el modal
+    };
 
     return (
         <>
@@ -115,11 +116,12 @@ export const BloqueNovedades = () => {
                             mapCountries={selectedMovie.production_countries && selectedMovie.production_countries.map((country, index) => (
                                 <span key={country.iso_3166_1}>{country.name}{index < selectedMovie.production_countries.length - 1 ? ', ' : ''}</span>
                             ))}
-                            budget={new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'USD' }).format(selectedMovie.budget)}
-                            revenue={new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'USD' }).format(selectedMovie.revenue)}
+                            budget={selectedMovie.budget > 0 ? <><span className='fw-bold'>Presupuesto:</span> {new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'USD' }).format(selectedMovie.budget)}</> : <><span className='fw-bold'>Presupuesto: </span>No informado</>}
+                            revenue={selectedMovie.revenue > 0 ? <><span className='fw-bold'>Recaudación:</span> {new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'USD' }).format(selectedMovie.revenue)}</> : <><span className='fw-bold'>Recaudación: </span>No informado</>}
                             estrella={estrella}
                             lapiz={lapiz}
-
+                            onClose={handleCloseModal}
+                            trailer={trailer} // Pasar el trailer como prop
                         />
                     )}
                 </main>
@@ -127,31 +129,30 @@ export const BloqueNovedades = () => {
 
             <h2 className="text-center text-light snippet_novedades_title">Novedades</h2>
 
-                <div className="row justify-content-center mx-auto gap-5 mt-5 mb-3 novedades fs-5">
-                    {moviesToShow.map((movie) => {
-                        const releaseDate = new Date(movie.release_date);
-                        const today = new Date();
-                        const isUpcoming = releaseDate > today ? "Próximo estreno" : "";
+            <div className="row justify-content-center mx-auto gap-5 mt-5 mb-3 novedades fs-5">
+                {moviesToShow.map((movie) => {
+                    const releaseDate = new Date(movie.release_date);
+                    const today = new Date();
+                    const isUpcoming = releaseDate > today ? "Próximo estreno" : "";
 
-
-                        return (
-                            <FilmCard
-                                key={movie.id}
-                                size={{ width: '16rem' }}
-                                image={movie.poster_path}
-                                title={movie.title}
-                                overview={movie.overview}
-                                releaseDate={formatDate(movie.release_date)}
-                                voteAverage={(movie.vote_average * 10).toFixed(2)}
-                                onclick={() => selectMovie(movie)}
-                                movieType={''}
-                                classMovieType={movie.title ? 'movie-type-movie' : 'movie-type-serie'}
-                                topMovie={movie.vote_average > 7.75 && movie.vote_count > 99 ? "Destacada" : ''}
-                                proxEstreno={isUpcoming}
-                            />
-                        );
-                    })}
-                </div>
+                    return (
+                        <FilmCard
+                            key={movie.id}
+                            size={{ width: '15.5rem' }}
+                            image={movie.poster_path}
+                            title={movie.title}
+                            overview={movie.overview}
+                            releaseDate={formatDate(movie.release_date)}
+                            voteAverage={<><span className='fw-bold'>Valoración:</span> {(movie.vote_average * 10).toFixed(2)} %</>}
+                            onclick={() => selectMovie(movie)}
+                            movieType={''}
+                            classMovieType={movie.title ? 'movie-type-movie' : 'movie-type-serie'}
+                            topMovie={movie.vote_average > 7.75 && movie.vote_count > 99 ? "Destacada" : ''}
+                            proxEstreno={isUpcoming}
+                        />
+                    );
+                })}
+            </div>
 
             <div className="container pb-5 mt-5 text-center ">
                 <a href="novedades.html"><button className='btn btn-primary botones-ver-mas ps-3 pe-3'>Ver más</button></a>
