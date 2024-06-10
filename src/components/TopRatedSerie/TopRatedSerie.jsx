@@ -2,12 +2,16 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { FilmCard } from '../FilmCard/FilmCard';
 import { ModalSerie } from '../ModalSerie/ModalSerie';
+import { CardActores } from '../CardActores/CardActores';
 import estrella from '../../assets/img/estrella.png';
 import lapiz from '../../assets/img/lapiz.png';
+import smartTv from '../../assets/img/smart-tv.png';
 import fondoNotFound from '../../assets/img/fondo-not-found.jpeg';
+import avatar from '../../assets/img/avatar.webp';
 import '../Novedades/novedades.css';
 import '../FilmCard/filmcard.css';
-import '../InfoMovie/infoMovie.css';
+import '../InfoMovie/infoMovie.css'
+import '../SnippetNovedades/bloque_novedades.css'
 
 export const TopRatedSerie = () => {
     const API_URL = "https://api.themoviedb.org/3";
@@ -18,6 +22,10 @@ export const TopRatedSerie = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [loading, setLoading] = useState(true);
+    const [trailer, setTrailer] = useState(null);
+    const [cast, setCast] = useState(null);
+    const [platforms, setPlatforms] = useState(null);
+    const [playing, setPlaying] = useState(false);
 
     const fetchTopRatedSeries = async () => {
         setLoading(true);
@@ -70,8 +78,35 @@ export const TopRatedSerie = () => {
                 params: {
                     api_key: API_KEY,
                     language: 'es-ES',
+                    append_to_response: 'videos,credits,watch/providers',
                 },
             });
+
+            if (data.videos && data.videos.results) {
+                const trailer = data.videos.results.find(
+                    (vid) => vid.name === "Official Trailer"
+                );
+                setTrailer(trailer ? trailer : data.videos.results[0]);
+            }
+
+            if (data.credits && data.credits.cast) {
+                // Extraer el elenco de la respuesta de la API
+                const castMembers = data.credits.cast;
+                // Configurar el estado 'cast' con la lista de miembros del elenco
+                setCast(castMembers.slice(0, 6));
+            }
+            if (data["watch/providers"] && data["watch/providers"].results) {
+                const country = data["watch/providers"].results.ES; // Cambia 'ES' por el código del país que desees
+                if (country && country.flatrate) {
+                    setPlatforms(country.flatrate);
+                } else {
+                    setPlatforms(null); // Reiniciar plataformas si no hay flatrate
+                }
+            } else {
+                setPlatforms(null); // Reiniciar plataformas si no hay resultados
+            }
+
+
             setSelectedSerie(data);
         } catch (error) {
             console.error("Error fetching series details:", error);
@@ -106,6 +141,7 @@ export const TopRatedSerie = () => {
     };
 
     const handleCloseModal = () => {
+        setPlaying(false); // Detiene el video
         setSelectedSerie(null); // Cierra el modal
     };
 
@@ -140,7 +176,7 @@ export const TopRatedSerie = () => {
                             ))}
                             mapNextEpisodeToAir={selectedSerie.next_episode_to_air && selectedSerie.next_episode_to_air.length > 0 ? selectedSerie.next_episode_to_air.map((nextEpisode, index) => (
                                 <span className='ps-2' key={nextEpisode.id}>{nextEpisode.air_date}{nextEpisode.episode_number}</span>
-                              )) : 'No'}
+                            )) : 'No'}
                             mapCreatedBy={selectedSerie.created_by && selectedSerie.created_by.length > 0
                                 ? selectedSerie.created_by.map((createdBy, index) => (
                                     <span className='ps-2' key={createdBy.id}>
@@ -152,14 +188,39 @@ export const TopRatedSerie = () => {
                                 <span key={season.id}>{season.name}</span>
                             ))}
                             mapSeasonsSeasonDate={selectedSerie.seasons && selectedSerie.seasons.map((season, index) => (
-                                <span key={season.id}>{formatDate(season.air_date) == '01/01/1970' ? 'No informado' : formatDate(season.air_date) }</span>
+                                <span key={season.id}>{formatDate(season.air_date) == '01/01/1970' ? 'No informado' : formatDate(season.air_date)}</span>
                             ))}
                             mapSeasonsSeasonEpisodes={selectedSerie.seasons && selectedSerie.seasons.map((episodes, index) => (
                                 <span key={episodes.id}>{episodes.episode_count == 0 ? 'Sin definir' : episodes.episode_count}</span>
                             ))}
                             estrella={estrella}
                             lapiz={lapiz}
+                            smartTv={smartTv}
                             onClose={handleCloseModal}
+                            trailer={trailer}
+                            cast={cast && cast.map((actor, index) => (
+
+                                <CardActores
+                                    key={index}
+                                    castImg={`https://image.tmdb.org/t/p/w200${actor.profile_path}`}
+                                    castName={actor.name}
+                                    noImg={avatar}
+                                    castCharacter={actor.character ? ` (${actor.character})` : ''}
+                                />
+
+                            ))}
+                            providers={platforms && platforms.length > 0 ? (
+                                <>
+                                    <div>
+                                        <img className='icono-modal me-2' alt="smarttv" src={smartTv} />
+                                        <span className='fw-bold'>Plataformas</span>
+                                    </div>
+                                    {platforms.map((platform, index) => (
+                                        <img key={index} className='border platforms me-2 mt-2' src={`https://image.tmdb.org/t/p/w200${platform.logo_path}`} alt={platform.provider_name} />
+                                    ))}
+                                </>
+                            ) : ''}
+
                         />
                     )}
                 </main>

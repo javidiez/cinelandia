@@ -24,7 +24,8 @@ export const Modal = ({
     lapiz,
     onClose,
     trailer, // Pasar el trailer como prop
-    cast
+    cast,
+    providers
 }) => {
     const videoContainerRef = useRef(null);
     const [playing, setPlaying] = useState(false);
@@ -130,15 +131,22 @@ export const Modal = ({
                                     <img className='icono-modal' src={lapiz} alt="Lapiz" />
                                     <span className='fw-bold'>Valoraciones:</span> {voteCount}
                                 </p>
+                                <p className='fs-4 pt-1 align-items-baseline gap-2'>
+                                {providers}
+                                </p>
                             </div>
                         </div>
                         <div>
                             <h2 className='pt-4 text-primary subtitle-modal'>Más información</h2>
                             <p className='fs-4'><span className='fw-bold'>Productora: </span>{mapProductionCompanies}</p>
                             <p className='fs-4'><span className='fw-bold pe-2'>País: </span>{mapCountries}</p>
-                            <p className='fs-4'><span className='fw-bold pe-2'>Actores: </span>{cast}</p>
                             <p className='fs-4'>{budget}</p>
                             <p className='fs-4'>{revenue}</p>
+                            <h2 className='pt-4 pb-4 text-primary subtitle-modal'>Reparto principal: </h2>
+                            <div className='d-flex gap-3 flex-wrap'>
+                           {cast}
+                           
+                           </div>
                         </div>
                     </div>
                     <div className="modal-footer position-relative border-0">

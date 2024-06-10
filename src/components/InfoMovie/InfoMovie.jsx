@@ -5,9 +5,13 @@ import { ModalSerie } from '../ModalSerie/ModalSerie';
 import { Modal } from '../Modal/Modal';
 import { Buscador } from '../Buscador/Buscador';
 import './infoMovie.css'
-import estrella from '../../assets/img/estrella.png'
-import lapiz from '../../assets/img/lapiz.png'
-import fondoNotFound from '../../assets/img/fondo-not-found.jpeg'
+import { CardActores } from '../CardActores/CardActores';
+import estrella from '../../assets/img/estrella.png';
+import lapiz from '../../assets/img/lapiz.png';
+import smartTv from '../../assets/img/smart-tv.png';
+import fondoNotFound from '../../assets/img/fondo-not-found.jpeg';
+import avatar from '../../assets/img/avatar.webp';
+import '../SnippetNovedades/bloque_novedades.css'
 
 
 function InfoMovie() {
@@ -23,6 +27,8 @@ function InfoMovie() {
   const [totalPages, setTotalPages] = useState(1);
   const [showNoResults, setShowNoResults] = useState(false);
   const [trailer, setTrailer] = useState(null);
+  const [cast, setCast] = useState(null);
+  const [platforms, setPlatforms] = useState(null);
   const [playing, setPlaying] = useState(false);
 
   const fetchMovies = async (searchKey = "", page = 1) => {
@@ -46,7 +52,7 @@ function InfoMovie() {
       const { data } = await axios.get(`${API_URL}/${mediaType}/${id}?language=es-ES`, {
         params: {
           api_key: API_KEY,
-          append_to_response: 'videos'
+          append_to_response: 'videos,credits,watch/providers',
         },
       });
 
@@ -54,6 +60,24 @@ function InfoMovie() {
         const trailer = data.videos.results.find((vid) => vid.name === "Official Trailer");
         setTrailer(trailer ? trailer : data.videos.results[0]);
       }
+
+      if (data.credits && data.credits.cast) {
+        // Extraer el elenco de la respuesta de la API
+        const castMembers = data.credits.cast;
+        // Configurar el estado 'cast' con la lista de miembros del elenco
+        setCast(castMembers.slice(0, 6));
+      }
+      if (data["watch/providers"] && data["watch/providers"].results) {
+        const country = data["watch/providers"].results.ES; // Cambia 'ES' por el código del país que desees
+        if (country && country.flatrate) {
+          setPlatforms(country.flatrate);
+        } else {
+          setPlatforms(null); // Reiniciar plataformas si no hay flatrate
+        }
+      } else {
+        setPlatforms(null); // Reiniciar plataformas si no hay resultados
+      }
+
 
       setMovie(data);
       const modal = new bootstrap.Modal(document.getElementById(`topModal-${id}`));
@@ -151,8 +175,31 @@ function InfoMovie() {
               revenue={selectedMovie.revenue > 0 ? <><span className='fw-bold'>Recaudación:</span> {new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'USD' }).format(selectedMovie.revenue)}</> : <><span className='fw-bold'>Recaudación: </span>No informado</>}
               estrella={estrella}
               lapiz={lapiz}
+              smartTv={smartTv}
               onClose={handleCloseModal}
               trailer={trailer}
+              cast={cast && cast.map((actor, index) => (
+
+                <CardActores
+                  key={index}
+                  castImg={`https://image.tmdb.org/t/p/w200${actor.profile_path}`}
+                  castName={actor.name}
+                  noImg={avatar}
+                  castCharacter={actor.character ? ` (${actor.character})` : ''}
+                />
+
+              ))}
+              providers={platforms && platforms.length > 0 ? (
+                <>
+                  <div>
+                    <img className='icono-modal me-2' alt="smarttv" src={smartTv} />
+                    <span className='fw-bold'>Plataformas</span>
+                  </div>
+                  {platforms.map((platform, index) => (
+                    <img key={index} className='border platforms me-2 mt-2' src={`https://image.tmdb.org/t/p/w200${platform.logo_path}`} alt={platform.provider_name} />
+                  ))}
+                </>
+              ) : ''}
             />
           ) : selectedMovie && selectedMovie.name ? (
 
@@ -201,7 +248,31 @@ function InfoMovie() {
               ))}
               estrella={estrella}
               lapiz={lapiz}
+              smartTv={smartTv}
               onClose={handleCloseModal}
+              trailer={trailer}
+              cast={cast && cast.map((actor, index) => (
+
+                <CardActores
+                  key={index}
+                  castImg={`https://image.tmdb.org/t/p/w200${actor.profile_path}`}
+                  castName={actor.name}
+                  noImg={avatar}
+                  castCharacter={actor.character ? ` (${actor.character})` : ''}
+                />
+
+              ))}
+              providers={platforms && platforms.length > 0 ? (
+                <>
+                  <div>
+                    <img className='icono-modal me-2' alt="smarttv" src={smartTv} />
+                    <span className='fw-bold'>Plataformas</span>
+                  </div>
+                  {platforms.map((platform, index) => (
+                    <img key={index} className='border platforms me-2 mt-2' src={`https://image.tmdb.org/t/p/w200${platform.logo_path}`} alt={platform.provider_name} />
+                  ))}
+                </>
+              ) : ''}
             />
           ) : null
           }
@@ -220,14 +291,14 @@ function InfoMovie() {
 
       ) : showNoResults && (
         <>
-        <h3 className='text-center container text-light mt-5 fs-1'>No se encontraron resultados</h3>
-        <hr className="container-fluid border-2 border-top border-secondary mt-5 mb-5 pe-5 ps-5" />
+          <h3 className='text-center container text-light mt-5 fs-1'>No se encontraron resultados</h3>
+          <hr className="container-fluid border-2 border-top border-secondary mt-5 mb-5 pe-5 ps-5" />
         </>
 
 
       )}
 
-  
+
 
       <div>
         {/* contenedor para mostrar los posters y las peliculas en la peticion a la api */}

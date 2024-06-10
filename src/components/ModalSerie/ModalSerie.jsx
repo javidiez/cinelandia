@@ -1,6 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import YouTube from 'react-youtube';
 import '../Novedades/novedades.css'
 import './modalserie.css'
+import '../Novedades/novedades.css';
+import '../Modal/modal.css';
 
 export const ModalSerie = ({
     idModal,
@@ -26,9 +29,14 @@ export const ModalSerie = ({
     mapSeasonsSeasonEpisodes,
     estrella,
     lapiz,
-    onClose
+    onClose,
+    cast,
+    trailer,
+    providers
 }) => {
     const backgroundImage = postherPad ? `url("${postherPad}")` : `url("${noImg}")`;
+    const videoContainerRef = useRef(null);
+    const [playing, setPlaying] = useState(false);
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -38,7 +46,7 @@ export const ModalSerie = ({
                 onClose && onClose();
             }
         };
-    
+
         document.addEventListener("mousedown", handleClickOutside);
         return () => {
             console.log("Removing event listener");
@@ -50,10 +58,10 @@ export const ModalSerie = ({
         if (!mapSeasonsSeasonName || !mapSeasonsSeasonEpisodes || !mapSeasonsSeasonDate) {
             return null;
         }
-    
+
         // Asegúrate de que todas las listas tengan la misma longitud
         const maxRows = Math.max(mapSeasonsSeasonName.length, mapSeasonsSeasonEpisodes.length, mapSeasonsSeasonDate.length);
-    
+
         const rows = [];
         for (let i = 0; i < maxRows; i++) {
             const estreno = mapSeasonsSeasonDate[i] === "01/01/1970" ? "No informado" : mapSeasonsSeasonDate[i];
@@ -65,12 +73,21 @@ export const ModalSerie = ({
                 </tr>
             );
         }
-    
+
         return rows;
     };
 
     const closeModal = () => {
         onClose && onClose();
+    };
+
+    const handlePlayTrailer = () => {
+        setPlaying(true);
+        setTimeout(() => {
+            if (videoContainerRef.current) {
+                videoContainerRef.current.scrollIntoView({ behavior: 'smooth' });
+            }
+        }, 0);
     };
 
 
@@ -90,6 +107,44 @@ export const ModalSerie = ({
                             {mapGenre}
                             <p className='fs-4 d-flex align-items-center'><span className='fw-bold fs-1 pe-2'>·</span> {firstAirDate}</p>
                             <p className='fs-4 text-uppercase d-flex align-items-center'><span className='fw-bold fs-1 pe-2'>·</span> {originalLanguage}</p>
+                            {!playing && trailer && (
+                                <button
+                                    className="btn btn-success fw-bold ver-trailer"
+                                    onClick={handlePlayTrailer}
+                                    type="button"
+                                >
+                                    VER TRAILER
+                                </button>
+                            )}
+                        </div>
+                        <div ref={videoContainerRef} className="video-container mt-3">
+                            {playing && (
+                                <div>
+                                    <button onClick={() => setPlaying(false)} className="btn btn-primary fw-bold mb-3">
+                                        CERRAR
+                                    </button>
+                                    <YouTube
+                                        videoId={trailer ? trailer.key : ''}
+                                        className="reproductor"
+                                        containerClassName={"youtube-container amru"}
+                                        opts={{
+                                            width: "100%",
+                                            height: "100%",
+                                            playerVars: {
+                                                autoplay: 1,
+                                                controls: 1,
+                                                cc_load_policy: 0,
+                                                fs: 0,
+                                                iv_load_policy: 0,
+                                                modestbranding: 0,
+                                                rel: 0,
+                                                showinfo: 0,
+                                            },
+                                        }}
+                                    />
+                                </div>
+                            )}
+
                         </div>
                         <div className='d-flex gap-4 pt-3 flex-wrap'>
                             <div>
@@ -109,6 +164,9 @@ export const ModalSerie = ({
                                     <img className='icono-modal' src={lapiz} alt="Lapiz" />
                                     <span className='fw-bold'>Valoraciones:</span> {voteCount}
                                 </p>
+                                <p className='fs-4 pt-1 align-items-baseline gap-2'>
+                                {providers}
+                                </p>
                             </div>
                         </div>
                         <div>
@@ -118,22 +176,27 @@ export const ModalSerie = ({
                             <p className='fs-4'><span className='fw-bold pe-2'>País: </span>{mapCountries}</p>
                             <p className='fs-4'><span className='fw-bold pe-2'>Fecha de último capítulo: </span>{lastAirDate}</p>
                             <p className='fs-4'><span className='fw-bold pe-2'>Estreno de nuevos episodios: </span>{mapNextEpisodeToAir}</p>
+                            <h2 className='pt-4 pb-4 text-primary subtitle-modal'>Reparto principal: </h2>
+                            <div className='d-flex gap-3 flex-wrap'>
+                                {cast}
+
+                            </div>
                             <h2 className='pt-4 text-primary fs-1'>Información sobre Temporadas</h2>
                             <div className="table-responsive">
-                            <table className="table">
-                                <thead>
-                                    <tr>
+                                <table className="table">
+                                    <thead>
+                                        <tr>
 
-                                        <th scope="col">Temporada</th>
-                                        <th scope="col">Episodios</th>
-                                        <th scope="col">Estreno</th>
-                                    </tr>
+                                            <th scope="col">Temporada</th>
+                                            <th scope="col">Episodios</th>
+                                            <th scope="col">Estreno</th>
+                                        </tr>
 
-                                </thead>
-                                <tbody>
-                                {mapSeasonsSeasonRows()}
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                        {mapSeasonsSeasonRows()}
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
