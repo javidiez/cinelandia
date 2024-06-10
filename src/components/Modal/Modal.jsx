@@ -25,7 +25,8 @@ export const Modal = ({
     onClose,
     trailer, // Pasar el trailer como prop
     cast,
-    providers
+    providers,
+    recommendations
 }) => {
     const videoContainerRef = useRef(null);
     const [playing, setPlaying] = useState(false);
@@ -71,7 +72,7 @@ export const Modal = ({
                     </div>
                     <div className="modal-body pt-0 text-light position-relative">
                         <div className='d-flex gap-2 data-extra flex-wrap align-items-center'>
-                            <p className='fs-4 d-flex align-items-center'>{runTime} minutos <span className='fw-bold fs-1 ps-2'>·</span></p>
+                            <p className='fs-4 d-flex align-items-center'>{runTime}<span className='fw-bold fs-1 ps-2'>·</span></p>
                             {mapGenre}
                             <p className='fs-4 d-flex align-items-center'><span className='fw-bold fs-1 pe-2'>·</span> {releaseDate}</p>
                             <p className='fs-4 text-uppercase d-flex align-items-center pe-3'><span className='fw-bold fs-1 pe-2'>·</span> {originalLanguage}</p>
@@ -132,7 +133,7 @@ export const Modal = ({
                                     <span className='fw-bold'>Valoraciones:</span> {voteCount}
                                 </p>
                                 <p className='fs-4 pt-1 align-items-baseline gap-2'>
-                                {providers}
+                                    {providers}
                                 </p>
                             </div>
                         </div>
@@ -142,11 +143,12 @@ export const Modal = ({
                             <p className='fs-4'><span className='fw-bold pe-2'>País: </span>{mapCountries}</p>
                             <p className='fs-4'>{budget}</p>
                             <p className='fs-4'>{revenue}</p>
-                            <h2 className='pt-4 pb-4 text-primary subtitle-modal'>Reparto principal: </h2>
+                            <h2 className='pt-4 pb-4 text-primary subtitle-modal'>Reparto principal</h2>
                             <div className='d-flex gap-3 flex-wrap'>
-                           {cast}
-                           
-                           </div>
+                                {cast}
+
+                            </div>
+                                {recommendations}
                         </div>
                     </div>
                     <div className="modal-footer position-relative border-0">

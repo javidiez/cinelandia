@@ -12,3 +12,8 @@
     text-wrap: balance;
     padding: 20px 0px 0 5px;
 }
+
+.film-card-modal{
+    filter: drop-shadow(0 0 3px #ffffff7a);
+    font-size: 0.50rem;
+}

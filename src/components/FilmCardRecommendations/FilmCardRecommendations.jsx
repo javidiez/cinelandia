@@ -1,8 +1,8 @@
 import React from "react";
-import './filmcard.css';
+import './FilmCardRecommendations.css';
 import fondoNotFound from '../../assets/img/fondo-not-found.jpeg'
 
-export const FilmCard = ({ image, title, releaseDate, voteAverage, onclick, topMovie, proxEstreno, movieType, classMovieType, size }) => {
+export const FilmCardRecommendations = ({ image, title, releaseDate, voteAverage, topMovie, proxEstreno, movieType, classMovieType, size }) => {
 
   return (
     <>
@@ -21,10 +21,10 @@ export const FilmCard = ({ image, title, releaseDate, voteAverage, onclick, topM
           />
           <div className="overlay text-center p-3">
             <div className={classMovieType}>{movieType}</div>
-            <p className="card-text fs-3 pb-4 fw-bold text-uppercase">{title}</p>
-            <p className="card-text">{releaseDate}</p>
+            <p className="card-text card-text-recommend fw-bold text-uppercase">{title}</p>
+            <hr className="hr-border mt-2 mb-2 pe-5 ps-5" />
+            <p className="card-text card-text-recommend">{releaseDate}</p>
             <p className="card-text"><span className="fw-bold"></span>{voteAverage}</p>
-            <button className="btn btn-primary mt-4 fw-bold fs-5" onClick={onclick}>VER MÁS</button>
           </div>
         </div>
         <div className="position-absolute top-movie"><p>{topMovie}</p></div>

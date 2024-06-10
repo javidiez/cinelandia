@@ -1,0 +1,8 @@
+.card-text-recommend{
+    font-size: clamp(1.2rem,2vw,1.2rem)
+}
+
+hr{
+    color: white;
+    opacity: 0.8;
+}

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { FilmCard } from '../FilmCard/FilmCard';
+import { FilmCardRecommendations } from '../FilmCardRecommendations/FilmCardRecommendations';
 import { Modal } from '../Modal/Modal';
 import { CardActores } from '../CardActores/CardActores';
 import estrella from '../../assets/img/estrella.png';
@@ -26,6 +27,7 @@ export const Novedades = () => {
     const [trailer, setTrailer] = useState(null);
     const [cast, setCast] = useState(null);
     const [platforms, setPlatforms] = useState(null);
+    const [recommendations, setRecommendations] = useState(null);
     const [playing, setPlaying] = useState(false);
 
     const fetchNowPlaying = async (page) => {
@@ -48,7 +50,7 @@ export const Novedades = () => {
         const { data } = await axios.get(`${API_URL}/movie/${id}?language=es-ES`, {
             params: {
                 api_key: API_KEY,
-                append_to_response: 'videos,credits,watch/providers',
+                append_to_response: 'videos,credits,watch/providers,recommendations',
             },
         });
 
@@ -74,6 +76,13 @@ export const Novedades = () => {
             }
         } else {
             setPlatforms(null); // Reiniciar plataformas si no hay resultados
+        }
+
+        if (data.recommendations && data.recommendations.results) {
+            // Extraer el elenco de la respuesta de la API
+            const recommend = data.recommendations.results;
+            // Configurar el estado 'cast' con la lista de miembros del elenco
+            setRecommendations(recommend.slice(0, 6));
         }
 
         setSelectedMovie(data);
@@ -136,7 +145,7 @@ export const Novedades = () => {
                             postherPad={selectedMovie.poster_path ? `https://image.tmdb.org/t/p/w500${selectedMovie.poster_path}` : fondoNotFound}
                             noImg={fondoNotFound}
                             title={selectedMovie.title}
-                            runTime={selectedMovie.runtime}
+                            runTime={selectedMovie.runtime > 0 ? `${selectedMovie.runtime} minutos` : 'Duración no informada'}
                             mapGenre={selectedMovie.genres && selectedMovie.genres.map((genre, index) => (
                                 <p className='fs-4' key={genre.id}>{genre.name}{index < selectedMovie.genres.length - 1 ? ', ' : ''}</p>
                             ))}
@@ -181,7 +190,41 @@ export const Novedades = () => {
                                     ))}
                                 </>
                             ) : ''}
+                            recommendations={recommendations && recommendations.length > 0 ? (
 
+                                <>
+
+                                    <h2 className='pt-5 pb-4 text-primary subtitle-modal'>Recomendaciones</h2>
+
+                                    <div className='d-flex flex-wrap gap-4'>
+                                        {recommendations.map((recommend) => {
+                                            const releaseDate = new Date(recommend.release_date);
+                                            const today = new Date();
+                                            const isUpcoming = releaseDate > today ? "Próximo estreno" : "";
+
+
+                                            return (
+                                                <div className='film-card-modal'>
+                                                    <FilmCardRecommendations
+                                                        key={recommend.id}
+                                                        size={{ width: '9rem' }}
+                                                        image={recommend.poster_path}
+                                                        title={recommend.title}
+                                                        overview={recommend.overview}
+                                                        releaseDate={<><span className='fw-bold'>Fecha</span> {formatDate(recommend.release_date)}</>}
+                                                        voteAverage={''}
+                                                        movieType={''}
+                                                        classMovieType={recommend.title ? 'movie-type-movie' : 'movie-type-serie'}
+                                                        topMovie={''}
+                                                        proxEstreno={isUpcoming}
+                                                    />
+                                                </div>
+                                            );
+
+                                        })}
+                                    </div>
+                                </>
+                            ) : ''}
                         />
                     )}
                 </main>
@@ -194,30 +237,30 @@ export const Novedades = () => {
                 <button onClick={goToNextPage} disabled={currentPage === totalPages} className='btn btn-dark botones-paginacion ps-3 pe-3'>Siguiente</button>
             </div>
 
-                <div className="row justify-content-center mx-auto gap-5 mt-5 mb-3 novedades fs-5">
-                    {movies.map((movie) => {
-                        const releaseDate = new Date(movie.release_date);
-                        const today = new Date();
-                        const isUpcoming = releaseDate > today ? "Próximo estreno" : "";
+            <div className="row justify-content-center mx-auto gap-5 mt-5 mb-3 novedades fs-5">
+                {movies.map((movie) => {
+                    const releaseDate = new Date(movie.release_date);
+                    const today = new Date();
+                    const isUpcoming = releaseDate > today ? "Próximo estreno" : "";
 
 
-                        return (
-                            <FilmCard
-                                key={movie.id}
-                                size={{ width: '18rem' }}
-                                image={movie.poster_path}
-                                title={movie.title}
-                                overview={movie.overview}
-                                releaseDate={formatDate(movie.release_date)}
-                                voteAverage={isUpcoming ? '' : <><span className="fw-bold">Valoración:</span> {(movie.vote_average * 10).toFixed(2)}%</>}                                  onclick={() => selectMovie(movie)}
-                                movieType={''}
-                                classMovieType={movie.title ? 'movie-type-movie' : 'movie-type-serie'}
-                                topMovie={movie.vote_average > 7.75 && movie.vote_count > 99 ? "Destacada" : ''}
-                                proxEstreno={isUpcoming}
-                            />
-                        );
-                    })}
-                </div>
+                    return (
+                        <FilmCard
+                            key={movie.id}
+                            size={{ width: '18rem' }}
+                            image={movie.poster_path}
+                            title={movie.title}
+                            overview={movie.overview}
+                            releaseDate={<><span className='fw-bold'>Fecha</span> {formatDate(movie.release_date)}</>}
+                            voteAverage={isUpcoming ? '' : <><span className="fw-bold">Valoración:</span> {(movie.vote_average * 10).toFixed(2)}%</>} onclick={() => selectMovie(movie)}
+                            movieType={''}
+                            classMovieType={movie.title ? 'movie-type-movie' : 'movie-type-serie'}
+                            topMovie={movie.vote_average > 7.75 && movie.vote_count > 99 ? "Destacada" : ''}
+                            proxEstreno={isUpcoming}
+                        />
+                    );
+                })}
+            </div>
 
             <div className="text-center container pb-5">
                 <button onClick={goToPreviousPage} disabled={currentPage === 1} className='btn btn-dark botones-paginacion ps-3 pe-3'>Anterior</button>
