@@ -85,7 +85,7 @@ function InfoMovie() {
         const recommend = data.recommendations.results;
         // Configurar el estado 'cast' con la lista de miembros del elenco
         setRecommendations(recommend.slice(0, 6));
-    }
+      }
 
 
       setMovie(data);
@@ -213,7 +213,7 @@ function InfoMovie() {
 
                 <>
 
-                  <h2 className='pt-5 pb-4 text-primary subtitle-modal'>Recomendaciones</h2>
+                  <h2 className='pt-5 pb-4 text-info subtitle-modal'>Te puede interesar</h2>
 
                   <div className='d-flex flex-wrap gap-4'>
                     {recommendations.map((recommend) => {
@@ -317,6 +317,41 @@ function InfoMovie() {
                   {platforms.map((platform, index) => (
                     <img key={index} className='border platforms me-2 mt-2' src={`https://image.tmdb.org/t/p/w200${platform.logo_path}`} alt={platform.provider_name} />
                   ))}
+                </>
+              ) : ''}
+              recommendations={recommendations && recommendations.length > 0 ? (
+
+                <>
+
+                  <h2 className='pt-4 pb-4 text-info subtitle-modal'>Te puede interesar</h2>
+
+                  <div className='d-flex flex-wrap gap-4'>
+                    {recommendations.map((recommend) => {
+                      const releaseDate = new Date(recommend.release_date);
+                      const today = new Date();
+                      const isUpcoming = releaseDate > today ? "Próximo estreno" : "";
+
+
+                      return (
+                        <div className='film-card-modal'>
+                          <FilmCardRecommendations
+                            key={recommend.id}
+                            size={{ width: '9rem' }}
+                            image={recommend.poster_path}
+                            title={recommend.name}
+                            overview={recommend.overview}
+                            releaseDate={<><span className='fw-bold'>Fecha</span> {formatDate(recommend.first_air_date)}</>}
+                            voteAverage={''}
+                            movieType={''}
+                            classMovieType={recommend.title ? 'movie-type-movie' : 'movie-type-serie'}
+                            topMovie={''}
+                            proxEstreno={isUpcoming}
+                          />
+                        </div>
+                      );
+
+                    })}
+                  </div>
                 </>
               ) : ''}
             />

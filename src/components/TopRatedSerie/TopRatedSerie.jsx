@@ -3,6 +3,7 @@ import axios from 'axios';
 import { FilmCard } from '../FilmCard/FilmCard';
 import { ModalSerie } from '../ModalSerie/ModalSerie';
 import { CardActores } from '../CardActores/CardActores';
+import { FilmCardRecommendations } from '../FilmCardRecommendations/FilmCardRecommendations';
 import estrella from '../../assets/img/estrella.png';
 import lapiz from '../../assets/img/lapiz.png';
 import smartTv from '../../assets/img/smart-tv.png';
@@ -25,6 +26,7 @@ export const TopRatedSerie = () => {
     const [trailer, setTrailer] = useState(null);
     const [cast, setCast] = useState(null);
     const [platforms, setPlatforms] = useState(null);
+    const [recommendations, setRecommendations] = useState(null);
     const [playing, setPlaying] = useState(false);
 
     const fetchTopRatedSeries = async () => {
@@ -78,7 +80,7 @@ export const TopRatedSerie = () => {
                 params: {
                     api_key: API_KEY,
                     language: 'es-ES',
-                    append_to_response: 'videos,credits,watch/providers',
+                    append_to_response: 'videos,credits,watch/providers,recommendations',
                 },
             });
 
@@ -104,6 +106,13 @@ export const TopRatedSerie = () => {
                 }
             } else {
                 setPlatforms(null); // Reiniciar plataformas si no hay resultados
+            }
+
+            if (data.recommendations && data.recommendations.results) {
+                // Extraer el elenco de la respuesta de la API
+                const recommend = data.recommendations.results;
+                // Configurar el estado 'cast' con la lista de miembros del elenco
+                setRecommendations(recommend.slice(0, 6));
             }
 
 
@@ -218,6 +227,41 @@ export const TopRatedSerie = () => {
                                     {platforms.map((platform, index) => (
                                         <img key={index} className='border platforms me-2 mt-2' src={`https://image.tmdb.org/t/p/w200${platform.logo_path}`} alt={platform.provider_name} />
                                     ))}
+                                </>
+                            ) : ''}
+                            recommendations={recommendations && recommendations.length > 0 ? (
+
+                                <>
+
+                                    <h2 className='pt-4 pb-4 text-info subtitle-modal'>Te puede interesar</h2>
+
+                                    <div className='d-flex flex-wrap gap-4'>
+                                        {recommendations.map((recommend) => {
+                                            const releaseDate = new Date(recommend.release_date);
+                                            const today = new Date();
+                                            const isUpcoming = releaseDate > today ? "Próximo estreno" : "";
+
+
+                                            return (
+                                                <div className='film-card-modal'>
+                                                    <FilmCardRecommendations
+                                                        key={recommend.id}
+                                                        size={{ width: '9rem' }}
+                                                        image={recommend.poster_path}
+                                                        title={recommend.name}
+                                                        overview={recommend.overview}
+                                                        releaseDate={<><span className='fw-bold'>Fecha</span> {formatDate(recommend.first_air_date)}</>}
+                                                        voteAverage={''}
+                                                        movieType={''}
+                                                        classMovieType={recommend.title ? 'movie-type-movie' : 'movie-type-serie'}
+                                                        topMovie={''}
+                                                        proxEstreno={isUpcoming}
+                                                    />
+                                                </div>
+                                            );
+
+                                        })}
+                                    </div>
                                 </>
                             ) : ''}
 

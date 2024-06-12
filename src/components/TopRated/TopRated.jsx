@@ -42,7 +42,7 @@ export const TopRated = () => {
 
             const filteredMovies = results.filter(movie => movie.vote_average > 7.75);
             filteredMovies.sort((a, b) => new Date(b.release_date) - new Date(a.release_date));
-            
+
             setMovies(filteredMovies);
             setTotalPages(total_pages);
         } catch (error) {
@@ -91,7 +91,7 @@ export const TopRated = () => {
             // Configurar el estado 'cast' con la lista de miembros del elenco
             setRecommendations(recommend.slice(0, 6));
         }
-        
+
 
         setSelectedMovie(data);
     };
@@ -172,17 +172,25 @@ export const TopRated = () => {
                             smartTv={smartTv}
                             onClose={handleCloseModal}
                             trailer={trailer}
-                            cast={cast && cast.map((actor, index) => (
+                            cast={cast && cast.length > 0 ?
 
-                                <CardActores
-                                    key={index}
-                                    castImg={`https://image.tmdb.org/t/p/w200${actor.profile_path}`}
-                                    castName={actor.name}
-                                    noImg={avatar}
-                                    castCharacter={actor.character ? ` (${actor.character})` : ''}
-                                />
+                                <div className='d-flex flex-column'>
+                                    <div>
+                                        <h2 className='pt-4 pb-4 text-info subtitle-modal'>Reparto principal</h2>
+                                    </div>
+                                    <div className='d-flex gap-3 flex-wrap'>
+                                        {cast.map((actor, index) => (
 
-                            ))}
+                                            <CardActores
+                                                key={index}
+                                                castImg={`https://image.tmdb.org/t/p/w200${actor.profile_path}`}
+                                                castName={actor.name}
+                                                noImg={avatar}
+                                                castCharacter={actor.character ? ` (${actor.character})` : ''}
+                                            />
+
+                                        ))}</div>
+                                </div> : ''}
                             providers={platforms && platforms.length > 0 ? (
                                 <>
                                     <div>
@@ -198,7 +206,7 @@ export const TopRated = () => {
 
                                 <>
 
-                                    <h2 className='pt-5 pb-4 text-primary subtitle-modal'>Recomendaciones</h2>
+                                    <h2 className='pt-5 pb-4 text-info subtitle-modal'>Te puede interesar</h2>
 
                                     <div className='d-flex flex-wrap gap-4'>
                                         {recommendations.map((recommend) => {

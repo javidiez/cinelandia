@@ -31,12 +31,13 @@ export const Navbar = () => {
                 <div className="d-flex justify-content-between">
                     <a className="navbar-brand d-flex align-items-center" href="index.html">
                         <img src={logo} className="logo" />
-                        <p className="text-light fw-bold display-5 ps-3">CINELANDIA</p>
+                        <p className="text-light fw-bold ps-3">CINELANDIA</p>
                     </a>
                 </div>
                 <div>
-                    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                        <span className="navbar-toggler-icon"></span>
+                    <button className="navbar-toggler custom-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span className="navbar-toggler-icon">
+                        </span>
                     </button>
                     <div className="collapse navbar-collapse" id="navbarNav">
                         <ul className="navbar-nav pe-3">

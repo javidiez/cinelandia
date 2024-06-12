@@ -1,0 +1,15 @@
+.buscador_central{
+    max-width: 1000px;
+    padding: 0px 50px;
+}
+
+@media screen and (max-width: 600px){
+    .buscar{
+        padding: 45px 0px;
+        font-size: 1.4rem !important;
+    }
+    #buscador{
+        height: 45px;
+        font-size: 1.2rem;
+    }
+}

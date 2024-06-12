@@ -32,7 +32,8 @@ export const ModalSerie = ({
     onClose,
     cast,
     trailer,
-    providers
+    providers,
+    recommendations
 }) => {
     const backgroundImage = postherPad ? `url("${postherPad}")` : `url("${noImg}")`;
     const videoContainerRef = useRef(null);
@@ -170,18 +171,19 @@ export const ModalSerie = ({
                             </div>
                         </div>
                         <div>
-                            <h2 className='pt-4 text-primary fs-1'>Más información</h2>
+                        <h2 className='pt-5 pt-3 text-info subtitle-modal'>Más información</h2>
                             <p className='fs-4'><span className='fw-bold'>Productora: </span>{mapProductionCompanies}</p>
                             <p className='fs-4'><span className='fw-bold'>Creador: </span>{mapCreatedBy}</p>
                             <p className='fs-4'><span className='fw-bold pe-2'>País: </span>{mapCountries}</p>
                             <p className='fs-4'><span className='fw-bold pe-2'>Fecha de último capítulo: </span>{lastAirDate}</p>
                             <p className='fs-4'><span className='fw-bold pe-2'>Estreno de nuevos episodios: </span>{mapNextEpisodeToAir}</p>
-                            <h2 className='pt-4 pb-4 text-primary subtitle-modal'>Reparto principal: </h2>
+                            <h2 className='pt-4 pb-4 text-info subtitle-modal'>Reparto principal</h2>
                             <div className='d-flex gap-3 flex-wrap'>
                                 {cast}
 
                             </div>
-                            <h2 className='pt-4 text-primary fs-1'>Información sobre Temporadas</h2>
+                            
+                            <h2 className='pt-5 pb-3 text-info subtitle-modal'>Información sobre Temporadas</h2>
                             <div className="table-responsive">
                                 <table className="table">
                                     <thead>
@@ -198,6 +200,7 @@ export const ModalSerie = ({
                                     </tbody>
                                 </table>
                             </div>
+                            {recommendations}
                         </div>
                     </div>
                     <div className="modal-footer position-relative border-0">

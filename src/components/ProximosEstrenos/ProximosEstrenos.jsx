@@ -18,7 +18,9 @@ export const ProximosEstrenos = () => {
     const API_URL = "https://api.themoviedb.org/3";
     const API_KEY = "4f5f43495afcc67e9553f6c684a82f84";
     const today = new Date();
-    const formattedToday = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
+    const formattedTomorrow = `${tomorrow.getFullYear()}-${String(tomorrow.getMonth() + 1).padStart(2, '0')}-${String(tomorrow.getDate()).padStart(2, '0')}`;
 
     const [movies, setMovies] = useState([]);
     const [selectedMovie, setSelectedMovie] = useState(null);
@@ -36,7 +38,7 @@ export const ProximosEstrenos = () => {
                 api_key: API_KEY,
                 language: 'es-ES',
                 sort_by: 'popularity',
-                'primary_release_date.gte': formattedToday,
+                'primary_release_date.gte': formattedTomorrow,
                 page: page,
             },
         });
@@ -194,7 +196,7 @@ export const ProximosEstrenos = () => {
 
                                 <>
 
-                                    <h2 className='pt-5 pb-4 text-primary subtitle-modal'>Recomendaciones</h2>
+                                    <h2 className='pt-5 pb-4 text-info subtitle-modal'>Te puede interesar</h2>
 
                                     <div className='d-flex flex-wrap gap-4'>
                                         {recommendations.map((recommend) => {

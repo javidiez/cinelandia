@@ -3,6 +3,18 @@
     filter: drop-shadow(0 0 8px #ffffff96);
 }
 
+.custom-toggler .navbar-toggler-icon {
+    filter: brightness(0) invert(1);
+}
+.navbar-toggler{
+    border-color: #ffffffb0;
+
+}
+
+.navbar-toggler:focus {
+    box-shadow: none;
+}
+
 .btn-lupa{
     
     border-radius: 6px; /* Esquinas: superior izquierda, superior derecha, inferior derecha, inferior izquierda */
@@ -59,6 +71,9 @@
     }
     .navbar p {
         font-size: 2rem !important; /* Ajusta según el tamaño inicial */
-        transition: font-size 0.5s ease-in-out;
     }
+    .navbar.shrink p {
+        font-size: 2rem !important; /* Ajusta según el tamaño deseado al hacer scroll */
+    }
+    
 }

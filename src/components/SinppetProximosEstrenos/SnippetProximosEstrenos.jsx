@@ -119,10 +119,7 @@ export const SnippetProximosEstrenos = () => {
         const year = date.getFullYear();
         return `${day}/${month}/${year}`;
     };
-
-    const releaseDate = new Date(movies.release_date);
-    const isUpcoming = releaseDate > today ? "Próximo estreno" : "";
-
+    
     const moviesToShow = movies.slice(0, 5);
 
     const handleCloseModal = () => {
@@ -190,7 +187,7 @@ export const SnippetProximosEstrenos = () => {
 
                                 <>
 
-                                    <h2 className='pt-5 pb-4 text-primary subtitle-modal'>Recomendaciones</h2>
+                                    <h2 className='pt-5 pb-4 text-info subtitle-modal'>Te puede interesar</h2>
 
                                     <div className='d-flex flex-wrap gap-4'>
                                         {recommendations.map((recommend) => {

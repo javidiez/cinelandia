@@ -23,9 +23,17 @@
     object-fit: cover;
   }
 
+  .subtitle-modal{
+    font-size: clamp(1.9rem, 5vw, 2.5rem);
+  }
+
   @media screen and (max-width: 950px){
     .reproductor{
         min-width: 100%;
         height: 400px;
+      }
+      .bloque-poster-modal{
+        display: flex;
+        margin:auto;
       }
   }

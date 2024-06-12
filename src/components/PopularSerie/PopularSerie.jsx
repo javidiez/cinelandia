@@ -3,6 +3,7 @@ import axios from 'axios';
 import { FilmCard } from '../FilmCard/FilmCard';
 import { ModalSerie } from '../ModalSerie/ModalSerie';
 import { CardActores } from '../CardActores/CardActores';
+import { FilmCardRecommendations } from '../FilmCardRecommendations/FilmCardRecommendations';
 import estrella from '../../assets/img/estrella.png';
 import lapiz from '../../assets/img/lapiz.png';
 import smartTv from '../../assets/img/smart-tv.png';
@@ -26,6 +27,7 @@ export const PopularesSerie = () => {
     const [trailer, setTrailer] = useState(null);
     const [cast, setCast] = useState(null);
     const [platforms, setPlatforms] = useState(null);
+    const [recommendations, setRecommendations] = useState(null);
     const [playing, setPlaying] = useState(false);
 
     const fetchPopularesSerie = async (page) => {
@@ -43,7 +45,7 @@ export const PopularesSerie = () => {
             setTotalPages(total_pages);
 
             // Filtrar duplicados
-            const uniqueResults = results.filter((result, index, self) => 
+            const uniqueResults = results.filter((result, index, self) =>
                 index === self.findIndex((t) => t.id === result.id)
             );
 
@@ -61,10 +63,10 @@ export const PopularesSerie = () => {
                 params: {
                     api_key: API_KEY,
                     language: 'es-ES',
-                    append_to_response: 'videos,credits,watch/providers',
+                    append_to_response: 'videos,credits,watch/providers,recommendations',
                 },
             });
-    
+
             if (data.videos && data.videos.results) {
                 const trailer = data.videos.results.find(
                     (vid) => vid.name === "Official Trailer"
@@ -88,7 +90,14 @@ export const PopularesSerie = () => {
             } else {
                 setPlatforms(null); // Reiniciar plataformas si no hay resultados
             }
-    
+
+            if (data.recommendations && data.recommendations.results) {
+                // Extraer el elenco de la respuesta de la API
+                const recommend = data.recommendations.results;
+                // Configurar el estado 'cast' con la lista de miembros del elenco
+                setRecommendations(recommend.slice(0, 6));
+            }
+
 
             setSelectedSerie(data);
             const modal = bootstrap.Modal.getOrCreateInstance(`#modalPopularSerie-${id}`);
@@ -135,7 +144,7 @@ export const PopularesSerie = () => {
         return `${day}/${month}/${year}`;
     };
 
-     const handleCloseModal = () => {
+    const handleCloseModal = () => {
         setPlaying(false); // Detiene el video
         setSelectedSerie(null); // Cierra el modal
     };
@@ -171,7 +180,7 @@ export const PopularesSerie = () => {
                             ))}
                             mapNextEpisodeToAir={selectedSerie.next_episode_to_air && selectedSerie.next_episode_to_air.length > 0 ? selectedSerie.next_episode_to_air.map((nextEpisode, index) => (
                                 <span className='ps-2' key={nextEpisode.id}>{nextEpisode.air_date}{nextEpisode.episode_number}</span>
-                              )) : 'No'}
+                            )) : 'No'}
                             mapCreatedBy={selectedSerie.created_by && selectedSerie.created_by.length > 0
                                 ? selectedSerie.created_by.map((createdBy, index) => (
                                     <span className='ps-2' key={createdBy.id}>
@@ -194,7 +203,7 @@ export const PopularesSerie = () => {
                             onClose={handleCloseModal}
                             trailer={trailer}
                             cast={cast && cast.map((actor, index) => (
-              
+
                                 <CardActores
                                     key={index}
                                     castImg={`https://image.tmdb.org/t/p/w200${actor.profile_path}`}
@@ -202,7 +211,7 @@ export const PopularesSerie = () => {
                                     noImg={avatar}
                                     castCharacter={actor.character ? ` (${actor.character})` : ''}
                                 />
-              
+
                             ))}
                             providers={platforms && platforms.length > 0 ? (
                                 <>
@@ -213,6 +222,41 @@ export const PopularesSerie = () => {
                                     {platforms.map((platform, index) => (
                                         <img key={index} className='border platforms me-2 mt-2' src={`https://image.tmdb.org/t/p/w200${platform.logo_path}`} alt={platform.provider_name} />
                                     ))}
+                                </>
+                            ) : ''}
+                            recommendations={recommendations && recommendations.length > 0 ? (
+
+                                <>
+
+                                    <h2 className='pt-4 pb-4 text-info subtitle-modal'>Te puede interesar</h2>
+
+                                    <div className='d-flex flex-wrap gap-4'>
+                                        {recommendations.map((recommend) => {
+                                            const releaseDate = new Date(recommend.release_date);
+                                            const today = new Date();
+                                            const isUpcoming = releaseDate > today ? "Próximo estreno" : "";
+
+
+                                            return (
+                                                <div className='film-card-modal'>
+                                                    <FilmCardRecommendations
+                                                        key={recommend.id}
+                                                        size={{ width: '9rem' }}
+                                                        image={recommend.poster_path}
+                                                        title={recommend.name}
+                                                        overview={recommend.overview}
+                                                        releaseDate={<><span className='fw-bold'>Fecha</span> {formatDate(recommend.first_air_date)}</>}
+                                                        voteAverage={''}
+                                                        movieType={''}
+                                                        classMovieType={recommend.title ? 'movie-type-movie' : 'movie-type-serie'}
+                                                        topMovie={''}
+                                                        proxEstreno={isUpcoming}
+                                                    />
+                                                </div>
+                                            );
+
+                                        })}
+                                    </div>
                                 </>
                             ) : ''}
 

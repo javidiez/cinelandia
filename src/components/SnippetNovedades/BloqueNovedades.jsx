@@ -181,7 +181,7 @@ export const BloqueNovedades = () => {
 
                                 <>
 
-                                    <h2 className='pt-5 pb-4 text-primary subtitle-modal'>Recomendaciones</h2>
+                                    <h2 className='pt-5 pb-4 text-info subtitle-modal'>Te puede interesar</h2>
 
                                     <div className='d-flex flex-wrap gap-4'>
                                         {recommendations.map((recommend) => {
