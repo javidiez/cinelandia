@@ -1,0 +1,33 @@
+label{
+    padding: 0;
+    margin: 0;
+}
+
+.switcheo .hide {
+    display: none;
+    
+}
+
+.switcheo .show {
+    display: flex;
+    
+}
+
+.movie-btn{
+    border-radius: 50px 0 0 50px;
+    font-size: clamp(1.5rem,3vw,3rem);
+    font-weight: 500;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+.serie-btn{
+    border-radius: 0 50px 50px 0;
+    font-size: clamp(1.5rem,3vw,3rem);
+    font-weight: 500;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.btn-check:checked+.btn{
+    color: #023249;
+}

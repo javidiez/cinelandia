@@ -1,5 +1,5 @@
 .snippet_novedades_title{
-    font-size: 4.2rem;
+    font-size: clamp(3rem,5vw, 3.6rem);
 }
 
 .botones-ver-mas{

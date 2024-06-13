@@ -177,7 +177,6 @@ export const ModalSerie = ({
                             <p className='fs-4'><span className='fw-bold pe-2'>País: </span>{mapCountries}</p>
                             <p className='fs-4'><span className='fw-bold pe-2'>Fecha de último capítulo: </span>{lastAirDate}</p>
                             <p className='fs-4'><span className='fw-bold pe-2'>Estreno de nuevos episodios: </span>{mapNextEpisodeToAir}</p>
-                            <h2 className='pt-4 pb-4 text-info subtitle-modal'>Reparto principal</h2>
                             <div className='d-flex gap-3 flex-wrap'>
                                 {cast}
 

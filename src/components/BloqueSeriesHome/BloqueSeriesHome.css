@@ -1,0 +1,23 @@
+.snippet_novedades_title.fade-in {
+    opacity: 0;
+    animation: fadeInAnimation 0.6s ease-in forwards;
+}
+
+.novedades.fade-in {
+    opacity: 0;
+    animation: fadeInAnimation 0.6s ease-in forwards;
+}
+
+.snippet_pp.fade-in {
+    opacity: 0;
+    animation: fadeInAnimation 0.6s ease-in forwards;
+}
+
+@keyframes fadeInAnimation {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}

@@ -187,17 +187,25 @@ function InfoMovie() {
               smartTv={smartTv}
               onClose={handleCloseModal}
               trailer={trailer}
-              cast={cast && cast.map((actor, index) => (
+              cast={cast && cast.length > 0 ?
 
-                <CardActores
-                  key={index}
-                  castImg={`https://image.tmdb.org/t/p/w200${actor.profile_path}`}
-                  castName={actor.name}
-                  noImg={avatar}
-                  castCharacter={actor.character ? ` (${actor.character})` : ''}
-                />
+                <div className='d-flex flex-column'>
+                  <div>
+                    <h2 className='pt-4 pb-4 text-info subtitle-modal'>Reparto principal</h2>
+                  </div>
+                  <div className='d-flex gap-3 flex-wrap'>
+                    {cast.map((actor, index) => (
 
-              ))}
+                      <CardActores
+                        key={index}
+                        castImg={`https://image.tmdb.org/t/p/w200${actor.profile_path}`}
+                        castName={actor.name}
+                        noImg={avatar}
+                        castCharacter={actor.character ? ` (${actor.character})` : ''}
+                      />
+
+                    ))}</div>
+                </div> : ''}
               providers={platforms && platforms.length > 0 ? (
                 <>
                   <div>
@@ -255,18 +263,18 @@ function InfoMovie() {
               postherPad={selectedMovie.poster_path ? `https://image.tmdb.org/t/p/w500${selectedMovie.poster_path}` : fondoNotFound}
               noImg={fondoNotFound}
               originalName={selectedMovie.name}
-              seasons={selectedMovie.number_of_seasons > 1 ? `${selectedMovie.number_of_seasons} temporadas` : `${selectedMovie.number_of_seasons} temporada`}
-              episodes={selectedMovie.number_of_episodes > 1 ? `${selectedMovie.number_of_episodes} episodios` : `${selectedMovie.number_of_episodes} episodio`}
+              seasons={selectedMovie.number_of_seasons > 1 ? `${selectedMovie.number_of_seasons} temporadas` : selectedMovie.number_of_seasons ? `${selectedMovie.number_of_seasons} temporada` : 'Temporadas desconocidas'}
+              episodes={selectedMovie.number_of_episodes > 1 ? `${selectedMovie.number_of_episodes} episodios` : selectedMovie.number_of_episodes ? `${selectedMovie.number_of_episodes} episodio` : 'Episodios desconocidos'}
               mapGenre={selectedMovie.genres && selectedMovie.genres.length > 0 ? selectedMovie.genres.map((genre, index) => (
                 <p className='fs-4' key={genre.id}>{genre.name}{index < selectedMovie.genres.length - 1 ? ', ' : ''}</p>
               )) : <p className='fs-4'>Género no informado</p>}
-              firstAirDate={formatDate(selectedMovie.first_air_date)}
-              lastAirDate={formatDate(selectedMovie.last_air_date)}
-              originalLanguage={selectedMovie.original_language}
+              firstAirDate={selectedMovie.first_air_date ? formatDate(selectedMovie.first_air_date) : 'Fecha desconocida'}
+              lastAirDate={selectedMovie.last_air_date ? formatDate(selectedMovie.last_air_date) : 'No informado'}
+              originalLanguage={selectedMovie.original_language ? selectedMovie.original_language : <span className='text-lowercase'>Idioma desconocido</span>}
               overview={selectedMovie.overview}
               classPuntaje={`${selectedMovie.vote_average * 10 >= 80 ? 'puntaje-verde' : selectedMovie.vote_average * 10 > 60 ? 'puntaje-amarillo' : 'puntaje-rojo'}`}
-              voteAverage={(selectedMovie.vote_average * 10).toFixed(2)}
-              voteCount={selectedMovie.vote_count}
+              voteAverage={selectedMovie.vote_average ? (selectedMovie.vote_average * 10).toFixed(2) : '0'}
+              voteCount={selectedMovie.vote_count ? selectedMovie.vote_count : 0}
               mapProductionCompanies={selectedMovie.production_companies && selectedMovie.production_companies.length > 0 ? selectedMovie.production_companies.map((company, index) => (
                 <span className='ps-2' key={company.id}>{company.name}{index < selectedMovie.production_companies.length - 1 ? ', ' : ''}</span>
               )) : 'No informado'}
@@ -287,27 +295,35 @@ function InfoMovie() {
                 <span key={season.id}>{season.name}</span>
               ))}
               mapSeasonsSeasonDate={selectedMovie.seasons && selectedMovie.seasons.map((season, index) => (
-                <span key={season.id}>{formatDate(season.air_date)}</span>
+                <span key={season.id}>{formatDate(season.air_date) == '01/01/1970' ? 'Sin definir' : formatDate(season.air_date)}</span>
               ))}
               mapSeasonsSeasonEpisodes={selectedMovie.seasons && selectedMovie.seasons.map((episodes, index) => (
-                <span key={episodes.id}>{episodes.episode_count}</span>
+                <span key={episodes.id}>{episodes.episode_count == 0 ? 'Sin definir' : episodes.episode_count}</span>
               ))}
               estrella={estrella}
               lapiz={lapiz}
               smartTv={smartTv}
               onClose={handleCloseModal}
               trailer={trailer}
-              cast={cast && cast.map((actor, index) => (
+              cast={cast && cast.length > 0 ?
 
-                <CardActores
-                  key={index}
-                  castImg={`https://image.tmdb.org/t/p/w200${actor.profile_path}`}
-                  castName={actor.name}
-                  noImg={avatar}
-                  castCharacter={actor.character ? ` (${actor.character})` : ''}
-                />
+                <div className='d-flex flex-column'>
+                  <div>
+                    <h2 className='pt-4 pb-4 text-info subtitle-modal'>Reparto principal</h2>
+                  </div>
+                  <div className='d-flex gap-3 flex-wrap'>
+                    {cast.map((actor, index) => (
 
-              ))}
+                      <CardActores
+                        key={index}
+                        castImg={`https://image.tmdb.org/t/p/w200${actor.profile_path}`}
+                        castName={actor.name}
+                        noImg={avatar}
+                        castCharacter={actor.character ? ` (${actor.character})` : ''}
+                      />
+
+                    ))}</div>
+                </div> : ''}
               providers={platforms && platforms.length > 0 ? (
                 <>
                   <div>
@@ -381,9 +397,9 @@ function InfoMovie() {
 
 
 
-      <div>
+
         {/* contenedor para mostrar los posters y las peliculas en la peticion a la api */}
-        <div className="row justify-content-center container-fluid mx-auto gap-5 mt-5 novedades fs-5">
+        <div className="row justify-content-center container-fluid mx-auto gap-5 mt-5 novedades fade-in fs-5">
           {movies.map((movie) => {
 
             const releaseDate = new Date(movie.release_date);
@@ -391,14 +407,15 @@ function InfoMovie() {
             const isUpcoming = releaseDate > today ? "Próximo estreno" : "";
 
             return (
+
               <FilmCard
                 key={movie.id}
                 size={{ width: '18rem' }}
                 image={movie.poster_path}
                 title={movie.title ? movie.title : movie.name}
                 overview={movie.overview}
-                releaseDate={movie.title && movie.release_date ? <><span className='fw-bold'>Fecha</span> {formatDate(movie.release_date)}</> : movie.name ? formatDate(movie.first_air_date) : 'Fecha no informada'}
-                voteAverage={isUpcoming ? '' : <><span className="fw-bold">Valoración:</span> {(movie.vote_average * 10).toFixed(2)}%</>}
+                releaseDate={movie.title && movie.release_date ? <><span className='fw-bold'>Fecha:</span> {formatDate(movie.release_date)}</> : movie.name && movie.first_air_date ? <><span className='fw-bold'>Fecha: </span>{formatDate(movie.first_air_date)}</> : 'Fecha no informada'}
+                voteAverage={isUpcoming || isNaN(movie.vote_average) ? '' : <><span className="fw-bold">Valoración:</span> {(movie.vote_average * 10).toFixed(2)}%</>}
                 onclick={() => selectMovie(movie)}
                 movieType={movie.title ? 'Película' : 'Serie'}
                 classMovieType={movie.title ? 'movie-type-movie' : 'movie-type-serie'}
@@ -410,7 +427,7 @@ function InfoMovie() {
 
         </div>
 
-      </div>
+      
 
       {movies.length > 0 ? (
         <>

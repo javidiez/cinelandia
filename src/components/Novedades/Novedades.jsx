@@ -153,14 +153,14 @@ export const Novedades = () => {
                             originalLanguage={selectedMovie.original_language}
                             overview={selectedMovie.overview}
                             classPuntaje={`${selectedMovie.vote_average * 10 >= 80 ? 'puntaje-verde' : selectedMovie.vote_average * 10 > 60 ? 'puntaje-amarillo' : 'puntaje-rojo'}`}
-                            voteAverage={(selectedMovie.vote_average * 10).toFixed(2)}
-                            voteCount={selectedMovie.vote_count}
-                            mapProductionCompanies={selectedMovie.production_companies && selectedMovie.production_companies.map((company, index) => (
+                            voteAverage={selectedMovie.vote_average ? (selectedMovie.vote_average * 10).toFixed(2) : '0'}
+                            voteCount={selectedMovie.vote_count ? selectedMovie.vote_count : 0}
+                            mapProductionCompanies={selectedMovie.production_companies && selectedMovie.production_companies.length > 0 ? selectedMovie.production_companies.map((company, index) => (
                                 <span className='ps-2' key={company.id}>{company.name}{index < selectedMovie.production_companies.length - 1 ? ', ' : ''}</span>
-                            ))}
-                            mapCountries={selectedMovie.production_countries && selectedMovie.production_countries.map((country, index) => (
+                            )) : 'No informado'}
+                            mapCountries={selectedMovie.production_countries && selectedMovie.production_countries.length > 0 ? selectedMovie.production_countries.map((country, index) => (
                                 <span key={country.iso_3166_1}>{country.name}{index < selectedMovie.production_countries.length - 1 ? ', ' : ''}</span>
-                            ))}
+                            )) : 'No informado'}
                             budget={selectedMovie.budget > 0 ? <><span className='fw-bold'>Presupuesto:</span> {new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'USD' }).format(selectedMovie.budget)}</> : <><span className='fw-bold'>Presupuesto: </span>No informado</>}
                             revenue={selectedMovie.revenue > 0 ? <><span className='fw-bold'>Recaudación:</span> {new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'USD' }).format(selectedMovie.revenue)}</> : <><span className='fw-bold'>Recaudación: </span>No informado</>}
                             estrella={estrella}
@@ -168,17 +168,25 @@ export const Novedades = () => {
                             smartTv={smartTv}
                             onClose={handleCloseModal}
                             trailer={trailer}
-                            cast={cast && cast.map((actor, index) => (
+                            cast={cast && cast.length > 0 ?
 
-                                <CardActores
-                                    key={index}
-                                    castImg={`https://image.tmdb.org/t/p/w200${actor.profile_path}`}
-                                    castName={actor.name}
-                                    noImg={avatar}
-                                    castCharacter={actor.character ? ` (${actor.character})` : ''}
-                                />
+                                <div className='d-flex flex-column'>
+                                    <div>
+                                        <h2 className='pt-4 pb-4 text-info subtitle-modal'>Reparto principal</h2>
+                                    </div>
+                                    <div className='d-flex gap-3 flex-wrap'>
+                                        {cast.map((actor, index) => (
 
-                            ))}
+                                            <CardActores
+                                                key={index}
+                                                castImg={`https://image.tmdb.org/t/p/w200${actor.profile_path}`}
+                                                castName={actor.name}
+                                                noImg={avatar}
+                                                castCharacter={actor.character ? ` (${actor.character})` : ''}
+                                            />
+
+                                        ))}</div>
+                                </div> : ''}
                             providers={platforms && platforms.length > 0 ? (
                                 <>
                                     <div>
@@ -251,7 +259,7 @@ export const Novedades = () => {
                             image={movie.poster_path}
                             title={movie.title}
                             overview={movie.overview}
-                            releaseDate={<><span className='fw-bold'>Fecha</span> {formatDate(movie.release_date)}</>}
+                            releaseDate={movie.release_date ? <><span className='fw-bold'>Fecha</span> {formatDate(movie.release_date)}</> : ''}
                             voteAverage={isUpcoming ? '' : <><span className="fw-bold">Valoración:</span> {(movie.vote_average * 10).toFixed(2)}%</>} onclick={() => selectMovie(movie)}
                             movieType={''}
                             classMovieType={movie.title ? 'movie-type-movie' : 'movie-type-serie'}

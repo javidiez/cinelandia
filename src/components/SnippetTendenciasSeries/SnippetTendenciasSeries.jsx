@@ -1,8 +1,9 @@
+
 import React from "react";
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Modal } from '../Modal/Modal';
-import { BloqueProximosEstrenos } from "./BloqueProximosEstrenos";
+import { ModalSerie } from "../ModalSerie/ModalSerie";
+import { BloqueTendenciasSeries } from "./BloqueTendenciasSeries";
 import { FilmCardRecommendations } from '../FilmCardRecommendations/FilmCardRecommendations';
 import { CardActores } from '../CardActores/CardActores';
 import estrella from '../../assets/img/estrella.png';
@@ -13,49 +14,72 @@ import avatar from '../../assets/img/avatar.webp';
 import '../Novedades/novedades.css';
 import '../FilmCard/filmcard.css';
 import '../InfoMovie/infoMovie.css'
-import './snippet_pp.css'
+import '../SinppetProximosEstrenos/snippet_pp.css'
 import '../BloqueSeriesHome/BloqueSeriesHome.css'
 
-export const SnippetProximosEstrenos = () => {
+export const SnippetTendenciasSeries = () => {
 
     const API_URL = "https://api.themoviedb.org/3";
     const API_KEY = "4f5f43495afcc67e9553f6c684a82f84";
     const IMAGE_PATH = "https://image.tmdb.org/t/p/original";
-    const today = new Date();
-    const tomorrow = new Date(today);
-    tomorrow.setDate(today.getDate() + 1);
-    const formattedTomorrow = `${tomorrow.getFullYear()}-${String(tomorrow.getMonth() + 1).padStart(2, '0')}-${String(tomorrow.getDate()).padStart(2, '0')}`;
 
     const [movies, setMovies] = useState([]);
-    const [selectedMovie, setSelectedMovie] = useState(null);
+    const [selectedSerie, setSelectedSerie] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
+    const [loading, setLoading] = useState(true);
     const [trailer, setTrailer] = useState(null);
-    const [recommendations, setRecommendations] = useState(null);
     const [cast, setCast] = useState(null);
     const [platforms, setPlatforms] = useState(null);
+    const [recommendations, setRecommendations] = useState(null);
     const [playing, setPlaying] = useState(false);
 
-    const fetchNowPlaying = async (page) => {
-        const { data: { results, total_pages } } = await axios.get(`${API_URL}/discover/movie?include_adult=false&popularity`, {
-            params: {
-                api_key: API_KEY,
-                language: 'es-ES',
-                sort_by: 'popularity.desc',
-                'primary_release_date.gte': formattedTomorrow,
-                page: page,
-            },
-        });
+    const fetchTopRatedSeries = async () => {
+        setLoading(true);
 
-        const sortedResults = results.sort((a, b) => new Date(a.release_date) - new Date(b.release_date));
+        try {
+            let allResultsMap = {}; // Objeto de mapa para almacenar las series sin duplicados
+            let totalPages = 1;
+            let currentPage = 1;
 
-        setCurrentPage(page);
-        setTotalPages(total_pages);
-        setMovies(sortedResults);
+            // Realiza bucle hasta que hayas obtenido todas las páginas de resultados
+            while (currentPage <= totalPages) {
+                const { data: { results, total_pages } } = await axios.get(`${API_URL}/tv/top_rated`, {
+                    params: {
+                        api_key: API_KEY,
+                        language: 'es-ES',
+                        page: currentPage,
+                    },
+                });
+
+                // Agrega cada serie al objeto de mapa utilizando el id como clave
+                results.forEach(serie => {
+                    allResultsMap[serie.id] = serie;
+                });
+
+                totalPages = total_pages;
+                currentPage++;
+            }
+
+            // Extrae los valores del objeto de mapa (las series únicas) y conviértelos en una matriz
+            const allResults = Object.values(allResultsMap);
+
+            // Ordena todas las películas por fecha de first_air_date
+            allResults.sort((a, b) => new Date(b.first_air_date) - new Date(a.first_air_date));
+
+            // Establece las películas ordenadas en el estado
+            setMovies(allResults);
+            setTotalPages(totalPages);
+        } catch (error) {
+            console.error("Error fetching top rated series:", error);
+        } finally {
+            setLoading(false);
+        }
     };
 
+
     const fetchMovie = async (id) => {
-        const { data } = await axios.get(`${API_URL}/movie/${id}?language=es-ES`, {
+        const { data } = await axios.get(`${API_URL}/tv/${id}?language=es-ES`, {
             params: {
                 api_key: API_KEY,
                 append_to_response: 'videos,credits,watch/providers,recommendations',
@@ -93,7 +117,7 @@ export const SnippetProximosEstrenos = () => {
             setRecommendations(recommend.slice(0, 6));
         }
 
-        setSelectedMovie(data);
+        setSelectedSerie(data);
     };
 
     const selectMovie = async (movie) => {
@@ -101,16 +125,16 @@ export const SnippetProximosEstrenos = () => {
     };
 
     useEffect(() => {
-        fetchNowPlaying(currentPage);
+        fetchTopRatedSeries(currentPage);
     }, [currentPage]);
 
 
     useEffect(() => {
-        if (selectedMovie) {
-            const modal = new bootstrap.Modal(document.getElementById(`modalEstrenos-${selectedMovie.id}`));
+        if (selectedSerie) {
+            const modal = new bootstrap.Modal(document.getElementById(`modalTendenciasSerieSnippet-${selectedSerie.id}`));
             modal.show();
         }
-    }, [selectedMovie]);
+    }, [selectedSerie]);
 
 
     const formatDate = (dateString) => {
@@ -120,43 +144,62 @@ export const SnippetProximosEstrenos = () => {
         const year = date.getFullYear();
         return `${day}/${month}/${year}`;
     };
-    
+
     const moviesToShow = movies.slice(0, 5);
 
     const handleCloseModal = () => {
         setPlaying(false); // Detiene el video
-        setSelectedMovie(null); // Cierra el modal
+        setSelectedSerie(null); // Cierra el modal
     };
 
     return (
         <>
             <div>
                 <main>
-                    {selectedMovie && (
-                        <Modal
-                            key={selectedMovie.id}
-                            idModal={`modalEstrenos-${selectedMovie.id}`}
-                            postherPad={selectedMovie.poster_path ? `https://image.tmdb.org/t/p/w500${selectedMovie.poster_path}` : fondoNotFound}
+                    {selectedSerie && (
+                        <ModalSerie
+                            key={selectedSerie.id}
+                            idModal={`modalTendenciasSerieSnippet-${selectedSerie.id}`}
+                            postherPad={selectedSerie.poster_path ? `https://image.tmdb.org/t/p/w500${selectedSerie.poster_path}` : fondoNotFound}
                             noImg={fondoNotFound}
-                            title={selectedMovie.title}
-                            runTime={selectedMovie.runtime > 0 ? `${selectedMovie.runtime} minutos` : 'Duración no informada'}
-                            mapGenre={selectedMovie.genres && selectedMovie.genres.map((genre, index) => (
-                                <p className='fs-4' key={genre.id}>{genre.name}{index < selectedMovie.genres.length - 1 ? ', ' : ''}</p>
+                            originalName={selectedSerie.name}
+                            seasons={selectedSerie.number_of_seasons > 1 ? `${selectedSerie.number_of_seasons} temporadas` : selectedSerie.number_of_seasons ? `${selectedSerie.number_of_seasons} temporada` : 'Temporadas desconocidas'}
+                            episodes={selectedSerie.number_of_episodes > 1 ? `${selectedSerie.number_of_episodes} episodios` : selectedSerie.number_of_episodes ? `${selectedSerie.number_of_episodes} episodio` : 'Episodios desconocidos'}
+                            mapGenre={selectedSerie.genres && selectedSerie.genres.length > 0 ? selectedSerie.genres.map((genre, index) => (
+                                <p className='fs-4' key={genre.id}>{genre.name}{index < selectedSerie.genres.length - 1 ? ', ' : ''}</p>
+                            )) : <p className='fs-4'>Género no informado</p>}
+                            firstAirDate={selectedSerie.first_air_date ? formatDate(selectedSerie.first_air_date) : 'Fecha desconocida'}
+                            lastAirDate={selectedSerie.last_air_date ? formatDate(selectedSerie.last_air_date) : 'No informado'}
+                            originalLanguage={selectedSerie.original_language ? selectedSerie.original_language : <span className='text-lowercase'>Idioma desconocido</span>}
+                            overview={selectedSerie.overview}
+                            classPuntaje={`${selectedSerie.vote_average * 10 >= 80 ? 'puntaje-verde' : selectedSerie.vote_average * 10 > 60 ? 'puntaje-amarillo' : 'puntaje-rojo'}`}
+                            voteAverage={selectedSerie.vote_average ? (selectedSerie.vote_average * 10).toFixed(2) : '0'}
+                            voteCount={selectedSerie.vote_count ? selectedSerie.vote_count : 0}
+                            mapProductionCompanies={selectedSerie.production_companies && selectedSerie.production_companies.length > 0 ? selectedSerie.production_companies.map((company, index) => (
+                                <span className='ps-2' key={company.id}>{company.name}{index < selectedSerie.production_companies.length - 1 ? ', ' : ''}</span>
+                            )) : 'No informado'}
+                            mapCountries={selectedSerie.production_countries && selectedSerie.production_countries.length > 0 ? selectedSerie.production_countries.map((country, index) => (
+                                <span key={country.iso_3166_1}>{country.name}{index < selectedSerie.production_countries.length - 1 ? ', ' : ''}</span>
+                            )) : 'No informado'}
+                            mapCreatedBy={selectedSerie.created_by && selectedSerie.created_by.length > 0
+                                ? selectedSerie.created_by.map((createdBy, index) => (
+                                    <span className='ps-2' key={createdBy.id}>
+                                        {createdBy.name}{index < selectedSerie.created_by.length - 1 ? ', ' : ''}
+                                    </span>
+                                ))
+                                : 'No informado'}
+                            mapNextEpisodeToAir={selectedSerie.next_episode_to_air && selectedSerie.next_episode_to_air.length > 0 ? selectedSerie.next_episode_to_air.map((nextEpisode, index) => (
+                                <span className='ps-2' key={nextEpisode.id}>{nextEpisode.air_date}{nextEpisode.episode_number}</span>
+                            )) : 'No'}
+                            mapSeasonsSeasonName={selectedSerie.seasons && selectedSerie.seasons.map((season, index) => (
+                                <span key={season.id}>{season.name}</span>
                             ))}
-                            releaseDate={formatDate(selectedMovie.release_date)}
-                            originalLanguage={selectedMovie.original_language}
-                            overview={selectedMovie.overview}
-                            classPuntaje={`${selectedMovie.vote_average * 10 >= 80 ? 'puntaje-verde' : selectedMovie.vote_average * 10 > 60 ? 'puntaje-amarillo' : 'puntaje-rojo'}`}
-                            voteAverage={selectedMovie.vote_average ? (selectedMovie.vote_average * 10).toFixed(2) : '0'}
-                            voteCount={selectedMovie.vote_count ? selectedMovie.vote_count : 0}
-                            mapProductionCompanies={selectedMovie.production_companies && selectedMovie.production_companies.map((company, index) => (
-                                <span className='ps-2' key={company.id}>{company.name}{index < selectedMovie.production_companies.length - 1 ? ', ' : ''}</span>
+                            mapSeasonsSeasonDate={selectedSerie.seasons && selectedSerie.seasons.map((season, index) => (
+                                <span key={season.id}>{formatDate(season.air_date) == '01/01/1970' ? 'Sin definir' : formatDate(season.air_date)}</span>
                             ))}
-                            mapCountries={selectedMovie.production_countries && selectedMovie.production_countries.map((country, index) => (
-                                <span key={country.iso_3166_1}>{country.name}{index < selectedMovie.production_countries.length - 1 ? ', ' : ''}</span>
+                            mapSeasonsSeasonEpisodes={selectedSerie.seasons && selectedSerie.seasons.map((episodes, index) => (
+                                <span key={episodes.id}>{episodes.episode_count == 0 ? 'Sin definir' : episodes.episode_count}</span>
                             ))}
-                            budget={''}
-                            revenue={''}
                             estrella={estrella}
                             lapiz={lapiz}
                             smartTv={smartTv}
@@ -196,7 +239,7 @@ export const SnippetProximosEstrenos = () => {
 
                                 <>
 
-                                    <h2 className='pt-5 pb-4 text-info subtitle-modal'>Te puede interesar</h2>
+                                    <h2 className='pt-4 pb-4 text-info subtitle-modal'>Te puede interesar</h2>
 
                                     <div className='d-flex flex-wrap gap-4'>
                                         {recommendations.map((recommend) => {
@@ -211,9 +254,9 @@ export const SnippetProximosEstrenos = () => {
                                                         key={recommend.id}
                                                         size={{ width: '9rem' }}
                                                         image={recommend.poster_path}
-                                                        title={recommend.title}
+                                                        title={recommend.name}
                                                         overview={recommend.overview}
-                                                        releaseDate={<><span className='fw-bold'>Fecha</span> {formatDate(recommend.release_date)}</>}
+                                                        releaseDate={<><span className='fw-bold'>Fecha</span> {formatDate(recommend.first_air_date)}</>}
                                                         voteAverage={''}
                                                         movieType={''}
                                                         classMovieType={recommend.title ? 'movie-type-movie' : 'movie-type-serie'}
@@ -227,7 +270,6 @@ export const SnippetProximosEstrenos = () => {
                                     </div>
                                 </>
                             ) : ''}
-
                         />
                     )}
                 </main>
@@ -239,26 +281,20 @@ export const SnippetProximosEstrenos = () => {
 
                 <div className="d-flex flex-column container-fluid snippet_pp fade-in">
 
-                    <h2 className="text-center text-light snippet_pp_title">Próximos estrenos</h2>
-
-
-
-
-
-
+                    <h2 className="text-center text-light snippet_tendencias_title">Mejor valoradas</h2>
 
                     {moviesToShow.map((movie) => {
 
-
-
                         return (
                             <>
-                                <BloqueProximosEstrenos
+                                <BloqueTendenciasSeries
                                     key={movie.id}
                                     img={`${IMAGE_PATH}${movie.poster_path}`}
-                                    title={movie.title}
+                                    title={movie.name}
                                     description={''}
-                                    date={formatDate(movie.release_date)}
+                                    voteAverage={<><span className="fw-bold">Valoración:</span> {(movie.vote_average * 10).toFixed(2)}%</>}
+                                    selectedSerie
+                                    date={formatDate(movie.first_air_date)}
                                     onclick={() => selectMovie(movie)}
                                 />
                                 <hr className="border-2 border-top border-secondary" />
@@ -266,7 +302,7 @@ export const SnippetProximosEstrenos = () => {
                         );
                     })}
                     <div className="text-center mb-5 mt-3 ">
-                        <a href="./proximos_estrenos.html"><button className='btn btn-primary botones-ver-mas ps-3 pe-3'>Ver mas</button></a>
+                        <a href="./topratedserie.html"><button className='btn btn-primary botones-ver-mas ps-3 pe-3'>Ver mas</button></a>
                     </div>
                 </div>
 

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { FilmCard } from '../FilmCard/FilmCard';
-import { Modal } from '../Modal/Modal';
+import { ModalSerie } from '../ModalSerie/ModalSerie';
 import { CardActores } from '../CardActores/CardActores';
 import { FilmCardRecommendations } from '../FilmCardRecommendations/FilmCardRecommendations';
 import estrella from '../../assets/img/estrella.png';
@@ -11,46 +11,56 @@ import fondoNotFound from '../../assets/img/fondo-not-found.jpeg';
 import avatar from '../../assets/img/avatar.webp';
 import '../Novedades/novedades.css';
 import '../FilmCard/filmcard.css';
-import '../InfoMovie/infoMovie.css';
-import './bloque_novedades.css';
-import '../Modal/modal.css';
-import '../BloqueSeriesHome/BloqueSeriesHome.css'
+import '../InfoMovie/infoMovie.css'
+import '../SnippetNovedades/bloque_novedades.css'
+import '../SwitchPeliSerie/SwitchPeliSerie.css'
+import './BloqueSeriesHome.css'
 
-export const BloqueNovedades = () => {
+export const BloqueSeries = () => {
     const API_URL = "https://api.themoviedb.org/3";
     const API_KEY = "4f5f43495afcc67e9553f6c684a82f84";
     const sixMonthsAgo = new Date();
     sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 2);
 
     const [movies, setMovies] = useState([]);
-    const [selectedMovie, setSelectedMovie] = useState(null);
+    const [selectedSerie, setSelectedSerie] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
+    const [loading, setLoading] = useState(true);
     const [trailer, setTrailer] = useState(null);
     const [cast, setCast] = useState(null);
     const [platforms, setPlatforms] = useState(null);
     const [recommendations, setRecommendations] = useState(null);
     const [playing, setPlaying] = useState(false);
 
-    const fetchNowPlaying = async (page) => {
-        const { data: { results, total_pages } } = await axios.get(`${API_URL}/discover/movie`, {
+    const fetchNovedadesSerie = async (page) => {
+        const { data: { results, total_pages } } = await axios.get(`${API_URL}/discover/tv`, {
             params: {
                 api_key: API_KEY,
                 language: 'es-ES',
                 sort_by: 'popularity',
-                'primary_release_date.gte': sixMonthsAgo.toISOString().split('T')[0],
+                'first_air_date.gte': sixMonthsAgo.toISOString().split('T')[0],
                 page: page,
             },
         });
 
         setCurrentPage(page);
+        setTotalPages(total_pages);
         setMovies(results);
     };
 
-    const fetchMovie = async (id) => {
-        const { data } = await axios.get(`${API_URL}/movie/${id}?language=es-ES`, {
+    useEffect(() => {
+        if (selectedSerie) {
+            const modal = new bootstrap.Modal(document.getElementById(`modalNovedadSerie-${selectedSerie.id}`));
+            modal.show();
+        }
+    }, [selectedSerie]);
+
+    const fetchSerie = async (id) => {
+        const { data } = await axios.get(`${API_URL}/tv/${id}?language=es-ES`, {
             params: {
                 api_key: API_KEY,
-                append_to_response: 'videos,credits,watch/providers,recommendations,release_dates',
+                append_to_response: 'videos,credits,watch/providers,recommendations',
             },
         });
 
@@ -77,32 +87,27 @@ export const BloqueNovedades = () => {
         } else {
             setPlatforms(null); // Reiniciar plataformas si no hay resultados
         }
-        
+
         if (data.recommendations && data.recommendations.results) {
+            // Extraer el elenco de la respuesta de la API
             const recommend = data.recommendations.results;
+            // Configurar el estado 'cast' con la lista de miembros del elenco
             setRecommendations(recommend.slice(0, 6));
         }
 
-        setSelectedMovie(data);
 
-        const modal = new bootstrap.Modal(document.getElementById(`modalNovedad-${id}`));
-        modal.show();
+        setSelectedSerie(data);
     };
 
     const selectMovie = async (movie) => {
-        await fetchMovie(movie.id);
+        await fetchSerie(movie.id);
     };
 
     useEffect(() => {
-        fetchNowPlaying(currentPage);
+        fetchNovedadesSerie(currentPage);
     }, [currentPage]);
 
-    useEffect(() => {
-        if (selectedMovie) {
-            const modal = new bootstrap.Modal(document.getElementById(`modalNovedad-${selectedMovie.id}`));
-            modal.show();
-        }
-    }, [selectedMovie]);
+
 
     const formatDate = (dateString) => {
         const date = new Date(dateString);
@@ -112,42 +117,62 @@ export const BloqueNovedades = () => {
         return `${day}/${month}/${year}`;
     };
 
-    const moviesToShow = movies.slice(0, 12);
-
     const handleCloseModal = () => {
         setPlaying(false); // Detiene el video
-        setSelectedMovie(null); // Cierra el modal
+        setSelectedSerie(null); // Cierra el modal
     };
+
+    const seriesToShow = movies.slice(0, 12);
+
 
     return (
         <>
             <div>
                 <main>
-                    {selectedMovie && (
-                        <Modal
-                            key={selectedMovie.id}
-                            idModal={`modalNovedad-${selectedMovie.id}`}
-                            postherPad={selectedMovie.poster_path ? `https://image.tmdb.org/t/p/w500${selectedMovie.poster_path}` : fondoNotFound}
+                    {selectedSerie && (
+                        <ModalSerie
+                            key={selectedSerie.id}
+                            idModal={`modalNovedadSerie-${selectedSerie.id}`}
+                            postherPad={selectedSerie.poster_path ? `https://image.tmdb.org/t/p/w500${selectedSerie.poster_path}` : fondoNotFound}
                             noImg={fondoNotFound}
-                            title={selectedMovie.title}
-                            runTime={selectedMovie.runtime > 0 ? `${selectedMovie.runtime} minutos` : 'Duración no informada'}
-                            mapGenre={selectedMovie.genres && selectedMovie.genres.map((genre, index) => (
-                                <p className='fs-4' key={genre.id}>{genre.name}{index < selectedMovie.genres.length - 1 ? ', ' : ''}</p>
+                            originalName={selectedSerie.name}
+                            seasons={selectedSerie.number_of_seasons > 1 ? `${selectedSerie.number_of_seasons} temporadas` : selectedSerie.number_of_seasons ? `${selectedSerie.number_of_seasons} temporada` : 'Temporadas desconocidas'}
+                            episodes={selectedSerie.number_of_episodes > 1 ? `${selectedSerie.number_of_episodes} episodios` : selectedSerie.number_of_episodes ? `${selectedSerie.number_of_episodes} episodio` : 'Episodios desconocidos'}
+                            mapGenre={selectedSerie.genres && selectedSerie.genres.length > 0 ? selectedSerie.genres.map((genre, index) => (
+                                <p className='fs-4' key={genre.id}>{genre.name}{index < selectedSerie.genres.length - 1 ? ', ' : ''}</p>
+                            )) : <p className='fs-4'>Género no informado</p>}
+                            firstAirDate={selectedSerie.first_air_date ? formatDate(selectedSerie.first_air_date) : 'Fecha desconocida'}
+                            lastAirDate={selectedSerie.last_air_date ? formatDate(selectedSerie.last_air_date) : 'No informado'}
+                            originalLanguage={selectedSerie.original_language ? selectedSerie.original_language : <span className='text-lowercase'>Idioma desconocido</span>}
+                            overview={selectedSerie.overview}
+                            classPuntaje={`${selectedSerie.vote_average * 10 >= 80 ? 'puntaje-verde' : selectedSerie.vote_average * 10 > 60 ? 'puntaje-amarillo' : 'puntaje-rojo'}`}
+                            voteAverage={selectedSerie.vote_average ? (selectedSerie.vote_average * 10).toFixed(2) : '0'}
+                            voteCount={selectedSerie.vote_count ? selectedSerie.vote_count : 0}
+                            mapProductionCompanies={selectedSerie.production_companies && selectedSerie.production_companies.length > 0 ? selectedSerie.production_companies.map((company, index) => (
+                                <span className='ps-2' key={company.id}>{company.name}{index < selectedSerie.production_companies.length - 1 ? ', ' : ''}</span>
+                            )) : 'No informado'}
+                            mapCountries={selectedSerie.production_countries && selectedSerie.production_countries.length > 0 ? selectedSerie.production_countries.map((country, index) => (
+                                <span key={country.iso_3166_1}>{country.name}{index < selectedSerie.production_countries.length - 1 ? ', ' : ''}</span>
+                            )) : 'No informado'}
+                            mapCreatedBy={selectedSerie.created_by && selectedSerie.created_by.length > 0
+                                ? selectedSerie.created_by.map((createdBy, index) => (
+                                    <span className='ps-2' key={createdBy.id}>
+                                        {createdBy.name}{index < selectedSerie.created_by.length - 1 ? ', ' : ''}
+                                    </span>
+                                ))
+                                : 'No informado'}
+                            mapNextEpisodeToAir={selectedSerie.next_episode_to_air && selectedSerie.next_episode_to_air.length > 0 ? selectedSerie.next_episode_to_air.map((nextEpisode, index) => (
+                                <span className='ps-2' key={nextEpisode.id}>{nextEpisode.air_date}{nextEpisode.episode_number}</span>
+                            )) : 'No'}
+                            mapSeasonsSeasonName={selectedSerie.seasons && selectedSerie.seasons.map((season, index) => (
+                                <span key={season.id}>{season.name}</span>
                             ))}
-                            releaseDate={formatDate(selectedMovie.release_date)}
-                            originalLanguage={selectedMovie.original_language}
-                            overview={selectedMovie.overview}
-                            classPuntaje={`${selectedMovie.vote_average * 10 >= 80 ? 'puntaje-verde' : selectedMovie.vote_average * 10 > 60 ? 'puntaje-amarillo' : 'puntaje-rojo'}`}
-                            voteAverage={selectedMovie.vote_average ? (selectedMovie.vote_average * 10).toFixed(2) : '0'}
-                            voteCount={selectedMovie.vote_count ? selectedMovie.vote_count : 0}
-                            mapProductionCompanies={selectedMovie.production_companies && selectedMovie.production_companies.map((company, index) => (
-                                <span className='ps-2' key={company.id}>{company.name}{index < selectedMovie.production_companies.length - 1 ? ', ' : ''}</span>
+                            mapSeasonsSeasonDate={selectedSerie.seasons && selectedSerie.seasons.map((season, index) => (
+                                <span key={season.id}>{formatDate(season.air_date) == '01/01/1970' ? 'Sin definir' : formatDate(season.air_date)}</span>
                             ))}
-                            mapCountries={selectedMovie.production_countries && selectedMovie.production_countries.map((country, index) => (
-                                <span key={country.iso_3166_1}>{country.name}{index < selectedMovie.production_countries.length - 1 ? ', ' : ''}</span>
+                            mapSeasonsSeasonEpisodes={selectedSerie.seasons && selectedSerie.seasons.map((episodes, index) => (
+                                <span key={episodes.id}>{episodes.episode_count == 0 ? 'Sin definir' : episodes.episode_count}</span>
                             ))}
-                            budget={selectedMovie.budget > 0 ? <><span className='fw-bold'>Presupuesto:</span> {new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'USD' }).format(selectedMovie.budget)}</> : <><span className='fw-bold'>Presupuesto: </span>No informado</>}
-                            revenue={selectedMovie.revenue > 0 ? <><span className='fw-bold'>Recaudación:</span> {new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'USD' }).format(selectedMovie.revenue)}</> : <><span className='fw-bold'>Recaudación: </span>No informado</>}
                             estrella={estrella}
                             lapiz={lapiz}
                             smartTv={smartTv}
@@ -187,7 +212,7 @@ export const BloqueNovedades = () => {
 
                                 <>
 
-                                    <h2 className='pt-5 pb-4 text-info subtitle-modal'>Te puede interesar</h2>
+                                    <h2 className='pt-4 pb-4 text-info subtitle-modal'>Te puede interesar</h2>
 
                                     <div className='d-flex flex-wrap gap-4'>
                                         {recommendations.map((recommend) => {
@@ -202,9 +227,9 @@ export const BloqueNovedades = () => {
                                                         key={recommend.id}
                                                         size={{ width: '9rem' }}
                                                         image={recommend.poster_path}
-                                                        title={recommend.title}
+                                                        title={recommend.name}
                                                         overview={recommend.overview}
-                                                        releaseDate={<><span className='fw-bold'>Fecha</span> {formatDate(recommend.release_date)}</>}
+                                                        releaseDate={<><span className='fw-bold'>Fecha</span> {formatDate(recommend.first_air_date)}</>}
                                                         voteAverage={''}
                                                         movieType={''}
                                                         classMovieType={recommend.title ? 'movie-type-movie' : 'movie-type-serie'}
@@ -226,42 +251,37 @@ export const BloqueNovedades = () => {
             <h2 className="text-center text-light snippet_novedades_title fade-in">Novedades</h2>
 
             <div className="row justify-content-center mx-auto gap-5 mt-5 mb-3 novedades fade-in fs-5">
-                {moviesToShow.map((movie) => {
-                    const releaseDateMovie = new Date(movie.release_date);
+                {seriesToShow.map((movie) => {
+                    const releaseDate = new Date(movie.first_air_date);
                     const today = new Date();
-                    const isUpcoming = releaseDateMovie > today ? "Próximo estreno" : "";
+                    const isUpcoming = releaseDate > today ? "Próximo estreno" : "";
 
-                    const formatDateReleaseDate = (dateString) => {
-                        const date = new Date(dateString);
-                        const day = String(date.getDate()).padStart(2, '0');
-                        const month = String(date.getMonth() + 1).padStart(2, '0');
-                        const year = date.getFullYear();
-                        return `${day}/${month}/${year}`;
-                    };
-                    
 
                     return (
+                        
                         <FilmCard
                             key={movie.id}
                             size={{ width: '15.5rem' }}
                             image={movie.poster_path}
-                            title={movie.title}
+                            title={movie.name}
                             overview={movie.overview}
-                            releaseDate={<><span className='fw-bold'>Fecha</span> {formatDate(movie.release_date)}</>}
-                            voteAverage={<><span className='fw-bold'>Valoración:</span> {(movie.vote_average * 10).toFixed(2)} %</>}
+                            releaseDate={movie.title && movie.release_date ? <><span className='fw-bold'>Fecha:</span> {formatDate(movie.release_date)}</> : movie.name && movie.first_air_date ? <><span className='fw-bold'>Fecha: </span>{formatDate(movie.first_air_date)}</> : 'Fecha no informada'}
+                            voteAverage={isUpcoming  || isNaN(movie.vote_average) ? '' : <><span className="fw-bold">Valoración:</span> {(movie.vote_average * 10).toFixed(2)}%</>}
                             onclick={() => selectMovie(movie)}
                             movieType={''}
                             classMovieType={movie.title ? 'movie-type-movie' : 'movie-type-serie'}
                             topMovie={movie.vote_average > 7.75 && movie.vote_count > 99 ? "Destacada" : ''}
                             proxEstreno={isUpcoming}
                         />
+                        
                     );
                 })}
             </div>
 
             <div className="container pb-5 mt-5 text-center ">
-                <a href="novedades.html"><button className='btn btn-primary botones-ver-mas ps-3 pe-3'>Ver más</button></a>
+                <a href="novedades_series.html"><button className='btn btn-primary botones-ver-mas ps-3 pe-3'>Ver más</button></a>
             </div>
+
         </>
     );
 };

@@ -148,24 +148,24 @@ export const NovedadesSerie = () => {
                             postherPad={selectedSerie.poster_path ? `https://image.tmdb.org/t/p/w500${selectedSerie.poster_path}` : fondoNotFound}
                             noImg={fondoNotFound}
                             originalName={selectedSerie.name}
-                            seasons={selectedSerie.number_of_seasons > 1 ? `${selectedSerie.number_of_seasons} temporadas` : `${selectedSerie.number_of_seasons} temporada`}
-                            episodes={`${selectedSerie.number_of_episodes} episodios`}
-                            mapGenre={selectedSerie.genres && selectedSerie.genres.map((genre, index) => (
+                            seasons={selectedSerie.number_of_seasons > 1 ? `${selectedSerie.number_of_seasons} temporadas` : selectedSerie.number_of_seasons ? `${selectedSerie.number_of_seasons} temporada` : 'Temporadas desconocidas'}
+                            episodes={selectedSerie.number_of_episodes > 1 ? `${selectedSerie.number_of_episodes} episodios` : selectedSerie.number_of_episodes ? `${selectedSerie.number_of_episodes} episodio` : 'Episodios desconocidos'}
+                            mapGenre={selectedSerie.genres && selectedSerie.genres.length > 0 ? selectedSerie.genres.map((genre, index) => (
                                 <p className='fs-4' key={genre.id}>{genre.name}{index < selectedSerie.genres.length - 1 ? ', ' : ''}</p>
-                            ))}
-                            firstAirDate={formatDate(selectedSerie.first_air_date)}
-                            lastAirDate={formatDate(selectedSerie.last_air_date)}
-                            originalLanguage={selectedSerie.original_language}
+                            )) : <p className='fs-4'>Género no informado</p>}
+                            firstAirDate={selectedSerie.first_air_date ? formatDate(selectedSerie.first_air_date) : 'Fecha desconocida'}
+                            lastAirDate={selectedSerie.last_air_date ? formatDate(selectedSerie.last_air_date) : 'No informado'}
+                            originalLanguage={selectedSerie.original_language ? selectedSerie.original_language : <span className='text-lowercase'>Idioma desconocido</span>}
                             overview={selectedSerie.overview}
                             classPuntaje={`${selectedSerie.vote_average * 10 >= 80 ? 'puntaje-verde' : selectedSerie.vote_average * 10 > 60 ? 'puntaje-amarillo' : 'puntaje-rojo'}`}
-                            voteAverage={(selectedSerie.vote_average * 10).toFixed(2)}
-                            voteCount={selectedSerie.vote_count}
-                            mapProductionCompanies={selectedSerie.production_companies && selectedSerie.production_companies.map((company, index) => (
+                            voteAverage={selectedSerie.vote_average ? (selectedSerie.vote_average * 10).toFixed(2) : '0'}
+                            voteCount={selectedSerie.vote_count ? selectedSerie.vote_count : 0}
+                            mapProductionCompanies={selectedSerie.production_companies && selectedSerie.production_companies.length > 0 ? selectedSerie.production_companies.map((company, index) => (
                                 <span className='ps-2' key={company.id}>{company.name}{index < selectedSerie.production_companies.length - 1 ? ', ' : ''}</span>
-                            ))}
-                            mapCountries={selectedSerie.production_countries && selectedSerie.production_countries.map((country, index) => (
+                            )) : 'No informado'}
+                            mapCountries={selectedSerie.production_countries && selectedSerie.production_countries.length > 0 ? selectedSerie.production_countries.map((country, index) => (
                                 <span key={country.iso_3166_1}>{country.name}{index < selectedSerie.production_countries.length - 1 ? ', ' : ''}</span>
-                            ))}
+                            )) : 'No informado'}
                             mapCreatedBy={selectedSerie.created_by && selectedSerie.created_by.length > 0
                                 ? selectedSerie.created_by.map((createdBy, index) => (
                                     <span className='ps-2' key={createdBy.id}>
@@ -180,7 +180,7 @@ export const NovedadesSerie = () => {
                                 <span key={season.id}>{season.name}</span>
                             ))}
                             mapSeasonsSeasonDate={selectedSerie.seasons && selectedSerie.seasons.map((season, index) => (
-                                <span key={season.id}>{formatDate(season.air_date) == '01/01/1970' ? 'No informado' : formatDate(season.air_date)}</span>
+                                <span key={season.id}>{formatDate(season.air_date) == '01/01/1970' ? 'Sin definir' : formatDate(season.air_date)}</span>
                             ))}
                             mapSeasonsSeasonEpisodes={selectedSerie.seasons && selectedSerie.seasons.map((episodes, index) => (
                                 <span key={episodes.id}>{episodes.episode_count == 0 ? 'Sin definir' : episodes.episode_count}</span>
@@ -190,17 +190,25 @@ export const NovedadesSerie = () => {
                             smartTv={smartTv}
                             onClose={handleCloseModal}
                             trailer={trailer}
-                            cast={cast && cast.map((actor, index) => (
+                            cast={cast && cast.length > 0 ?
 
-                                <CardActores
-                                    key={index}
-                                    castImg={`https://image.tmdb.org/t/p/w200${actor.profile_path}`}
-                                    castName={actor.name}
-                                    noImg={avatar}
-                                    castCharacter={actor.character ? ` (${actor.character})` : ''}
-                                />
+                                <div className='d-flex flex-column'>
+                                    <div>
+                                        <h2 className='pt-4 pb-4 text-info subtitle-modal'>Reparto principal</h2>
+                                    </div>
+                                    <div className='d-flex gap-3 flex-wrap'>
+                                        {cast.map((actor, index) => (
 
-                            ))}
+                                            <CardActores
+                                                key={index}
+                                                castImg={`https://image.tmdb.org/t/p/w200${actor.profile_path}`}
+                                                castName={actor.name}
+                                                noImg={avatar}
+                                                castCharacter={actor.character ? ` (${actor.character})` : ''}
+                                            />
+
+                                        ))}</div>
+                                </div> : ''}
                             providers={platforms && platforms.length > 0 ? (
                                 <>
                                     <div>
@@ -273,8 +281,9 @@ export const NovedadesSerie = () => {
                             image={movie.poster_path}
                             title={movie.name}
                             overview={movie.overview}
-                            releaseDate={formatDate(movie.first_air_date)}
-                            voteAverage={isUpcoming ? '' : <><span className="fw-bold">Valoración:</span> {(movie.vote_average * 10).toFixed(2)}%</>} onclick={() => selectMovie(movie)}
+                            releaseDate={movie.title && movie.release_date ? <><span className='fw-bold'>Fecha:</span> {formatDate(movie.release_date)}</> : movie.name && movie.first_air_date ? <><span className='fw-bold'>Fecha: </span>{formatDate(movie.first_air_date)}</> : 'Fecha no informada'}
+                            voteAverage={isUpcoming  || isNaN(movie.vote_average) ? '' : <><span className="fw-bold">Valoración:</span> {(movie.vote_average * 10).toFixed(2)}%</>}
+                            onclick={() => selectMovie(movie)}
                             movieType={''}
                             classMovieType={movie.title ? 'movie-type-movie' : 'movie-type-serie'}
                             topMovie={movie.vote_average > 7.75 && movie.vote_count > 99 ? "Destacada" : ''}

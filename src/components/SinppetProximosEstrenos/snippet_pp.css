@@ -11,8 +11,9 @@
 }
 
 .snippet_pp_movie_title{
-    font-size: 2rem;
+    font-size: clamp(1.5rem,5vw, 2rem);
     font-weight: 600;
+    color:rgb(189, 189, 189)
 }
 
 .snippet-estrenos-date-text{
@@ -22,4 +23,10 @@
 
 .btn-mas-info-estrenos{
     font-weight: 500;
+}
+
+.snippet_tendencias_title{
+    font-size: clamp(2.5rem,5vw, 3.4rem);
+    margin-bottom: 70px;
+    padding-top: 20px
 }
