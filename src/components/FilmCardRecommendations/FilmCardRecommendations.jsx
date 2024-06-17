@@ -28,7 +28,7 @@ export const FilmCardRecommendations = ({ image, title, releaseDate, voteAverage
           </div>
         </div>
         <div className="position-absolute top-movie"><p>{topMovie}</p></div>
-        <div className="position-absolute prox-estreno"><p>{proxEstreno}</p></div>
+        <div className="position-absolute prox-estreno"><p className="prox-estreno-recommend">{proxEstreno}</p></div>
       </div>
     </>
   );

@@ -37,7 +37,7 @@ export const SnippetProximosEstrenos = () => {
     const [playing, setPlaying] = useState(false);
 
     const fetchNowPlaying = async (page) => {
-        const { data: { results, total_pages } } = await axios.get(`${API_URL}/discover/movie?include_adult=false&popularity`, {
+        const { data: { results, total_pages } } = await axios.get(`${API_URL}/discover/movie?include_adult=false`, {
             params: {
                 api_key: API_KEY,
                 language: 'es-ES',
@@ -47,11 +47,11 @@ export const SnippetProximosEstrenos = () => {
             },
         });
 
-        const sortedResults = results.sort((a, b) => new Date(a.release_date) - new Date(b.release_date));
+        // const sortedResults = results.sort((a, b) => new Date(a.release_date) - new Date(b.release_date));
 
         setCurrentPage(page);
         setTotalPages(total_pages);
-        setMovies(sortedResults);
+        setMovies(results);
     };
 
     const fetchMovie = async (id) => {
@@ -240,11 +240,6 @@ export const SnippetProximosEstrenos = () => {
                 <div className="d-flex flex-column container-fluid snippet_pp fade-in">
 
                     <h2 className="text-center text-light snippet_pp_title">Próximos estrenos</h2>
-
-
-
-
-
 
 
                     {moviesToShow.map((movie) => {

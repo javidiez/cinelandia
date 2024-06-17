@@ -30,13 +30,6 @@
     font-size: 1.7rem !important;
 }
 
-.botones-paginacion {
-    padding: 5px;
-    font-size: 1.5rem;
-    margin: 50px 15px 0px 0px;
-    border: none;
-}
-
 .modal-movie {
     background-repeat: no-repeat;
     background-size: cover;
@@ -44,6 +37,13 @@
     height: 80vh;
     filter: drop-shadow(0 0 8px #ffffff73);
 
+}
+
+.botones-paginacion {
+    padding: 5px;
+    font-size: 1.5rem;
+    margin: 50px 15px 0px 0px;
+    border: none;
 }
 
 .modal-movie::before {

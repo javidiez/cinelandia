@@ -18,7 +18,7 @@ export const NovedadesSerie = () => {
     const API_URL = "https://api.themoviedb.org/3";
     const API_KEY = "4f5f43495afcc67e9553f6c684a82f84";
     const sixMonthsAgo = new Date();
-    sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 2);
+    sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 4);
 
     const [movies, setMovies] = useState([]);
     const [selectedSerie, setSelectedSerie] = useState(null);
@@ -36,7 +36,8 @@ export const NovedadesSerie = () => {
             params: {
                 api_key: API_KEY,
                 language: 'es-ES',
-                sort_by: 'popularity',
+                sort_by: 'vote_average.desc',
+                'vote_count.gte':15,
                 'first_air_date.gte': sixMonthsAgo.toISOString().split('T')[0],
                 page: page,
             },

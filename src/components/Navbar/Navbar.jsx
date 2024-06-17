@@ -67,7 +67,7 @@ export const Navbar = () => {
                                 </ul>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link text-light fs-3 fw-bold" href="#">Contacto</a>
+                                <a className="nav-link text-light fs-3 fw-bold" href="generos.html">Géneros</a>
                             </li>
                         </ul>
                         <div className="d-flex pe-5">

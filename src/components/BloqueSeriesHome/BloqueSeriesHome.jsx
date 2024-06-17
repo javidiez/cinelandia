@@ -38,7 +38,8 @@ export const BloqueSeries = () => {
             params: {
                 api_key: API_KEY,
                 language: 'es-ES',
-                sort_by: 'popularity',
+                sort_by: 'popularity.desc', 
+                'vote_count.gte':30,
                 'first_air_date.gte': sixMonthsAgo.toISOString().split('T')[0],
                 page: page,
             },
