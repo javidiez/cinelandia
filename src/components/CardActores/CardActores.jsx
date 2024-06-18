@@ -1,4 +1,6 @@
 import './cardcast.css'
+import Carousel from "react-multi-carousel";
+import "react-multi-carousel/lib/styles.css";
 
 export const CardActores = ({castImg, castName, noImg, castCharacter}) => {
     return(

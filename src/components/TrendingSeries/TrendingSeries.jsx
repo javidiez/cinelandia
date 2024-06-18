@@ -13,6 +13,9 @@ import '../Novedades/novedades.css';
 import '../FilmCard/filmcard.css';
 import '../InfoMovie/infoMovie.css'
 import '../SnippetNovedades/bloque_novedades.css'
+import { Tooltip } from "flowbite-react";
+import '../../../node_modules/swiper/swiper-bundle.min.css';
+import Swiper from 'swiper';
 
 export const TrendingSerie = () => {
     const API_URL = "https://api.themoviedb.org/3";
@@ -86,7 +89,7 @@ export const TrendingSerie = () => {
                 // Extraer el elenco de la respuesta de la API
                 const castMembers = data.credits.cast;
                 // Configurar el estado 'cast' con la lista de miembros del elenco
-                setCast(castMembers.slice(0, 6));
+                setCast(castMembers.slice(0, 10));
             }
             if (data["watch/providers"] && data["watch/providers"].results) {
                 const country = data["watch/providers"].results.ES; // Cambia 'ES' por el código del país que desees
@@ -103,7 +106,7 @@ export const TrendingSerie = () => {
                 // Extraer el elenco de la respuesta de la API
                 const recommend = data.recommendations.results;
                 // Configurar el estado 'cast' con la lista de miembros del elenco
-                setRecommendations(recommend.slice(0, 6));
+                setRecommendations(recommend.slice(0, 10));
             }
 
 
@@ -156,6 +159,15 @@ export const TrendingSerie = () => {
         setPlaying(false); // Detiene el video
         setSelectedSerie(null); // Cierra el modal
     };
+
+    useEffect(() => {
+        const swiper = new Swiper('.swiper-container', {
+            slidesPerView: 'auto', // Mostrará tantos slides como quepan en el contenedor
+            spaceBetween: 20, // Espacio entre las tarjeta
+
+        });
+    }, []);
+
     return (
         <>
             <div>
@@ -200,10 +212,10 @@ export const TrendingSerie = () => {
                             ))}
                             mapSeasonsSeasonDate={selectedSerie.seasons && selectedSerie.seasons.map((season, index) => (
                                 <span key={season.id}>{formatDate(season.air_date) == '01/01/1970' ? 'Sin definir' : formatDate(season.air_date)}</span>
-                              ))}
-                              mapSeasonsSeasonEpisodes={selectedSerie.seasons && selectedSerie.seasons.map((episodes, index) => (
+                            ))}
+                            mapSeasonsSeasonEpisodes={selectedSerie.seasons && selectedSerie.seasons.map((episodes, index) => (
                                 <span key={episodes.id}>{episodes.episode_count == 0 ? 'Sin definir' : episodes.episode_count}</span>
-                              ))}
+                            ))}
                             estrella={estrella}
                             lapiz={lapiz}
                             smartTv={smartTv}
@@ -215,18 +227,20 @@ export const TrendingSerie = () => {
                                     <div>
                                         <h2 className='pt-4 pb-4 text-info subtitle-modal'>Reparto principal</h2>
                                     </div>
-                                    <div className='d-flex gap-3 flex-wrap'>
-                                        {cast.map((actor, index) => (
-
-                                            <CardActores
-                                                key={index}
-                                                castImg={`https://image.tmdb.org/t/p/w200${actor.profile_path}`}
-                                                castName={actor.name}
-                                                noImg={avatar}
-                                                castCharacter={actor.character ? ` (${actor.character})` : ''}
-                                            />
-
-                                        ))}</div>
+                                    <div className="swiper-container">
+                                        <div className="swiper-wrapper scrollableDiv">
+                                            {cast.map((actor, index) => (
+                                                <div key={index} className="swiper-slide gap-5">
+                                                    <CardActores
+                                                        castImg={`https://image.tmdb.org/t/p/w200${actor.profile_path}`}
+                                                        castName={actor.name}
+                                                        noImg={avatar}
+                                                        castCharacter={actor.character ? ` (${actor.character})` : ''}
+                                                    />
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
                                 </div> : ''}
                             providers={platforms && platforms.length > 0 ? (
                                 <>
@@ -234,9 +248,13 @@ export const TrendingSerie = () => {
                                         <img className='icono-modal me-2' alt="smarttv" src={smartTv} />
                                         <span className='fw-bold'>Plataformas</span>
                                     </div>
-                                    {platforms.map((platform, index) => (
-                                        <img key={index} className='border platforms me-2 mt-2' src={`https://image.tmdb.org/t/p/w200${platform.logo_path}`} alt={platform.provider_name} />
-                                    ))}
+                                    <div className='d-flex'>
+                                        {platforms.map((platform, index) => (
+                                            <Tooltip content={platform.provider_name} trigger="hover" placement="bottom" className='d-flex align-items-start bg-dark text-light ps-2 pe-0 pt-0 pb-0 fs-5 rounded'>
+                                                <img key={index} className='border platforms me-2 mt-2' src={`https://image.tmdb.org/t/p/w200${platform.logo_path}`} alt={platform.provider_name} />
+                                            </Tooltip>
+                                        ))}
+                                    </div>
                                 </>
                             ) : ''}
                             recommendations={recommendations && recommendations.length > 0 ? (
@@ -246,31 +264,35 @@ export const TrendingSerie = () => {
                                     <h2 className='pt-4 pb-4 text-info subtitle-modal'>Te puede interesar</h2>
 
                                     <div className='d-flex flex-wrap gap-4'>
-                                        {recommendations.map((recommend) => {
-                                            const releaseDate = new Date(recommend.release_date);
-                                            const today = new Date();
-                                            const isUpcoming = releaseDate > today ? "Próximo estreno" : "";
+                                        <div className="swiper-container">
+                                            <div className="swiper-wrapper scrollableDiv">
+                                                {recommendations.map((recommend) => {
+                                                    const releaseDate = new Date(recommend.release_date);
+                                                    const today = new Date();
+                                                    const isUpcoming = releaseDate > today ? "Próximo estreno" : "";
 
 
-                                            return (
-                                                <div className='film-card-modal'>
-                                                    <FilmCardRecommendations
-                                                        key={recommend.id}
-                                                        size={{ width: '9rem' }}
-                                                        image={recommend.poster_path}
-                                                        title={recommend.name}
-                                                        overview={recommend.overview}
-                                                        releaseDate={<><span className='fw-bold'>Fecha</span> {formatDate(recommend.first_air_date)}</>}
-                                                        voteAverage={''}
-                                                        movieType={''}
-                                                        classMovieType={recommend.title ? 'movie-type-movie' : 'movie-type-serie'}
-                                                        topMovie={''}
-                                                        proxEstreno={isUpcoming}
-                                                    />
-                                                </div>
-                                            );
+                                                    return (
+                                                        <div className='film-card-modal swiper-slide gap-5'>
+                                                            <FilmCardRecommendations
+                                                                key={recommend.id}
+                                                                size={{ width: '9rem' }}
+                                                                image={recommend.poster_path}
+                                                                title={recommend.name}
+                                                                overview={recommend.overview}
+                                                                releaseDate={<><span className='fw-bold'>Fecha</span> {formatDate(recommend.first_air_date)}</>}
+                                                                voteAverage={''}
+                                                                movieType={''}
+                                                                classMovieType={recommend.title ? 'movie-type-movie' : 'movie-type-serie'}
+                                                                topMovie={''}
+                                                                proxEstreno={isUpcoming}
+                                                            />
+                                                        </div>
+                                                    );
 
-                                        })}
+                                                })}
+                                            </div>
+                                        </div>
                                     </div>
                                 </>
                             ) : ''}
@@ -300,7 +322,7 @@ export const TrendingSerie = () => {
                                 title={movie.name}
                                 overview={movie.overview}
                                 releaseDate={movie.title && movie.release_date ? <><span className='fw-bold'>Fecha:</span> {formatDate(movie.release_date)}</> : movie.name && movie.first_air_date ? <><span className='fw-bold'>Fecha: </span>{formatDate(movie.first_air_date)}</> : 'Fecha no informada'}
-                                voteAverage={isUpcoming  || isNaN(movie.vote_average) ? '' : <><span className="fw-bold">Valoración:</span> {(movie.vote_average * 10).toFixed(2)}%</>}
+                                voteAverage={isUpcoming || isNaN(movie.vote_average) ? '' : <><span className="fw-bold">Valoración:</span> {(movie.vote_average * 10).toFixed(2)}%</>}
                                 onclick={() => selectMovie(movie)}
                                 movieType={''}
                                 classMovieType={""}

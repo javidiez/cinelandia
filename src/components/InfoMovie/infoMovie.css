@@ -127,11 +127,13 @@
 
 .modal-body::-webkit-scrollbar-track {
     background: rgb(168, 168, 168);
+    border-radius: 10px;
     /* color of the tracking area */
 }
 
 .modal-body::-webkit-scrollbar-thumb {
     background-color: #016391;
+    border-radius: 10px;
     /* color of the scroll thumb */
 
     /* roundness of the scroll thumb */

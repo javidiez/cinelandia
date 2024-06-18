@@ -14,3 +14,56 @@
 .platforms{
     width: 60px;
 }
+
+/* bloque_novedades.css */
+
+/* Estilo para los contenedores de Swiper */
+.swiper-container {
+    max-width: 55vw
+
+}
+
+.scrollableDiv {
+    top: 0; /* Ajusta la posición desde la parte superior del contenedor padre */
+    left: 0; /* Ajusta la posición desde la parte izquierda del contenedor padre */
+    width: 100%; /* Opcional: Usa el ancho completo del contenedor */
+    overflow-x: auto; /* Permite el scroll vertical solo cuando sea necesario */
+    padding: 10px; /* Opcional: Agrega relleno para el contenido */
+    box-sizing: border-box; /* Asegura que el padding esté incluido en el ancho y alto */
+    padding-right: 80px;
+}
+
+.swiper-slide{
+    width: 170px !important;
+}
+
+.swiper-wrapper::-webkit-scrollbar {
+    width: 1px;
+    height: 5px;
+    border-radius: 5px;
+    display: none;
+    
+}
+
+.swiper-wrapper::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.swiper-wrapper::-webkit-scrollbar-thumb {
+    background-color: #016391;
+    border-radius: 5px;
+
+}
+
+.swiper-wrapper:hover::-webkit-scrollbar {
+    width: 1px;
+    height: 5px;
+    border-radius: 5px;
+    display: block;
+}
+
+@media screen and (max-width: 700px){
+    .swiper-wrapper:hover::-webkit-scrollbar {
+        display: none;
+    }
+}

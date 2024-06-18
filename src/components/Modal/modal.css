@@ -37,3 +37,7 @@
         margin:auto;
       }
   }
+
+  .modal-body {
+   overflow-x: hidden; /* Oculta la barra de desplazamiento */
+}
