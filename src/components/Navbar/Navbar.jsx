@@ -29,7 +29,7 @@ export const Navbar = () => {
         <nav className="navbar navbar-expand-lg sticky-top">
             <div className="container-fluid">
                 <div className="d-flex justify-content-between">
-                    <a className="navbar-brand d-flex align-items-center" href="index.html">
+                    <a className="navbar-brand d-flex align-items-center" href="/index.html">
                         <img src={logo} className="logo" />
                         <p className="text-light fw-bold ps-3">CINELANDIA</p>
                     </a>
@@ -49,10 +49,10 @@ export const Navbar = () => {
                                     Películas
                                 </a>
                                 <ul className="dropdown-menu">
-                                    <li><a className="dropdown-item text-light" href="./novedades.html">Novedades</a></li>
-                                    <li><a className="dropdown-item text-light" href="./populares.html">Populares</a></li>
-                                    <li><a className="dropdown-item text-light" href="./toprated.html">Mejor valoradas</a></li>
-                                    <li><a className="dropdown-item text-light" href="./proximos_estrenos.html">Próximos estrenos</a></li>
+                                    <li><a className="dropdown-item text-light" href="/novedades.html">Novedades</a></li>
+                                    <li><a className="dropdown-item text-light" href="/populares.html">Populares</a></li>
+                                    <li><a className="dropdown-item text-light" href="/toprated.html">Mejor valoradas</a></li>
+                                    <li><a className="dropdown-item text-light" href="/proximos_estrenos.html">Próximos estrenos</a></li>
                                 </ul>
                             </li>
                             <li className="nav-item dropdown">
@@ -60,14 +60,14 @@ export const Navbar = () => {
                                     Series
                                 </a>
                                 <ul className="dropdown-menu">
-                                    <li><a className="dropdown-item text-light" href="./novedades_series.html">Novedades</a></li>
-                                    <li><a className="dropdown-item text-light" href="./trending_series.html">Tendencias</a></li>
-                                    <li><a className="dropdown-item text-light" href="./populares_series.html">Populares</a></li>
-                                    <li><a className="dropdown-item text-light" href="./topratedserie.html">Mejor valoradas</a></li>
+                                    <li><a className="dropdown-item text-light" href="/novedades_series.html">Novedades</a></li>
+                                    <li><a className="dropdown-item text-light" href="/trending_series.html">Tendencias</a></li>
+                                    <li><a className="dropdown-item text-light" href="/populares_series.html">Populares</a></li>
+                                    <li><a className="dropdown-item text-light" href="/topratedserie.html">Mejor valoradas</a></li>
                                 </ul>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link text-light fs-3 fw-bold" href="./generos.html">Géneros</a>
+                                <a className="nav-link text-light fs-3 fw-bold" href="/generos.html">Géneros</a>
                             </li>
                         </ul>
                         <div className="d-flex pe-5">
