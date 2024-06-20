@@ -1,45 +1,46 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+import axios from 'axios'
 import { FilmCard } from '../FilmCard/FilmCard';
 import { FilmCardRecommendations } from '../FilmCardRecommendations/FilmCardRecommendations';
+import { ModalSerie } from '../ModalSerie/ModalSerie';
 import { Modal } from '../Modal/Modal';
+import '../InfoMovie/infoMovie.css'
 import { CardActores } from '../CardActores/CardActores';
 import estrella from '../../assets/img/estrella.png';
 import lapiz from '../../assets/img/lapiz.png';
 import smartTv from '../../assets/img/smart-tv.png';
 import fondoNotFound from '../../assets/img/fondo-not-found.jpeg';
 import avatar from '../../assets/img/avatar.webp';
-import './novedades.css';
-import '../FilmCard/filmcard.css';
-import '../InfoMovie/infoMovie.css'
 import '../SnippetNovedades/bloque_novedades.css'
 import { Tooltip } from "flowbite-react";
 import '../../../node_modules/swiper/swiper-bundle.min.css';
 import Swiper from 'swiper';
+import '../Buscador/buscador.css'
 
-export const Novedades = () => {
+function InfoMovie() {
     const API_URL = "https://api.themoviedb.org/3";
     const API_KEY = "4f5f43495afcc67e9553f6c684a82f84";
-    const sixMonthsAgo = new Date();
-    sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 2);
+    const IMAGE_PATH = "https://image.tmdb.org/t/p/original";
 
+    // variables de estado
     const [movies, setMovies] = useState([]);
-    const [selectedMovie, setSelectedMovie] = useState(null);
+    const [searchKey, setSearchKey] = useState("");
+    const [selectedMovie, setMovie] = useState({}); // Inicializar como objeto vacío
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
+    const [showNoResults, setShowNoResults] = useState(false);
     const [trailer, setTrailer] = useState(null);
     const [cast, setCast] = useState(null);
     const [platforms, setPlatforms] = useState(null);
     const [recommendations, setRecommendations] = useState(null);
     const [playing, setPlaying] = useState(false);
 
-    const fetchNowPlaying = async (page) => {
-        const { data: { results, total_pages } } = await axios.get(`${API_URL}/discover/movie`, {
+    const fetchMovies = async (searchKey = "", page = 1) => {
+        const type = searchKey ? "search" : "";
+        const { data: { results, total_pages } } = await axios.get(`${API_URL}/${type}/movie?include_adult=false&language=es-ES`, {
             params: {
                 api_key: API_KEY,
-                language: 'es-ES',
-                sort_by: 'popularity',
-                'primary_release_date.gte': sixMonthsAgo.toISOString().split('T')[0],
+                query: searchKey,
                 page: page,
             },
         });
@@ -47,78 +48,88 @@ export const Novedades = () => {
         setCurrentPage(page);
         setTotalPages(total_pages);
         setMovies(results);
+        setMovie(results[0] || {}); // Manejar si no hay resultados
     };
 
-    const fetchMovie = async (id) => {
-        const { data } = await axios.get(`${API_URL}/movie/${id}?language=es-ES`, {
-            params: {
-                api_key: API_KEY,
-                append_to_response: 'videos,credits,watch/providers,recommendations',
-            },
-        });
+    const fetchMovie = async (id, mediaType) => {
+        try {
+            const { data } = await axios.get(`${API_URL}/movie/${id}?language=es-ES`, {
+                params: {
+                    api_key: API_KEY,
+                    append_to_response: 'videos,credits,watch/providers,recommendations',
+                },
+            });
 
-        if (data.videos && data.videos.results) {
-            const trailer = data.videos.results.find(
-                (vid) => vid.name === "Official Trailer"
-            );
-            setTrailer(trailer ? trailer : data.videos.results[0]);
-        }
-
-        if (data.credits && data.credits.cast) {
-            // Extraer el elenco de la respuesta de la API
-            const castMembers = data.credits.cast;
-            // Configurar el estado 'cast' con la lista de miembros del elenco
-            setCast(castMembers.slice(0, 10));
-        }
-        if (data["watch/providers"] && data["watch/providers"].results) {
-            const country = data["watch/providers"].results.ES; // Cambia 'ES' por el código del país que desees
-            if (country && country.flatrate) {
-                setPlatforms(country.flatrate);
-            } else {
-                setPlatforms(null); // Reiniciar plataformas si no hay flatrate
+            if (data.videos && data.videos.results) {
+                const trailer = data.videos.results.find((vid) => vid.name === "Official Trailer");
+                setTrailer(trailer ? trailer : data.videos.results[0]);
             }
-        } else {
-            setPlatforms(null); // Reiniciar plataformas si no hay resultados
-        }
 
-        if (data.recommendations && data.recommendations.results) {
-            // Extraer el elenco de la respuesta de la API
-            const recommend = data.recommendations.results;
-            // Configurar el estado 'cast' con la lista de miembros del elenco
-            setRecommendations(recommend.slice(0, 10));
-        }
+            if (data.credits && data.credits.cast) {
+                // Extraer el elenco de la respuesta de la API
+                const castMembers = data.credits.cast;
+                // Configurar el estado 'cast' con la lista de miembros del elenco
+                setCast(castMembers.slice(0, 10));
+            }
+            if (data["watch/providers"] && data["watch/providers"].results) {
+                const country = data["watch/providers"].results.ES; // Cambia 'ES' por el código del país que desees
+                if (country && country.flatrate) {
+                    setPlatforms(country.flatrate);
+                } else {
+                    setPlatforms(null); // Reiniciar plataformas si no hay flatrate
+                }
+            } else {
+                setPlatforms(null); // Reiniciar plataformas si no hay resultados
+            }
 
-        setSelectedMovie(data);
-        const modal = new bootstrap.Modal(document.getElementById(`modalNovedad-${id}`));
-        modal.show();
+            if (data.recommendations && data.recommendations.results) {
+                // Extraer el elenco de la respuesta de la API
+                const recommend = data.recommendations.results;
+                // Configurar el estado 'cast' con la lista de miembros del elenco
+                setRecommendations(recommend.slice(0, 10));
+            }
+
+
+            setMovie(data);
+            const modal = new bootstrap.Modal(document.getElementById(`topModal-${id}`));
+            modal.show();
+        } catch (error) {
+            console.error("Error fetching movie/series data:", error);
+        }
     };
 
     const selectMovie = async (movie) => {
-        await fetchMovie(movie.id);
+        fetchMovie(movie.id, movie.media_type);
+        setMovie(movie);
+    };
+
+    const searchMovies = async (e) => {
+        e.preventDefault();
+        setMovies([]);
+        await fetchMovies(searchKey);
+
+        if (movies.length === 0) {
+            setShowNoResults(true);
+        } else {
+            setShowNoResults(false);
+        }
     };
 
     useEffect(() => {
-        fetchNowPlaying(currentPage);
-    }, [currentPage]);
+        fetchMovies();
 
-
-    useEffect(() => {
-        if (selectedMovie) {
-            const modal = new bootstrap.Modal(document.getElementById(`modalNovedad-${selectedMovie.id}`));
-            modal.show();
+        if (window.location.hash === '#search-focus') {
+            const searchInput = document.querySelector('#buscador');
+            if (searchInput) {
+                searchInput.focus();
+            }
         }
-    }, [selectedMovie]);
+    }, []);
 
     const goToPreviousPage = () => {
-        if (currentPage > 1) {
-            fetchNowPlaying(currentPage - 1);
-            window.scrollTo(0, 100);
-        }
-    };
-
-    const goToNextPage = () => {
-        if (currentPage < totalPages) {
-          fetchNowPlaying(currentPage + 1);
+        if (currentPage <= totalPages) {
+          fetchMovies(searchKey, currentPage - 1);
+          window.scrollTo(0, 500);
       
           // Seleccionar el contenedor que contiene los elementos desplazables
           const swiper = document.querySelector('.swiper-wrapper-paginas');
@@ -132,15 +143,32 @@ export const Novedades = () => {
               behavior: 'smooth', // Opcional: hacerlo con animación smooth
             });
           }
-
-          if (currentPage > 0) {
-            fetchNowPlaying(currentPage + 1);
-            window.scrollTo(0, 100);
-        }
+    
+    
         }
       };
+    
+      const goToNextPage = () => {
+        if (currentPage < totalPages) {
+          fetchMovies(searchKey, currentPage + 1);
+          window.scrollTo(0, 500);
       
-
+          // Seleccionar el contenedor que contiene los elementos desplazables
+          const swiper = document.querySelector('.swiper-wrapper-paginas');
+          const container = document.querySelector('.bloque-cards-desktop');
+          
+          // Realizar scroll hacia la izquierda
+          if (swiper) {
+            swiper.scrollTo({
+                top:400,
+                left: 0, // Hacer scroll al inicio del contenedor
+              behavior: 'smooth', // Opcional: hacerlo con animación smooth
+            });
+          }
+    
+    
+        }
+      };
     const formatDate = (dateString) => {
         const date = new Date(dateString);
         const day = String(date.getDate()).padStart(2, '0');
@@ -150,12 +178,12 @@ export const Novedades = () => {
     };
 
     const handleCloseModal = () => {
-        setPlaying(false); // Detiene el video
-        setSelectedMovie(null); // Cierra el modal
+        setPlaying(false);
+        setMovie({});
     };
 
     useEffect(() => {
-        const swiper = new Swiper('.swiper-container', '.swiper-container-paginas', {
+        const swiper = new Swiper('.swiper-container', {
             slidesPerView: 'auto', // Mostrará tantos slides como quepan en el contenedor
             spaceBetween: 20, // Espacio entre las tarjeta
 
@@ -164,26 +192,33 @@ export const Novedades = () => {
 
 
     return (
-        <>
+        <div className='d-flex justify-content-center flex-column align-items-center'>
+
+            <form className="d-flex align-items-center flex-column input-group-lg buscador_central" role="search" onSubmit={searchMovies}>
+                <input className="form-control" type="search" placeholder="Película..." aria-label="Search" id="buscador" onChange={(e) => setSearchKey(e.target.value)} />
+                <button className="btn btn-primary fw-bold buscar" type="submit">BUSCAR</button>
+            </form>
+
+
             <div>
                 <main>
                     {selectedMovie && (
                         <Modal
                             key={selectedMovie.id}
-                            idModal={`modalNovedad-${selectedMovie.id}`}
+                            idModal={`topModal-${selectedMovie.id}`}
                             postherPad={selectedMovie.poster_path ? `https://image.tmdb.org/t/p/w500${selectedMovie.poster_path}` : fondoNotFound}
                             noImg={fondoNotFound}
                             title={selectedMovie.title}
                             runTime={selectedMovie.runtime > 0 ? `${selectedMovie.runtime} minutos` : 'Duración no informada'}
-                            mapGenre={selectedMovie.genres && selectedMovie.genres.map((genre, index) => (
+                            mapGenre={selectedMovie.genres && selectedMovie.genres.length > 0 ? selectedMovie.genres.map((genre, index) => (
                                 <p className='fs-4' key={genre.id}>{genre.name}{index < selectedMovie.genres.length - 1 ? ', ' : ''}</p>
-                            ))}
-                            releaseDate={formatDate(selectedMovie.release_date)}
+                            )) : <p className='fs-4'>Género no informado</p>}
+                            releaseDate={selectedMovie.release_date ? formatDate(selectedMovie.release_date) : 'Fecha no informada'}
                             originalLanguage={selectedMovie.original_language}
                             overview={selectedMovie.overview}
                             classPuntaje={`${selectedMovie.vote_average * 10 >= 80 ? 'puntaje-verde' : selectedMovie.vote_average * 10 > 60 ? 'puntaje-amarillo' : 'puntaje-rojo'}`}
-                            voteAverage={selectedMovie.vote_average ? (selectedMovie.vote_average * 10).toFixed(2) : '0'}
-                            voteCount={selectedMovie.vote_count ? selectedMovie.vote_count : 0}
+                            voteAverage={(selectedMovie.vote_average * 10).toFixed(2)}
+                            voteCount={selectedMovie.vote_count}
                             mapProductionCompanies={selectedMovie.production_companies && selectedMovie.production_companies.length > 0 ? selectedMovie.production_companies.map((company, index) => (
                                 <span className='ps-2' key={company.id}>{company.name}{index < selectedMovie.production_companies.length - 1 ? ', ' : ''}</span>
                             )) : 'No informado'}
@@ -224,7 +259,7 @@ export const Novedades = () => {
                                         <img className='icono-modal me-2' alt="smarttv" src={smartTv} />
                                         <span className='fw-bold'>Plataformas</span>
                                     </div>
-                                    <div className='d-flex flex-wrap'>
+                                    <div className='d-flex'>
                                         {platforms.map((platform, index) => (
                                             <Tooltip content={platform.provider_name} trigger="hover" placement="bottom" className='d-flex align-items-start bg-dark text-light ps-2 pe-0 pt-0 pb-0 fs-5 rounded'>
                                                 <img key={index} className='border platforms me-2 mt-2' src={`https://image.tmdb.org/t/p/w200${platform.logo_path}`} alt={platform.provider_name} />
@@ -243,12 +278,14 @@ export const Novedades = () => {
                                         <div className="swiper-container">
                                             <div className="swiper-wrapper scrollableDiv">
                                                 {recommendations.map((recommend) => {
+
                                                     const releaseDate = new Date(recommend.release_date);
                                                     const today = new Date();
                                                     const isUpcoming = releaseDate > today ? "Próximo estreno" : "";
 
 
                                                     return (
+
                                                         <div className='film-card-modal swiper-slide gap-5'>
                                                             <FilmCardRecommendations
                                                                 key={recommend.id}
@@ -273,79 +310,108 @@ export const Novedades = () => {
                                 </>
                             ) : ''}
                         />
-                    )}
+                    )
+                    }
                 </main>
             </div>
 
-            <h2 className="text-center text-light novedades-title">Novedades</h2>
+            <div className='bloque-resultados'>
+                {movies.length > 0 ? (
+                    <>
 
-            <div className="text-center container">
-                <button onClick={goToPreviousPage} disabled={currentPage === 1} className='btn btn-dark botones-paginacion ps-3 pe-3'>Anterior</button>
-                <button onClick={goToNextPage} disabled={currentPage === totalPages} className='btn btn-dark botones-paginacion ps-3 pe-3'>Siguiente</button>
-            </div>
-
-            <div className="mt-4 mb-3 novedades bloque-card-mobile">
-            <div className="swiper-container-paginas">
-            <div className="swiper-wrapper-paginas scrollableDiv-paginas d-flex">
-                {movies.map((movie) => {
-                    const releaseDate = new Date(movie.release_date);
-                    const today = new Date();
-                    const isUpcoming = releaseDate > today ? "Próximo estreno" : "";
-
-
-                    return (
-                        <div className='swiper-slide-paginas pt-5 ps-5'>
-                        <FilmCard
-                            key={movie.id}
-                            size={{ width: 'clamp(16rem,20vw,18rem)' }}
-                            image={movie.poster_path}
-                            title={movie.title}
-                            overview={movie.overview}
-                            releaseDate={movie.release_date ? <><span className='fw-bold'>Fecha</span> {formatDate(movie.release_date)}</> : ''}
-                            voteAverage={isUpcoming ? '' : <><span className="fw-bold">Valoración:</span> {(movie.vote_average * 10).toFixed(2)}%</>}
-                            onclick={() => selectMovie(movie)}
-                            movieType={''}
-                            classMovieType={movie.title ? 'movie-type-movie' : 'movie-type-serie'}
-                            topMovie={movie.vote_average > 7.75 && movie.vote_count > 99 ? "Destacada" : ''}
-                            proxEstreno={isUpcoming}
-                        />
+                        <h2 className="hero-text text-center text-light pt-5">Resultados de la búsqueda</h2>
+                        <div className="text-center container">
+                            <button onClick={goToPreviousPage} disabled={currentPage === 1} className='btn btn-dark botones-paginacion ps-3 pe-3'>Anterior</button>
+                            <button onClick={goToNextPage} disabled={currentPage === totalPages} className='btn btn-dark botones-paginacion ps-3 pe-3'>Siguiente</button>
                         </div>
-                    );
-                })}
-            </div>
-            </div>
-            </div>
+                    </>
 
-            <div className="row justify-content-center mx-auto gap-5 mt-5 mb-3 novedades fs-5 bloque-cards-desktop">
-                {movies.map((movie) => {
-                    const releaseDate = new Date(movie.release_date);
-                    const today = new Date();
-                    const isUpcoming = releaseDate > today ? "Próximo estreno" : "";
+                ) : showNoResults && (
+                    <>
+                        <h3 className='text-center container text-light mt-5 fs-1'>No se encontraron resultados</h3>
+                        <hr className="border-2 border-top border-secondary mt-5" />
+                    </>
 
 
-                    return (
-                        <FilmCard
-                            key={movie.id}
-                            size={{ width: 'clamp(16rem,20vw,18rem)' }}
-                            image={movie.poster_path}
-                            title={movie.title}
-                            overview={movie.overview}
-                            releaseDate={movie.release_date ? <><span className='fw-bold'>Fecha</span> {formatDate(movie.release_date)}</> : ''}
-                            voteAverage={isUpcoming ? '' : <><span className="fw-bold">Valoración:</span> {(movie.vote_average * 10).toFixed(2)}%</>}
-                            onclick={() => selectMovie(movie)}
-                            movieType={''}
-                            classMovieType={movie.title ? 'movie-type-movie' : 'movie-type-serie'}
-                            topMovie={movie.vote_average > 7.75 && movie.vote_count > 99 ? "Destacada" : ''}
-                            proxEstreno={isUpcoming}
-                        />
-                    );
-                })}
-            </div>
+                )}
 
-            <div className="text-center container pb-5">
-                <button onClick={goToPreviousPage} disabled={currentPage === 1} className='btn btn-dark botones-paginacion ps-3 pe-3'>Anterior</button>
-                <button onClick={goToNextPage} disabled={currentPage === totalPages} className='btn btn-dark botones-paginacion ps-3 pe-3'>Siguiente</button>
+<div className="mt-4 mb-3 novedades bloque-card-mobile">
+          <div className="swiper-container-paginas">
+            <div className="swiper-wrapper-paginas scrollableDiv-paginas d-flex">
+              {movies.map((movie) => {
+                const releaseDate = new Date(movie.release_date);
+                const today = new Date();
+                const isUpcoming = releaseDate > today ? "Próximo estreno" : "";
+
+
+                return (
+                  <div className='swiper-slide-paginas pt-5 ps-5'>
+                    <FilmCard
+                      key={movie.id}
+                      size={{ width: 'clamp(16rem,20vw,18rem)' }}
+                      image={movie.poster_path}
+                      title={movie.title ? movie.title : movie.name}
+                      overview={movie.overview}
+                      releaseDate={movie.title && movie.release_date ? <><span className='fw-bold'>Fecha:</span> {formatDate(movie.release_date)}</> : movie.name && movie.first_air_date ? <><span className='fw-bold'>Fecha: </span>{formatDate(movie.first_air_date)}</> : 'Fecha no informada'}
+                      voteAverage={isUpcoming || isNaN(movie.vote_average) ? '' : <><span className="fw-bold">Valoración:</span> {(movie.vote_average * 10).toFixed(2)}%</>}
+                      onclick={() => selectMovie(movie)}
+                      movieType={movie.title ? 'Película' : 'Serie'}
+                      classMovieType={movie.title ? 'movie-type-movie' : 'movie-type-serie'}
+                      topMovie={movie.vote_average > 7.75 && movie.vote_count > 99 ? "Destacada" : ''}
+                      proxEstreno={isUpcoming}
+                    />
+                  </div>
+                );
+              })}
             </div>
-        </>
+          </div>
+        </div>
+
+        <div className="row justify-content-center mx-auto gap-5 mt-5 novedades fs-5 bloque-cards-desktop">
+                    {movies.map((movie) => {
+
+                        const releaseDate = new Date(movie.release_date);
+                        const today = new Date();
+                        const isUpcoming = releaseDate > today ? "Próximo estreno" : "";
+
+                        return (
+
+                            <FilmCard
+                                key={movie.id}
+                                size={{ width: 'clamp(16rem,20vw,18rem)' }}
+                                image={movie.poster_path}
+                                title={movie.title ? movie.title : movie.name}
+                                overview={movie.overview}
+                                releaseDate={movie.title && movie.release_date ? <><span className='fw-bold'>Fecha:</span> {formatDate(movie.release_date)}</> : movie.name && movie.first_air_date ? <><span className='fw-bold'>Fecha: </span>{formatDate(movie.first_air_date)}</> : 'Fecha no informada'}
+                                voteAverage={isUpcoming || isNaN(movie.vote_average) ? '' : <><span className="fw-bold">Valoración:</span> {(movie.vote_average * 10).toFixed(2)}%</>}
+                                onclick={() => selectMovie(movie)}
+                                movieType={movie.title ? 'Película' : 'Serie'}
+                                classMovieType={movie.title ? 'movie-type-movie' : 'movie-type-serie'}
+                                topMovie={movie.vote_average > 7.75 && movie.vote_count > 99 ? "Destacada" : ''}
+                                proxEstreno={isUpcoming}
+                            />
+                        );
+                    })}
+
+                </div>
+
+
+
+                {movies.length > 0 ? (
+                    <>
+                        <div className="text-center container mb-5">
+                            <button onClick={goToPreviousPage} disabled={currentPage === 1} className='btn btn-dark botones-paginacion ps-3 pe-3'>Anterior</button>
+                            <button onClick={goToNextPage} disabled={currentPage === totalPages} className='btn btn-dark botones-paginacion ps-3 pe-3'>Siguiente</button>
+                        </div>
+                        <hr className="container-fluid border-2 border-top border-secondary pe-5 ps-5" />
+                    </>
+
+                ) : ""
+                }
+            </div>
+        </div>
+
     );
-};
+}
+
+export default InfoMovie;

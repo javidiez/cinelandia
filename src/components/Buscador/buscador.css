@@ -1,15 +1,74 @@
 .buscador_central{
-    max-width: 1000px;
-    padding: 0px 50px;
+    width: 40vw;
+}
+
+.botones-buscador{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hero {
+    background-image: url(../../assets/img/fondo_buscador.webp);
+    min-height: 35vh;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+.hero-text {
+    font-size: clamp(2rem, 3vw, 7rem);
+    text-wrap: balance;
+    padding: 0 15px;
+}
+
+.buscar {
+    background-color: #014e72;
+    border: none;
+    font-size: 1.7rem !important;
+    width: 40vw;
+    margin-bottom: 70px;
+}
+
+.buscar:hover {
+    background-color: #024768;
+}
+
+#buscador {
+    letter-spacing: 1px;
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.container-buscador{
+    max-width: 900px;
+    margin: auto;
+    min-height: 180px;
+
+}
+
+.btn-check-buscador{
+    width: clamp(60px,20vw,120px);
+    font-size: clamp(1rem,4vw,1.5rem);
+    font-weight: 500;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    padding: 5px;
 }
 
 @media screen and (max-width: 600px){
     .buscar{
-        padding: 45px 0px;
-        font-size: 1.4rem !important;
+        font-size: 1.3rem !important;
+        height: 45px;
+        width: 60vw;
+        margin-bottom: 40px
     }
     #buscador{
         height: 45px;
-        font-size: 1.2rem;
+        width: 60vw;
+        font-size: 1.3rem;
+    }
+    .botones-buscador{
+        margin-right: 30px;
     }
 }

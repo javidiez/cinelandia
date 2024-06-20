@@ -3,6 +3,10 @@ label{
     margin: 0;
 }
 
+.switcheo{
+    overflow-x: hidden;
+}
+
 .switcheo .hide {
     display: none;
     

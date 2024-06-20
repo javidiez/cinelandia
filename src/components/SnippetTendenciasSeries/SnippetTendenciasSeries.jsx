@@ -244,7 +244,7 @@ export const SnippetTendenciasSeries = () => {
                                         <img className='icono-modal me-2' alt="smarttv" src={smartTv} />
                                         <span className='fw-bold'>Plataformas</span>
                                     </div>
-                                    <div className='d-flex'>
+                                    <div className='d-flex flex-wrap'>
                                         {platforms.map((platform, index) => (
                                             <Tooltip content={platform.provider_name} trigger="hover" placement="bottom" className='d-flex align-items-start bg-dark text-light ps-2 pe-0 pt-0 pb-0 fs-5 rounded'>
                                                 <img key={index} className='border platforms me-2 mt-2' src={`https://image.tmdb.org/t/p/w200${platform.logo_path}`} alt={platform.provider_name} />
@@ -319,7 +319,7 @@ export const SnippetTendenciasSeries = () => {
                                     date={formatDate(movie.first_air_date)}
                                     onclick={() => selectMovie(movie)}
                                 />
-                                <hr className="border-2 border-top border-secondary" />
+                                <hr className="border-2 border-top border-secondary mt-4 mb-4" />
                             </>
                         );
                     })}

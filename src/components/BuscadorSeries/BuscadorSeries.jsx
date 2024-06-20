@@ -3,8 +3,7 @@ import axios from 'axios'
 import { FilmCard } from '../FilmCard/FilmCard';
 import { FilmCardRecommendations } from '../FilmCardRecommendations/FilmCardRecommendations';
 import { ModalSerie } from '../ModalSerie/ModalSerie';
-import { Modal } from '../Modal/Modal';
-import './infoMovie.css'
+import '../InfoMovie/infoMovie.css'
 import { CardActores } from '../CardActores/CardActores';
 import estrella from '../../assets/img/estrella.png';
 import lapiz from '../../assets/img/lapiz.png';
@@ -37,7 +36,7 @@ function InfoMovie() {
 
   const fetchMovies = async (searchKey = "", page = 1) => {
     const type = searchKey ? "search" : "";
-    const { data: { results, total_pages } } = await axios.get(`${API_URL}/${type}/multi?include_adult=false&language=es-ES`, {
+    const { data: { results, total_pages } } = await axios.get(`${API_URL}/${type}/tv?include_adult=false&language=es-ES`, {
       params: {
         api_key: API_KEY,
         query: searchKey,
@@ -53,7 +52,7 @@ function InfoMovie() {
 
   const fetchMovie = async (id, mediaType) => {
     try {
-      const { data } = await axios.get(`${API_URL}/${mediaType}/${id}?language=es-ES`, {
+      const { data } = await axios.get(`${API_URL}/tv/${id}?language=es-ES`, {
         params: {
           api_key: API_KEY,
           append_to_response: 'videos,credits,watch/providers,recommendations',
@@ -170,7 +169,6 @@ function InfoMovie() {
     }
   };
 
-
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     const day = String(date.getDate()).padStart(2, '0');
@@ -196,126 +194,15 @@ function InfoMovie() {
   return (
     <div className='d-flex justify-content-center flex-column align-items-center'>
 
-      <form className="d-flex align-items-center flex-column input-group-lg buscador_central" role="search" onSubmit={searchMovies}>
-        <input className="form-control" type="search" placeholder="Película o serie..." aria-label="Search" id="buscador" onChange={(e) => setSearchKey(e.target.value)} />
-        <button className="btn btn-primary fw-bold buscar" type="submit">BUSCAR</button>
-      </form>
+        <form className="d-flex align-items-center flex-column input-group-lg buscador_central" role="search" onSubmit={searchMovies}>
+          <input className="form-control" type="search" placeholder="Serie..." aria-label="Search" id="buscador" onChange={(e) => setSearchKey(e.target.value)} />
+          <button className="btn btn-primary fw-bold buscar" type="submit">BUSCAR</button>
+        </form>
 
 
       <div>
         <main>
-          {selectedMovie && selectedMovie.title ? (
-            <Modal
-              key={selectedMovie.id}
-              idModal={`topModal-${selectedMovie.id}`}
-              postherPad={selectedMovie.poster_path ? `https://image.tmdb.org/t/p/w500${selectedMovie.poster_path}` : fondoNotFound}
-              noImg={fondoNotFound}
-              title={selectedMovie.title}
-              runTime={selectedMovie.runtime > 0 ? `${selectedMovie.runtime} minutos` : 'Duración no informada'}
-              mapGenre={selectedMovie.genres && selectedMovie.genres.length > 0 ? selectedMovie.genres.map((genre, index) => (
-                <p className='fs-4' key={genre.id}>{genre.name}{index < selectedMovie.genres.length - 1 ? ', ' : ''}</p>
-              )) : <p className='fs-4'>Género no informado</p>}
-              releaseDate={selectedMovie.release_date ? formatDate(selectedMovie.release_date) : 'Fecha no informada'}
-              originalLanguage={selectedMovie.original_language}
-              overview={selectedMovie.overview}
-              classPuntaje={`${selectedMovie.vote_average * 10 >= 80 ? 'puntaje-verde' : selectedMovie.vote_average * 10 > 60 ? 'puntaje-amarillo' : 'puntaje-rojo'}`}
-              voteAverage={(selectedMovie.vote_average * 10).toFixed(2)}
-              voteCount={selectedMovie.vote_count}
-              mapProductionCompanies={selectedMovie.production_companies && selectedMovie.production_companies.length > 0 ? selectedMovie.production_companies.map((company, index) => (
-                <span className='ps-2' key={company.id}>{company.name}{index < selectedMovie.production_companies.length - 1 ? ', ' : ''}</span>
-              )) : 'No informado'}
-              mapCountries={selectedMovie.production_countries && selectedMovie.production_countries.length > 0 ? selectedMovie.production_countries.map((country, index) => (
-                <span key={country.iso_3166_1}>{country.name}{index < selectedMovie.production_countries.length - 1 ? ', ' : ''}</span>
-              )) : 'No informado'}
-              budget={selectedMovie.budget > 0 ? <><span className='fw-bold'>Presupuesto:</span> {new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'USD' }).format(selectedMovie.budget)}</> : <><span className='fw-bold'>Presupuesto: </span>No informado</>}
-              revenue={selectedMovie.revenue > 0 ? <><span className='fw-bold'>Recaudación:</span> {new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'USD' }).format(selectedMovie.revenue)}</> : <><span className='fw-bold'>Recaudación: </span>No informado</>}
-              estrella={estrella}
-              lapiz={lapiz}
-              smartTv={smartTv}
-              onClose={handleCloseModal}
-              trailer={trailer}
-              cast={cast && cast.length > 0 ?
-
-                <div className='d-flex flex-column'>
-                  <div>
-                    <h2 className='pt-4 pb-4 text-info subtitle-modal'>Reparto principal</h2>
-                  </div>
-                  <div className="swiper-container">
-                    <div className="swiper-wrapper scrollableDiv">
-                      {cast.map((actor, index) => (
-                        <div key={index} className="swiper-slide gap-5">
-                          <CardActores
-                            castImg={`https://image.tmdb.org/t/p/w200${actor.profile_path}`}
-                            castName={actor.name}
-                            noImg={avatar}
-                            castCharacter={actor.character ? ` (${actor.character})` : ''}
-                          />
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div> : ''}
-              providers={platforms && platforms.length > 0 ? (
-                <>
-                  <div>
-                    <img className='icono-modal me-2' alt="smarttv" src={smartTv} />
-                    <span className='fw-bold'>Plataformas</span>
-                  </div>
-                  <div className='d-flex flex-wrap'>
-                    {platforms.map((platform, index) => (
-                      <Tooltip content={platform.provider_name} trigger="hover" placement="bottom" className='d-flex align-items-start bg-dark text-light ps-2 pe-0 pt-0 pb-0 fs-5 rounded'>
-                        <img key={index} className='border platforms me-2 mt-2' src={`https://image.tmdb.org/t/p/w200${platform.logo_path}`} alt={platform.provider_name} />
-                      </Tooltip>
-                    ))}
-                  </div>
-                </>
-              ) : ''}
-              recommendations={recommendations && recommendations.length > 0 ? (
-
-                <>
-
-                  <h2 className='pt-5 pb-4 text-info subtitle-modal'>Te puede interesar</h2>
-
-                  <div className='d-flex flex-wrap gap-4'>
-                    <div className="swiper-container">
-                      <div className="swiper-wrapper scrollableDiv">
-                        {recommendations.map((recommend) => {
-
-                          const releaseDate = new Date(recommend.release_date);
-                          const today = new Date();
-                          const isUpcoming = releaseDate > today ? "Próximo estreno" : "";
-
-
-                          return (
-
-                            <div className='film-card-modal swiper-slide gap-5'>
-                              <FilmCardRecommendations
-                                key={recommend.id}
-                                size={{ width: '9rem' }}
-                                image={recommend.poster_path}
-                                title={recommend.title}
-                                overview={recommend.overview}
-                                releaseDate={<><span className='fw-bold'>Fecha</span> {formatDate(recommend.release_date)}</>}
-                                voteAverage={''}
-                                movieType={''}
-                                classMovieType={recommend.title ? 'movie-type-movie' : 'movie-type-serie'}
-                                topMovie={''}
-                                proxEstreno={isUpcoming}
-                              />
-                            </div>
-                          );
-
-                        })}
-                      </div>
-                    </div>
-                  </div>
-                </>
-              ) : ''}
-
-
-            />
-          ) : selectedMovie && selectedMovie.name ? (
-
+          {selectedMovie && (
             <ModalSerie
               key={selectedMovie.id}
               idModal={`topModal-${selectedMovie.id}`}
@@ -440,7 +327,7 @@ function InfoMovie() {
                 </>
               ) : ''}
             />
-          ) : null
+          )
           }
         </main>
       </div>
@@ -465,7 +352,7 @@ function InfoMovie() {
 
         )}
 
-        <div className="mt-4 mb-3 novedades bloque-card-mobile">
+<div className="mt-4 mb-3 novedades bloque-card-mobile">
           <div className="swiper-container-paginas">
             <div className="swiper-wrapper-paginas scrollableDiv-paginas d-flex">
               {movies.map((movie) => {

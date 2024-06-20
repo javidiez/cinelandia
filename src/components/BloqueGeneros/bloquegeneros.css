@@ -1,0 +1,10 @@
+.title-select-generos{
+    font-weight: 500;
+    font-size: 2.2rem;
+}
+
+@media screen and (max-width: 500px){
+.switecheo-generos{
+    margin-left: -15px;
+}
+}

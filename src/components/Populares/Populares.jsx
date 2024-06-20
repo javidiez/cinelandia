@@ -106,19 +106,36 @@ export const Populares = () => {
         }
     }, [selectedMovie]);
 
+
     const goToPreviousPage = () => {
         if (currentPage > 1) {
             fetchNowPlaying(currentPage - 1);
-            window.scrollTo(0, 0);
+            window.scrollTo(0, 150);
         }
     };
 
     const goToNextPage = () => {
         if (currentPage < totalPages) {
             fetchNowPlaying(currentPage + 1);
-            window.scrollTo(0, 0);
+      
+          // Seleccionar el contenedor que contiene los elementos desplazables
+          const swiper = document.querySelector('.swiper-wrapper-paginas');
+          
+          // Realizar scroll hacia la izquierda
+          if (swiper) {
+            swiper.scrollTo({
+                top:400,
+                left: 0, // Hacer scroll al inicio del contenedor
+              behavior: 'smooth', // Opcional: hacerlo con animación smooth
+            });
+          }
+
+          if (currentPage > 0) {
+            fetchNowPlaying(currentPage + 1);
+            window.scrollTo(0, 150);
         }
-    };
+        }
+      };
 
     const formatDate = (dateString) => {
         const date = new Date(dateString);
@@ -204,7 +221,7 @@ export const Populares = () => {
                                     <img className='icono-modal me-2' alt="smarttv" src={smartTv} />
                                     <span className='fw-bold'>Plataformas</span>
                                   </div>
-                                  <div className='d-flex'>
+                                  <div className='d-flex flex-wrap'>
                                     {platforms.map((platform, index) => (
                                       <Tooltip content={platform.provider_name} trigger="hover" placement="bottom" className='d-flex align-items-start bg-dark text-light ps-2 pe-0 pt-0 pb-0 fs-5 rounded'>
                                         <img key={index} className='border platforms me-2 mt-2' src={`https://image.tmdb.org/t/p/w200${platform.logo_path}`} alt={platform.provider_name} />
@@ -265,7 +282,40 @@ export const Populares = () => {
             </div>
 
             <div>
-                <div className="row justify-content-center container-fluid mx-auto gap-5 mt-5 mb-3 novedades fs-5">
+
+            <div className="mt-4 mb-3 novedades bloque-card-mobile">
+            <div className="swiper-container-paginas">
+            <div className="swiper-wrapper-paginas scrollableDiv-paginas d-flex">
+                {movies.map((movie) => {
+                    const releaseDate = new Date(movie.release_date);
+                    const today = new Date();
+                    const isUpcoming = releaseDate > today ? "Próximo estreno" : "";
+
+
+                    return (
+                        <div className='swiper-slide-paginas pt-5 ps-5'>
+                        <FilmCard
+                            key={movie.id}
+                            size={{ width: 'clamp(16rem,20vw,18rem)' }}
+                            image={movie.poster_path}
+                            title={movie.title}
+                            overview={movie.overview}
+                            releaseDate={movie.release_date ? <><span className='fw-bold'>Fecha</span> {formatDate(movie.release_date)}</> : ''}
+                            voteAverage={isUpcoming ? '' : <><span className="fw-bold">Valoración:</span> {(movie.vote_average * 10).toFixed(2)}%</>} onclick={() => selectMovie(movie)}
+                            movieType={''}
+                            classMovieType={movie.title ? 'movie-type-movie' : 'movie-type-serie'}
+                            topMovie={movie.vote_average > 7.75 && movie.vote_count > 99 ? "Destacada" : ''}
+                            proxEstreno={isUpcoming}
+                        />
+                        </div>
+                    );
+                })}
+            </div>
+            </div>
+            </div>
+
+       
+                <div className="row justify-content-center container-fluid mx-auto gap-5 mt-5 mb-3 novedades fs-5  bloque-cards-desktop">
                     {movies.map((movie) => {
                         const releaseDate = new Date(movie.release_date);
                         const today = new Date();
@@ -274,6 +324,7 @@ export const Populares = () => {
                         return (
                             <FilmCard
                                 key={movie.id}
+                                size={{ width: 'clamp(16rem,20vw,18rem)' }}
                                 image={movie.poster_path}
                                 title={movie.title}
                                 overview={movie.overview}

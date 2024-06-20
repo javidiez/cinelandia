@@ -96,7 +96,7 @@ export const ModalSerie = ({
     return (
         <div className="modal fade" id={idModal} tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
             <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl modal-block">
-                <div className="modal-content modal-movie" style={{ backgroundImage }}>
+                <div className="modal-content modal-movie text-start" style={{ backgroundImage }}>
                     <div className="modal-header text-light border-0">
                         <h1 className="modal-title position-relative text-light" id="exampleModalLabel">{originalName}</h1>
                         <button onClick={closeModal} type="button" className="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -148,11 +148,10 @@ export const ModalSerie = ({
 
                         </div>
                         <div className='d-flex gap-4 pt-3 flex-wrap'>
-                            <div>
-                                <img src={postherPad || noImg} className='imagen-modal' onError={(e) => {
-                                    e.target.onerror = null;
-                                    e.target.src = noImg;
-                                }} alt="Poster" />
+                            <div className='bloque-poster-modal'>                                <img src={postherPad || noImg} className='imagen-modal' onError={(e) => {
+                                e.target.onerror = null;
+                                e.target.src = noImg;
+                            }} alt="Poster" />
                             </div>
                             <div className='bloque-derecho-modal'>
                                 <p className='fs-4 texto-modal pb-1'>{overview}</p>
@@ -166,12 +165,12 @@ export const ModalSerie = ({
                                     <span className='fw-bold'>Valoraciones:</span> {voteCount}
                                 </p>
                                 <p className='fs-4 pt-1 align-items-baseline gap-2'>
-                                {providers}
+                                    {providers}
                                 </p>
                             </div>
                         </div>
                         <div>
-                        <h2 className='pt-5 pt-3 text-info subtitle-modal'>Más información</h2>
+                            <h2 className='pt-5 pt-3 text-info subtitle-modal'>Más información</h2>
                             <p className='fs-4'><span className='fw-bold'>Productora: </span>{mapProductionCompanies}</p>
                             <p className='fs-4'><span className='fw-bold'>Creador: </span>{mapCreatedBy}</p>
                             <p className='fs-4'><span className='fw-bold pe-2'>País: </span>{mapCountries}</p>
@@ -181,7 +180,7 @@ export const ModalSerie = ({
                                 {cast}
 
                             </div>
-                            
+
                             <h2 className='pt-5 pb-3 text-info subtitle-modal'>Información sobre Temporadas</h2>
                             <div className="table-responsive">
                                 <table className="table">

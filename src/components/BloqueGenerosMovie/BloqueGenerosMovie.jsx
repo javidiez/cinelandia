@@ -1,112 +1,148 @@
-import { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { FilmCard } from '../FilmCard/FilmCard';
-import { Modal } from '../Modal/Modal';
-import { CardActores } from '../CardActores/CardActores';
 import { FilmCardRecommendations } from '../FilmCardRecommendations/FilmCardRecommendations';
+import { Modal } from '../Modal/Modal';
+import '../InfoMovie/infoMovie.css'
+import { CardActores } from '../CardActores/CardActores';
 import estrella from '../../assets/img/estrella.png';
 import lapiz from '../../assets/img/lapiz.png';
 import smartTv from '../../assets/img/smart-tv.png';
 import fondoNotFound from '../../assets/img/fondo-not-found.jpeg';
 import avatar from '../../assets/img/avatar.webp';
-import '../Novedades/novedades.css';
-import '../FilmCard/filmcard.css';
-import '../InfoMovie/infoMovie.css';
-import './bloque_novedades.css';
-import '../Modal/modal.css';
+import '../SnippetNovedades/bloque_novedades.css'
 import '../BloqueSeriesHome/BloqueSeriesHome.css'
 import '../../../node_modules/swiper/swiper-bundle.min.css';
+import '../BloqueGeneros/bloquegeneros.css'
+import '../Novedades/novedades.css'
+
 import Swiper from 'swiper';
 import { Tooltip } from "flowbite-react";
 
 
-export const BloqueNovedades = () => {
-    const API_URL = "https://api.themoviedb.org/3";
-    const API_KEY = "4f5f43495afcc67e9553f6c684a82f84";
-    const sixMonthsAgo = new Date();
-    sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 2);
+const API_KEY = '4f5f43495afcc67e9553f6c684a82f84';
+const API_URL = 'https://api.themoviedb.org/3';
 
+const BloqueGenerosMovie = () => {
+    const [genres, setGenres] = useState([]);
+    const [selectedGenre, setSelectedGenre] = useState('28');
     const [movies, setMovies] = useState([]);
+    const [page, setPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
     const [selectedMovie, setSelectedMovie] = useState(null);
-    const [currentPage, setCurrentPage] = useState(1);
     const [trailer, setTrailer] = useState(null);
     const [cast, setCast] = useState(null);
     const [platforms, setPlatforms] = useState(null);
     const [recommendations, setRecommendations] = useState(null);
     const [playing, setPlaying] = useState(false);
 
-    const fetchNowPlaying = async (page) => {
-        const { data: { results, total_pages } } = await axios.get(`${API_URL}/discover/movie`, {
-            params: {
-                api_key: API_KEY,
-                language: 'es-ES',
-                sort_by: 'popularity',
-                'primary_release_date.gte': sixMonthsAgo.toISOString().split('T')[0],
-                page: page,
-            },
-        });
+    useEffect(() => {
+        // Obtener lista de géneros al montar el componente
+        const fetchGenres = async () => {
+            try {
+                const { data: { genres } } = await axios.get(`${API_URL}/genre/movie/list`, {
+                    params: {
+                        api_key: API_KEY,
+                        language: 'es-ES',
+                    },
+                });
+                setGenres(genres);
+            } catch (error) {
+                console.error('Error al obtener la lista de géneros:', error);
+            }
+        };
 
-        setCurrentPage(page);
-        setMovies(results);
+        fetchGenres();
+    }, []);
+
+
+    useEffect(() => {
+        // Obtener películas por género cuando el género seleccionado o la página cambian
+        if (selectedGenre) {
+            const fetchMoviesByGenre = async () => {
+                try {
+                    const { data: { results, total_pages } } = await axios.get(`${API_URL}/discover/movie`, {
+                        params: {
+                            api_key: API_KEY,
+                            language: 'es-ES',
+                            with_genres: selectedGenre,
+                            sort_by: 'popularity.desc',
+                            'vote_count.gte': 30,
+                            page: page,
+                        },
+                    });
+
+
+                    setMovies(results);
+                    setTotalPages(total_pages);
+                } catch (error) {
+                    console.error('Error al obtener películas por género:', error);
+                }
+            };
+
+            fetchMoviesByGenre();
+        }
+    }, [selectedGenre, page]);
+
+
+    const handleGenreChange = (event) => {
+        setSelectedGenre(event.target.value);
+        setPage(1); // Resetear a la primera página al cambiar de género
     };
 
+
     const fetchMovie = async (id) => {
-        const { data } = await axios.get(`${API_URL}/movie/${id}?language=es-ES`, {
-            params: {
-                api_key: API_KEY,
-                append_to_response: 'videos,credits,watch/providers,recommendations,release_dates',
-            },
-        });
+        try {
+            const { data } = await axios.get(`${API_URL}/movie/${id}?language=es-ES`, {
+                params: {
+                    api_key: API_KEY,
+                    append_to_response: 'videos,credits,watch/providers,recommendations',
+                },
+            });
 
-        if (data.videos && data.videos.results) {
-            const trailer = data.videos.results.find(
-                (vid) => vid.name === "Official Trailer"
-            );
-            setTrailer(trailer ? trailer : data.videos.results[0]);
-        }
-
-        if (data.credits && data.credits.cast) {
-            // Extraer el elenco de la respuesta de la API
-            const castMembers = data.credits.cast;
-            // Configurar el estado 'cast' con la lista de miembros del elenco
-            setCast(castMembers.slice(0, 10));
-        }
-        if (data["watch/providers"] && data["watch/providers"].results) {
-            const country = data["watch/providers"].results.ES; // Cambia 'ES' por el código del país que desees
-            if (country && country.flatrate) {
-                setPlatforms(country.flatrate);
-            } else {
-                setPlatforms(null); // Reiniciar plataformas si no hay flatrate
+            if (data.videos && data.videos.results) {
+                const trailer = data.videos.results.find((vid) => vid.name === "Official Trailer");
+                setTrailer(trailer ? trailer : data.videos.results[0]);
             }
-        } else {
-            setPlatforms(null); // Reiniciar plataformas si no hay resultados
+
+            if (data.credits && data.credits.cast) {
+                // Extraer el elenco de la respuesta de la API
+                const castMembers = data.credits.cast;
+                // Configurar el estado 'cast' con la lista de miembros del elenco
+                setCast(castMembers.slice(0, 10));
+            }
+            if (data["watch/providers"] && data["watch/providers"].results) {
+                const country = data["watch/providers"].results.ES; // Cambia 'ES' por el código del país que desees
+                if (country && country.flatrate) {
+                    setPlatforms(country.flatrate);
+                } else {
+                    setPlatforms(null); // Reiniciar plataformas si no hay flatrate
+                }
+            } else {
+                setPlatforms(null); // Reiniciar plataformas si no hay resultados
+            }
+
+            if (data.recommendations && data.recommendations.results) {
+                // Extraer el elenco de la respuesta de la API
+                const recommend = data.recommendations.results;
+                // Configurar el estado 'cast' con la lista de miembros del elenco
+                setRecommendations(recommend.slice(0, 10));
+            }
+
+
+            setSelectedMovie(data);
+            const modal = new bootstrap.Modal(document.getElementById(`modalGenero-${id}`));
+            modal.show();
+        } catch (error) {
+            console.error("Error fetching movie/series data:", error);
         }
-
-        if (data.recommendations && data.recommendations.results) {
-            const recommend = data.recommendations.results;
-            setRecommendations(recommend.slice(0, 10));
-        }
-
-        setSelectedMovie(data);
-
-        const modal = new bootstrap.Modal(document.getElementById(`modalNovedad-${id}`));
-        modal.show();
     };
 
     const selectMovie = async (movie) => {
-        await fetchMovie(movie.id);
+        fetchMovie(movie.id);
+        setSelectedMovie(movie);
     };
 
-    useEffect(() => {
-        fetchNowPlaying(currentPage);
-    }, [currentPage]);
-
-    useEffect(() => {
-        if (selectedMovie) {
-            const modal = new bootstrap.Modal(document.getElementById(`modalNovedad-${selectedMovie.id}`));
-            modal.show();
-        }
-    }, [selectedMovie]);
 
     const formatDate = (dateString) => {
         const date = new Date(dateString);
@@ -116,11 +152,9 @@ export const BloqueNovedades = () => {
         return `${day}/${month}/${year}`;
     };
 
-    const moviesToShow = movies.slice(0, 12);
-
     const handleCloseModal = () => {
-        setPlaying(false); // Detiene el video
-        setSelectedMovie(null); // Cierra el modal
+        setPlaying(false);
+        setSelectedMovie(null);
     };
 
     useEffect(() => {
@@ -131,6 +165,7 @@ export const BloqueNovedades = () => {
         });
     }, []);
 
+
     return (
         <>
             <div>
@@ -138,26 +173,26 @@ export const BloqueNovedades = () => {
                     {selectedMovie && (
                         <Modal
                             key={selectedMovie.id}
-                            idModal={`modalNovedad-${selectedMovie.id}`}
+                            idModal={`modalGenero-${selectedMovie.id}`}
                             postherPad={selectedMovie.poster_path ? `https://image.tmdb.org/t/p/w500${selectedMovie.poster_path}` : fondoNotFound}
                             noImg={fondoNotFound}
                             title={selectedMovie.title}
                             runTime={selectedMovie.runtime > 0 ? `${selectedMovie.runtime} minutos` : 'Duración no informada'}
-                            mapGenre={selectedMovie.genres && selectedMovie.genres.map((genre, index) => (
+                            mapGenre={selectedMovie.genres && selectedMovie.genres.length > 0 ? selectedMovie.genres.map((genre, index) => (
                                 <p className='fs-4' key={genre.id}>{genre.name}{index < selectedMovie.genres.length - 1 ? ', ' : ''}</p>
-                            ))}
-                            releaseDate={formatDate(selectedMovie.release_date)}
+                            )) : <p className='fs-4'>Género no informado</p>}
+                            releaseDate={selectedMovie.release_date ? formatDate(selectedMovie.release_date) : 'Fecha no informada'}
                             originalLanguage={selectedMovie.original_language}
                             overview={selectedMovie.overview}
                             classPuntaje={`${selectedMovie.vote_average * 10 >= 80 ? 'puntaje-verde' : selectedMovie.vote_average * 10 > 60 ? 'puntaje-amarillo' : 'puntaje-rojo'}`}
-                            voteAverage={selectedMovie.vote_average ? (selectedMovie.vote_average * 10).toFixed(2) : '0'}
-                            voteCount={selectedMovie.vote_count ? selectedMovie.vote_count : 0}
-                            mapProductionCompanies={selectedMovie.production_companies && selectedMovie.production_companies.map((company, index) => (
+                            voteAverage={(selectedMovie.vote_average * 10).toFixed(2)}
+                            voteCount={selectedMovie.vote_count}
+                            mapProductionCompanies={selectedMovie.production_companies && selectedMovie.production_companies.length > 0 ? selectedMovie.production_companies.map((company, index) => (
                                 <span className='ps-2' key={company.id}>{company.name}{index < selectedMovie.production_companies.length - 1 ? ', ' : ''}</span>
-                            ))}
-                            mapCountries={selectedMovie.production_countries && selectedMovie.production_countries.map((country, index) => (
+                            )) : 'No informado'}
+                            mapCountries={selectedMovie.production_countries && selectedMovie.production_countries.length > 0 ? selectedMovie.production_countries.map((country, index) => (
                                 <span key={country.iso_3166_1}>{country.name}{index < selectedMovie.production_countries.length - 1 ? ', ' : ''}</span>
-                            ))}
+                            )) : 'No informado'}
                             budget={selectedMovie.budget > 0 ? <><span className='fw-bold'>Presupuesto:</span> {new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'USD' }).format(selectedMovie.budget)}</> : <><span className='fw-bold'>Presupuesto: </span>No informado</>}
                             revenue={selectedMovie.revenue > 0 ? <><span className='fw-bold'>Recaudación:</span> {new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'USD' }).format(selectedMovie.revenue)}</> : <><span className='fw-bold'>Recaudación: </span>No informado</>}
                             estrella={estrella}
@@ -205,7 +240,7 @@ export const BloqueNovedades = () => {
 
                                 <>
 
-                                    <h2 className='pt-5 pb-4 text-info subtitle-modal'>Te puede interesar</h2>
+                                    <h2 className='pt-5 pb-2 text-info subtitle-modal'>Te puede interesar</h2>
 
                                     <div className='d-flex flex-wrap gap-4'>
                                         <div className="swiper-container">
@@ -247,12 +282,35 @@ export const BloqueNovedades = () => {
                 </main>
             </div>
 
-            <h2 className="text-center text-light snippet_novedades_title fade-in">Novedades</h2>
+            <div className='row container-fluid justify-content-center bloque-generos ms-1'>
+                <div className='col-12 col-lg-2'>
+                    <p className='mb-3 text-light title-select-generos'>Géneros Peliculas</p>
+                    <select className='form-select form-select-lg' value={selectedGenre} onChange={handleGenreChange}>
+                        {genres.map(genre => (
+                            <option key={genre.id} value={genre.id} className='fs-4'>{genre.name}</option>
+                        ))}
+                    </select>
+                </div>
 
-            <div className="mt-4 mb-3 novedades bloque-card-mobile fade-in">
+
+
+                <div className="col-12 col-lg-10 fade-in fs-5 justify-content-center align-items-center text-center">
+
+
+
+                    <div className="text-center container">
+                        {page > 1 && (
+                            <button className='btn btn-dark botones-paginacion ps-3 pe-3' onClick={() => setPage(page - 1)}>Anterior</button>
+                        )}
+                        {page < totalPages && (
+                            <button className='btn btn-dark botones-paginacion ps-3 pe-3' onClick={() => setPage(page + 1)}>Siguiente</button>
+                        )}
+                    </div>
+
+                    <div className="mt-4 mb-3 novedades bloque-card-mobile fade-in">
                         <div className="swiper-container-paginas">
                             <div className="swiper-wrapper-paginas scrollableDiv-paginas d-flex">
-                                {moviesToShow.map((movie) => {
+                                {movies.map((movie) => {
                                     const releaseDate = new Date(movie.release_date);
                                     const today = new Date();
                                     const isUpcoming = releaseDate > today ? "Próximo estreno" : "";
@@ -281,42 +339,48 @@ export const BloqueNovedades = () => {
                         </div>
                     </div>
                     <div className="flex-wrap justify-content-center mx-auto gap-5 mt-5 mb-3 novedades fade-in fs-5 bloque-cards-desktop-generos">
-                {moviesToShow.map((movie) => {
-                    const releaseDateMovie = new Date(movie.release_date);
-                    const today = new Date();
-                    const isUpcoming = releaseDateMovie > today ? "Próximo estreno" : "";
 
-                    const formatDateReleaseDate = (dateString) => {
-                        const date = new Date(dateString);
-                        const day = String(date.getDate()).padStart(2, '0');
-                        const month = String(date.getMonth() + 1).padStart(2, '0');
-                        const year = date.getFullYear();
-                        return `${day}/${month}/${year}`;
-                    };
+                        {movies.map(movie => {
+
+                            const releaseDate = new Date(movie.release_date);
+                            const today = new Date();
+                            const isUpcoming = releaseDate > today ? "Próximo estreno" : "";
+                            return (
+
+                                <div className='fade-in'>
+
+                                    <FilmCard
+                                        key={movie.id}
+                                        size={{ width: 'clamp(16rem,20vw,18rem)' }}
+                                        image={movie.poster_path}
+                                        title={movie.title ? movie.title : movie.name}
+                                        overview={movie.overview}
+                                        releaseDate={movie.title && movie.release_date ? <><span className='fw-bold'>Fecha:</span> {formatDate(movie.release_date)}</> : movie.name && movie.first_air_date ? <><span className='fw-bold'>Fecha: </span>{formatDate(movie.first_air_date)}</> : 'Fecha no informada'}
+                                        voteAverage={<><span className='fw-bold'>Valoración:</span> {(movie.vote_average * 10).toFixed(2)} %</>}
+                                        onclick={() => selectMovie(movie)}
+                                        movieType={''}
+                                        classMovieType={movie.title ? 'movie-type-movie' : 'movie-type-serie'}
+                                        topMovie={movie.vote_average > 7.75 && movie.vote_count > 99 ? "Destacada" : ''}
+                                        proxEstreno={isUpcoming}
+                                    />
+                                </div>
+                            )
+                        })}
+                    </div>
+                    <div className="text-center container mb-5">
+                        {page > 1 && (
+                            <button className='btn btn-dark botones-paginacion ps-3 pe-3' onClick={() => setPage(page - 1)}>Anterior</button>
+                        )}
+                        {page < totalPages && (
+                            <button className='btn btn-dark botones-paginacion ps-3 pe-3' onClick={() => { setPage(page + 1); window.scrollTo(0, 190) }}>Siguiente</button>
+                        )}
+                    </div>
+                </div>
 
 
-                    return (
-                        <FilmCard
-                            key={movie.id}
-                            size={{ width: '15.5rem' }}
-                            image={movie.poster_path}
-                            title={movie.title}
-                            overview={movie.overview}
-                            releaseDate={<><span className='fw-bold'>Fecha</span> {formatDate(movie.release_date)}</>}
-                            voteAverage={<><span className='fw-bold'>Valoración:</span> {(movie.vote_average * 10).toFixed(2)} %</>}
-                            onclick={() => selectMovie(movie)}
-                            movieType={''}
-                            classMovieType={movie.title ? 'movie-type-movie' : 'movie-type-serie'}
-                            topMovie={movie.vote_average > 7.75 && movie.vote_count > 99 ? "Destacada" : ''}
-                            proxEstreno={isUpcoming}
-                        />
-                    );
-                })}
-            </div>
-
-            <div className="container pb-5 mt-5 text-center ">
-                <a href="novedades.html"><button className='btn btn-primary botones-ver-mas ps-3 pe-3'>Ver más</button></a>
             </div>
         </>
     );
 };
+
+export default BloqueGenerosMovie;

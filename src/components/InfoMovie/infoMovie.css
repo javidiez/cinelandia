@@ -1,35 +1,3 @@
-.hero {
-    background-image: url(../../assets/img/fondo_buscador.webp);
-    height: 35vh;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-}
-
-.hero-text {
-    font-size: clamp(2rem, 3vw, 7rem);
-    text-wrap: balance;
-    padding: 0 15px;
-}
-
-.buscar {
-    background-color: #016391;
-    border: none;
-}
-
-.buscar:hover {
-    background-color: #024768;
-}
-
-#buscador {
-    letter-spacing: 1px;
-    font-size: 1.5rem;
-}
-
-.buscar {
-    font-size: 1.7rem !important;
-}
-
 .modal-movie {
     background-repeat: no-repeat;
     background-size: cover;
@@ -153,4 +121,13 @@
     to {
         opacity: 1;
     }
+}
+
+.bloque-resultados{
+    background-color: #023249;
+    width: 100vw;
+}
+
+hr{
+    margin: 0;
 }

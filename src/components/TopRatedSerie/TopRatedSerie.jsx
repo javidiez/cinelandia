@@ -32,48 +32,32 @@ export const TopRatedSerie = () => {
     const [recommendations, setRecommendations] = useState(null);
     const [playing, setPlaying] = useState(false);
 
-    const fetchTopRatedSeries = async () => {
-        setLoading(true);
+const fetchTopRatedSeries = async (page = 1) => {
+    setLoading(true);
 
-        try {
-            let allResultsMap = {}; // Objeto de mapa para almacenar las series sin duplicados
-            let totalPages = 1;
-            let currentPage = 1;
+    try {
+        const { data: { results, total_pages } } = await axios.get(`${API_URL}/discover/tv`, {
+            params: {
+                api_key: API_KEY,
+                language: 'es-ES',
+                sort_by: 'popularity.desc',
+                'vote_count.gte': 100,
+                'vote_average.gte': 8,
+                page: page
+            },
+        });
 
-            // Realiza bucle hasta que hayas obtenido todas las páginas de resultados
-            while (currentPage <= totalPages) {
-                const { data: { results, total_pages } } = await axios.get(`${API_URL}/tv/top_rated`, {
-                    params: {
-                        api_key: API_KEY,
-                        language: 'es-ES',
-                        page: currentPage,
-                    },
-                });
 
-                // Agrega cada serie al objeto de mapa utilizando el id como clave
-                results.forEach(serie => {
-                    allResultsMap[serie.id] = serie;
-                });
-
-                totalPages = total_pages;
-                currentPage++;
-            }
-
-            // Extrae los valores del objeto de mapa (las series únicas) y conviértelos en una matriz
-            const allResults = Object.values(allResultsMap);
-
-            // Ordena todas las películas por fecha de first_air_date
-            allResults.sort((a, b) => new Date(b.first_air_date) - new Date(a.first_air_date));
-
-            // Establece las películas ordenadas en el estado
-            setMovies(allResults);
-            setTotalPages(totalPages);
-        } catch (error) {
-            console.error("Error fetching top rated series:", error);
-        } finally {
-            setLoading(false);
-        }
-    };
+        // Establece las series filtradas y la cantidad total de páginas en el estado
+        setMovies(results);
+        setTotalPages(total_pages);
+        setCurrentPage(page);
+    } catch (error) {
+        console.error("Error fetching top rated series:", error);
+    } finally {
+        setLoading(false);
+    }
+};
 
 
 
@@ -125,9 +109,11 @@ export const TopRatedSerie = () => {
         }
     };
 
-    const handlePageChange = (page) => {
-        setCurrentPage(page);
+    const handlePageChange = async (page) => {
+        await fetchTopRatedSeries(page);
+        window.scrollTo({ top: 200, left: 0, behavior: 'smooth' });
     };
+    
 
     const handleSerieSelect = async (serie) => {
         await fetchSerie(serie.id);
@@ -245,7 +231,7 @@ export const TopRatedSerie = () => {
                                         <img className='icono-modal me-2' alt="smarttv" src={smartTv} />
                                         <span className='fw-bold'>Plataformas</span>
                                     </div>
-                                    <div className='d-flex'>
+                                    <div className='d-flex flex-wrap'>
                                         {platforms.map((platform, index) => (
                                             <Tooltip content={platform.provider_name} trigger="hover" placement="bottom" className='d-flex align-items-start bg-dark text-light ps-2 pe-0 pt-0 pb-0 fs-5 rounded'>
                                                 <img key={index} className='border platforms me-2 mt-2' src={`https://image.tmdb.org/t/p/w200${platform.logo_path}`} alt={platform.provider_name} />
@@ -308,10 +294,41 @@ export const TopRatedSerie = () => {
                         <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1} className='btn btn-dark botones-paginacion ps-3 pe-3'>Anterior</button>
                         <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages} className='btn btn-dark botones-paginacion ps-3 pe-3'>Siguiente</button>
                     </div>
-
                     <div>
-                        <div className="row justify-content-center container-fluid mx-auto gap-5 mt-5 mb-3 novedades fs-5">
-                            {movies.slice((currentPage - 1) * 20, currentPage * 20).map((movie) => {
+                        <div className="mb-3 novedades bloque-card-mobile">
+                            <div className="swiper-container-paginas">
+                                <div className="swiper-wrapper-paginas scrollableDiv-paginas d-flex gap-2">
+                                    {movies.map((movie) => {
+                                        const releaseDate = new Date(movie.release_date);
+                                        const today = new Date();
+                                        const isUpcoming = releaseDate > today ? "Próximo estreno" : "";
+
+
+                                        return (
+                                            <div className='swiper-slide-paginas pt-5 ps-5'>
+                                                <FilmCard
+                                                    key={movie.id}
+                                                    size={{ width: 'clamp(16rem,20vw,18rem)' }}
+                                                    image={movie.poster_path}
+                                                    title={movie.name}
+                                                    overview={movie.overview}
+                                                    releaseDate={movie.title && movie.release_date ? <><span className='fw-bold'>Fecha:</span> {formatDate(movie.release_date)}</> : movie.name && movie.first_air_date ? <><span className='fw-bold'>Fecha: </span>{formatDate(movie.first_air_date)}</> : 'Fecha no informada'}
+                                                    voteAverage={isUpcoming || isNaN(movie.vote_average) ? '' : <><span className="fw-bold">Valoración:</span> {(movie.vote_average * 10).toFixed(2)}%</>}
+                                                    onclick={() => handleSerieSelect(movie)}
+                                                    movieType={''}
+                                                    classMovieType={''}
+                                                    topMovie={''}
+                                                    proxEstreno={isUpcoming}
+                                                />
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="row justify-content-center mx-auto gap-5 mt-5 mb-3 novedades fs-5 bloque-cards-desktop">
+                            {movies.map((movie) => {
                                 const releaseDate = new Date(movie.first_air_date);
                                 const today = new Date();
                                 const isUpcoming = releaseDate > today ? "Próximo estreno" : "";
@@ -319,7 +336,7 @@ export const TopRatedSerie = () => {
                                 return (
                                     <FilmCard
                                         key={movie.id}
-                                        size={{ width: '18rem' }}
+                                        size={{ width: 'clamp(16rem,20vw,18rem)' }}
                                         image={movie.poster_path}
                                         title={movie.name}
                                         overview={movie.overview}

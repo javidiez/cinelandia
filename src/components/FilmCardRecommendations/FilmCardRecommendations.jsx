@@ -7,7 +7,7 @@ export const FilmCardRecommendations = ({ image, title, releaseDate, voteAverage
   return (
     <>
 
-      <div className="card p-0" style={size}>
+      <div className="card p-0 mt-3" style={size}>
         <div className="film-card">
 
           <img

@@ -1,13 +1,13 @@
 import { Navbar } from './components/Navbar/Navbar';
-import InfoMovie from './components/InfoMovie/InfoMovie';
 import { SwitchPeliSerie } from './components/SwitchPeliSerie/SwitchPeliSerie';
+import { Buscador } from './components/Buscador/Buscador';
 
 function App() {
 
   return (
     <>
       <Navbar />
-      <InfoMovie />
+      <Buscador/>
       <SwitchPeliSerie />
     </>
   )

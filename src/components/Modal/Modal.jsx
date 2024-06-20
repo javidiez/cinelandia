@@ -64,7 +64,7 @@ export const Modal = ({
     return (
         <div className="modal fade" id={idModal} tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
             <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl modal-block">
-                <div className="modal-content modal-movie" style={{ backgroundImage }}>
+                <div className="modal-content modal-movie text-start" style={{ backgroundImage }}>
                     <div className="modal-background"></div>
                     <div className="modal-header text-light border-0">
                         <h1 className="modal-title position-relative text-light" id="exampleModalLabel">{title}</h1>
