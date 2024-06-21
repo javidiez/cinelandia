@@ -16,6 +16,8 @@ import '../SnippetNovedades/bloque_novedades.css'
 import { Tooltip } from "flowbite-react";
 import '../../../node_modules/swiper/swiper-bundle.min.css';
 import Swiper from 'swiper';
+import { Navbar } from '../Navbar/Navbar';
+import '../Navbar/navbar.css'
 
 export const Novedades = () => {
     const API_URL = "https://api.themoviedb.org/3";

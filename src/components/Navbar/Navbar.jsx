@@ -1,88 +1,91 @@
+import React from 'react';
+import { useEffect } from 'react';
 import logo from "../../assets/img/logo.png";
-import './navbar.css'
+import './navbar.css';
+import { Link } from "react-router-dom";
 
 export const Navbar = () => {
 
-    window.addEventListener('scroll', function () {
-        const navbar = document.querySelector('.navbar');
-        if (window.scrollY > 0) {
-            navbar.classList.add('shrink');
-        } else {
-            navbar.classList.remove('shrink');
-        }
-    });
+    useEffect(() => {
+        const handleScroll = () => {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 0) {
+                navbar.classList.add('shrink');
+            } else {
+                navbar.classList.remove('shrink');
+            }
+        };
 
-    // Función para manejar el clic en la lupa
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
     const handleLupaClick = (e) => {
         e.preventDefault();
-        window.location.href = "index.html#search-focus"; // Redirigir a index.html y agregar el hash para enfocar el buscador
+        window.location.href = "index.html#search-focus";
         setTimeout(() => {
             const buscador = document.getElementById('buscador');
             if (buscador) {
                 buscador.focus();
             }
         }, 0);
-        window.scrollTo({ top: 0, behavior: 'smooth' }); // Desplazar la pantalla hasta arriba
-    }
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
 
     return (
         <nav className="navbar navbar-expand-lg sticky-top">
             <div className="container-fluid">
                 <div className="d-flex justify-content-between">
-                    <a className="navbar-brand d-flex align-items-center" href="index.html">
+                    <Link className="navbar-brand d-flex align-items-center" to="/home">
                         <img src={logo} className="logo" />
                         <p className="text-light fw-bold ps-3">CINELANDIA</p>
-                    </a>
+                    </Link>
                 </div>
                 <div>
                     <button className="navbar-toggler custom-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                        <span className="navbar-toggler-icon">
-                        </span>
+                        <span className="navbar-toggler-icon"></span>
                     </button>
                     <div className="collapse navbar-collapse" id="navbarNav">
                         <ul className="navbar-nav pe-3">
                             <li className="nav-item">
-                                <a className="nav-link text-light fs-3 fw-bold" aria-current="page" href="index.html">Home</a>
+                                <Link className="nav-link text-light fs-3 fw-bold" aria-current="page" to="/home">Home</Link>
                             </li>
                             <li className="nav-item dropdown">
-                                <a className="nav-link dropdown-toggle text-light fs-3 fw-bold" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <Link className="nav-link dropdown-toggle text-light fs-3 fw-bold" to="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     Películas
-                                </a>
+                                </Link>
                                 <ul className="dropdown-menu">
-                                    <li><a className="dropdown-item text-light" href="novedades.html">Novedades</a></li>
-                                    <li><a className="dropdown-item text-light" href="populares.html">Populares</a></li>
-                                    <li><a className="dropdown-item text-light" href="toprated.html">Mejor valoradas</a></li>
-                                    <li><a className="dropdown-item text-light" href="proximos_estrenos.html">Próximos estrenos</a></li>
+                                    <li><Link className="dropdown-item text-light" to="/novedades">Novedades</Link></li>
+                                    <li><Link className="dropdown-item text-light" to="/peliculas_populares">Populares</Link></li>
+                                    <li><Link className="dropdown-item text-light" to="/peliculas_toprated">Mejor valoradas</Link></li>
+                                    <li><Link className="dropdown-item text-light" to="/peliculas_estrenos">Próximos estrenos</Link></li>
                                 </ul>
                             </li>
                             <li className="nav-item dropdown">
-                                <a className="nav-link dropdown-toggle text-light fs-3 fw-bold" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <Link className="nav-link dropdown-toggle text-light fs-3 fw-bold" to="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     Series
-                                </a>
+                                </Link>
                                 <ul className="dropdown-menu">
-                                    <li><a className="dropdown-item text-light" href="novedades_series.html">Novedades</a></li>
-                                    <li><a className="dropdown-item text-light" href="trending_series.html">Tendencias</a></li>
-                                    <li><a className="dropdown-item text-light" href="populares_series.html">Populares</a></li>
-                                    <li><a className="dropdown-item text-light" href="topratedserie.html">Mejor valoradas</a></li>
+                                    <li><Link className="dropdown-item text-light" to="/novedades_series">Novedades</Link></li>
+                                    <li><Link className="dropdown-item text-light" to="/series_trending">Tendencias</Link></li>
+                                    <li><Link className="dropdown-item text-light" to="/series_populares">Populares</Link></li>
+                                    <li><Link className="dropdown-item text-light" to="/series_toprated">Mejor valoradas</Link></li>
                                 </ul>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link text-light fs-3 fw-bold" href="generos.html">Géneros</a>
+                                <Link className="nav-link text-light fs-3 fw-bold" to="/generos">Géneros</Link>
                             </li>
                         </ul>
                         <div className="d-flex pe-5">
-                            <a href="index.html#search-focus" id="search-icon">
+                            <Link to="/home#search-focus" id="search-icon">
                                 <button className="btn text-light p-2 btn-lupa" onClick={handleLupaClick}>
                                     <i className="fa-solid fa-magnifying-glass fs-4"></i>
                                 </button>
-                            </a>
+                            </Link>
                         </div>
-
                     </div>
                 </div>
             </div>
         </nav>
-    )
-
-
-}
+    );
+};
