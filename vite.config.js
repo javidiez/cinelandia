@@ -9,4 +9,11 @@ export default defineConfig({
       fastRefresh: true, // Habilitar Fast Refresh
     }),
   ],
+  build: {
+    rollupOptions: {
+      input: {
+        main: './src/main.jsx'
+      }
+    }
+  }
 });
