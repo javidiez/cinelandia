@@ -5,12 +5,12 @@ export default defineConfig({
   base: '/', // Ajusta la ruta base según sea necesario
   plugins: [
     react({
-      fastRefresh: process.env.NODE_ENV !== 'production', // Habilitar Fast Refresh solo en desarrollo
+      fastRefresh: true, // Habilitar Fast Refresh
     }),
   ],
   build: {
     rollupOptions: {
-      external: ["/main.jsx"]
+      input: './src/main.jsx', // Ruta al archivo JavaScript o TypeScript principal
     }
   }
 });
