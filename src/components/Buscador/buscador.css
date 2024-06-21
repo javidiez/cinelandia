@@ -9,7 +9,7 @@
 }
 
 .hero {
-    background-image: url(../../assets/img/fondo_buscador.webp);
+    background-image: url(../../img/fondo_buscador.webp);
     min-height: 35vh;
     background-repeat: no-repeat;
     background-size: cover;

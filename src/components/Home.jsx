@@ -1,4 +1,3 @@
-import { Navbar } from './Navbar/Navbar';
 import { SwitchPeliSerie } from './SwitchPeliSerie/SwitchPeliSerie';
 import { Buscador } from './Buscador/Buscador';
 

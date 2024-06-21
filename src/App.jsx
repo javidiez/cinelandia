@@ -10,9 +10,6 @@ import { TrendingSerie } from "./components/TrendingSeries/TrendingSeries";
 import BloqueGeneros from "./components/BloqueGeneros/BloqueGeneros";
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { Navbar } from './components/Navbar/Navbar';
-import { SwitchPeliSerie } from './components/SwitchPeliSerie/SwitchPeliSerie';
-import { Buscador } from './components/Buscador/Buscador';
-
 
 
 function App() {
@@ -35,8 +32,7 @@ function App() {
           <Route path="/generos" element={<BloqueGeneros />} />
         </Routes>
       </Router>
-      <Buscador />
-      <SwitchPeliSerie />
+      <Home/>
     </>
   )
 }

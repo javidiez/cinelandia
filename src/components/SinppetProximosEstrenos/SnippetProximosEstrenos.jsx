@@ -5,11 +5,11 @@ import { Modal } from '../Modal/Modal';
 import { BloqueProximosEstrenos } from "./BloqueProximosEstrenos";
 import { FilmCardRecommendations } from '../FilmCardRecommendations/FilmCardRecommendations';
 import { CardActores } from '../CardActores/CardActores';
-import estrella from '../../assets/img/estrella.png';
-import lapiz from '../../assets/img/lapiz.png';
-import smartTv from '../../assets/img/smart-tv.png';
-import fondoNotFound from '../../assets/img/fondo-not-found.jpeg';
-import avatar from '../../assets/img/avatar.webp';
+import estrella from '../../../public/img/estrella.png';
+import lapiz from '../../../public/img/lapiz.png';
+import smartTv from '../../../public/img/smart-tv.png';
+import fondoNotFound from '../../../public/img/fondo-not-found.jpeg';
+import avatar from '../../../public/img/avatar.webp';
 import '../Novedades/novedades.css';
 import '../FilmCard/filmcard.css';
 import '../InfoMovie/infoMovie.css'
