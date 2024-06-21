@@ -5,7 +5,7 @@ export default defineConfig({
   base: '/', // Ajusta la ruta base según sea necesario
   plugins: [
     react({
-      fastRefresh: true, // Habilitar Fast Refresh
+      fastRefresh: process.env.NODE_ENV !== 'production', // Habilitar Fast Refresh solo en desarrollo
     }),
   ],
   build: {
