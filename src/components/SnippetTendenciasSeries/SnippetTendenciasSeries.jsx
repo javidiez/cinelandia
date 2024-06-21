@@ -20,6 +20,7 @@ import '../SnippetNovedades/bloque_novedades.css'
 import { Tooltip } from "flowbite-react";
 import '../../../node_modules/swiper/swiper-bundle.min.css';
 import Swiper from 'swiper';
+import { Link } from "react-router-dom";
 
 export const SnippetTendenciasSeries = () => {
 
@@ -324,7 +325,7 @@ export const SnippetTendenciasSeries = () => {
                         );
                     })}
                     <div className="text-center mb-5 mt-3 ">
-                        <a href="./topratedserie.html"><button className='btn btn-primary botones-ver-mas ps-3 pe-3'>Ver mas</button></a>
+                        <Link to="/series_toprated"><button className='btn btn-primary botones-ver-mas ps-3 pe-3'>Ver mas</button></Link>
                     </div>
                 </div>
 

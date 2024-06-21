@@ -21,6 +21,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/home" element={<Home />} />
+          <Route path="/index.html" element={<Home />} />
           <Route path="/novedades" element={<Novedades />} />
           <Route path="/novedades_series" element={<NovedadesSerie />} />
           <Route path="/peliculas_populares" element={<Populares />} />
@@ -32,7 +33,6 @@ function App() {
           <Route path="/generos" element={<BloqueGeneros />} />
         </Routes>
       </Router>
-      <Home/>
     </>
   )
 }

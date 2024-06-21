@@ -18,6 +18,7 @@ import './BloqueSeriesHome.css'
 import '../../../node_modules/swiper/swiper-bundle.min.css';
 import Swiper from 'swiper';
 import { Tooltip } from "flowbite-react";
+import { Link } from 'react-router-dom';
 
 export const BloqueSeries = () => {
     const API_URL = "https://api.themoviedb.org/3";
@@ -332,7 +333,7 @@ export const BloqueSeries = () => {
             </div>
 
             <div className="container pb-5 mt-5 text-center ">
-                <a href="novedades_series.html"><button className='btn btn-primary botones-ver-mas ps-3 pe-3'>Ver más</button></a>
+                <Link to="/novedades_series"><button className='btn btn-primary botones-ver-mas ps-3 pe-3'>Ver más</button></Link>
             </div>
 
         </>
