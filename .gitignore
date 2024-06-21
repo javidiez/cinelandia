@@ -5,20 +5,29 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
-lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-*.local
+# Dependency directories
+node_modules/
 
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
-.DS_Store
+# Production build output
+dist/
+
+# Static files
+public/
+
+# Vite local server HMR state
+.vite
+
+# IDEs and editors
+.idea/
+.vscode/
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
-*.sw?
+
+# Optional npm cache directory
+.npm
+
+# dotenv environment variables file
+.env
