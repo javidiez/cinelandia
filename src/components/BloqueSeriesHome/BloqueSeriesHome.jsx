@@ -332,7 +332,7 @@ export const BloqueSeries = () => {
             </div>
 
             <div className="container pb-5 mt-5 text-center ">
-                <Link to="novedades_series.html"><button className='btn btn-primary botones-ver-mas ps-3 pe-3'>Ver más</button></Link>
+                <a href="novedades_series.html"><button className='btn btn-primary botones-ver-mas ps-3 pe-3'>Ver más</button></a>
             </div>
 
         </>

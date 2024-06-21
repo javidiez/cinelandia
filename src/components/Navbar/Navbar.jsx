@@ -29,10 +29,10 @@ export const Navbar = () => {
         <nav className="navbar navbar-expand-lg sticky-top">
             <div className="container-fluid">
                 <div className="d-flex justify-content-between">
-                    <Link className="navbar-brand d-flex align-items-center" to="/index.html">
+                    <a className="navbar-brand d-flex align-items-center" href="index.html">
                         <img src={logo} className="logo" />
                         <p className="text-light fw-bold ps-3">CINELANDIA</p>
-                    </Link>
+                    </a>
                 </div>
                 <div>
                     <button className="navbar-toggler custom-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -42,40 +42,40 @@ export const Navbar = () => {
                     <div className="collapse navbar-collapse" id="navbarNav">
                         <ul className="navbar-nav pe-3">
                             <li className="nav-item">
-                                <Link className="nav-link text-light fs-3 fw-bold" aria-current="page" to="index.html">Home</Link>
+                                <a className="nav-link text-light fs-3 fw-bold" aria-current="page" href="index.html">Home</a>
                             </li>
                             <li className="nav-item dropdown">
-                                <Link className="nav-link dropdown-toggle text-light fs-3 fw-bold" to="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <a className="nav-link dropdown-toggle text-light fs-3 fw-bold" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     Películas
-                                </Link>
+                                </a>
                                 <ul className="dropdown-menu">
-                                    <li><Link className="dropdown-item text-light" to="/novedades.html">Novedades</Link></li>
-                                    <li><Link className="dropdown-item text-light" to="/populares.html">Populares</Link></li>
-                                    <li><Link className="dropdown-item text-light" to="/toprated.html">Mejor valoradas</Link></li>
-                                    <li><Link className="dropdown-item text-light" to="/proximos_estrenos.html">Próximos estrenos</Link></li>
+                                    <li><a className="dropdown-item text-light" href="novedades.html">Novedades</a></li>
+                                    <li><a className="dropdown-item text-light" href="populares.html">Populares</a></li>
+                                    <li><a className="dropdown-item text-light" href="toprated.html">Mejor valoradas</a></li>
+                                    <li><a className="dropdown-item text-light" href="proximos_estrenos.html">Próximos estrenos</a></li>
                                 </ul>
                             </li>
                             <li className="nav-item dropdown">
-                                <Link className="nav-link dropdown-toggle text-light fs-3 fw-bold" to="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <a className="nav-link dropdown-toggle text-light fs-3 fw-bold" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     Series
-                                </Link>
+                                </a>
                                 <ul className="dropdown-menu">
-                                    <li><Link className="dropdown-item text-light" to="/novedades_series.html">Novedades</Link></li>
-                                    <li><Link className="dropdown-item text-light" to="/trending_series.html">Tendencias</Link></li>
-                                    <li><Link className="dropdown-item text-light" to="/populares_series.html">Populares</Link></li>
-                                    <li><Link className="dropdown-item text-light" to="/topratedserie.html">Mejor valoradas</Link></li>
+                                    <li><a className="dropdown-item text-light" href="novedades_series.html">Novedades</a></li>
+                                    <li><a className="dropdown-item text-light" href="trending_series.html">Tendencias</a></li>
+                                    <li><a className="dropdown-item text-light" href="populares_series.html">Populares</a></li>
+                                    <li><a className="dropdown-item text-light" href="topratedserie.html">Mejor valoradas</a></li>
                                 </ul>
                             </li>
                             <li className="nav-item">
-                                <Link className="nav-link text-light fs-3 fw-bold" to="/generos.html">Géneros</Link>
+                                <a className="nav-link text-light fs-3 fw-bold" href="generos.html">Géneros</a>
                             </li>
                         </ul>
                         <div className="d-flex pe-5">
-                            <Link to="index.html#search-focus" id="search-icon">
+                            <a href="index.html#search-focus" id="search-icon">
                                 <button className="btn text-light p-2 btn-lupa" onClick={handleLupaClick}>
                                     <i className="fa-solid fa-magnifying-glass fs-4"></i>
                                 </button>
-                            </Link>
+                            </a>
                         </div>
 
                     </div>

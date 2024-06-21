@@ -283,7 +283,7 @@ export const SnippetProximosEstrenos = () => {
                         );
                     })}
                     <div className="text-center mb-5 mt-3 ">
-                        <Link to="./proximos_estrenos.html"><button className='btn btn-primary botones-ver-mas ps-3 pe-3'>Ver mas</button></Link>
+                        <a href="./proximos_estrenos.html"><button className='btn btn-primary botones-ver-mas ps-3 pe-3'>Ver mas</button></a>
                     </div>
                 </div>
 

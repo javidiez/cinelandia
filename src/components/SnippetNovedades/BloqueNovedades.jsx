@@ -315,7 +315,7 @@ export const BloqueNovedades = () => {
             </div>
 
             <div className="container pb-5 mt-5 text-center ">
-                <Link to="novedades.html"><button className='btn btn-primary botones-ver-mas ps-3 pe-3'>Ver más</button></Link>
+                <a href="novedades.html"><button className='btn btn-primary botones-ver-mas ps-3 pe-3'>Ver más</button></a>
             </div>
         </>
     );
