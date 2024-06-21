@@ -1,6 +1,6 @@
 import React from "react";
 import './FilmCardRecommendations.css';
-import fondoNotFound from '../../../public/img/fondo-not-found.jpeg'
+import fondoNotFound from '../../../public/assets/img/fondo-not-found.jpeg'
 
 
 export const FilmCardRecommendations = ({ image, title, releaseDate, voteAverage, topMovie, proxEstreno, movieType, classMovieType, size }) => {

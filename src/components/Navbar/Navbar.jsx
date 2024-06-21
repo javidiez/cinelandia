@@ -1,6 +1,6 @@
 import React from 'react';
 import { useEffect } from 'react';
-import logo from '../../../public/img/logo.png'
+import logo from '../../../public/assets/img/logo.png'
 import './navbar.css';
 import { Link } from "react-router-dom";
 
