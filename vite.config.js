@@ -10,7 +10,7 @@ export default defineConfig({
   ],
   build: {
     rollupOptions: {
-      input: './src/main.jsx', // Ruta al archivo JavaScript o TypeScript principal
+      input: './public/index.html' // Asegúrate de que el punto de entrada es correcto
     }
   }
 });
