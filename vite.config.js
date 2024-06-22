@@ -1,10 +1,16 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import { resolve } from 'path';
 
 export default defineConfig({
   plugins: [react()],
   build: {
-    outDir: 'dist', // Directorio de salida para los archivos construidos
-    emptyOutDir: true, // Limpiar directorio de salida antes de construir
+    rollupOptions: {
+      input: {
+        main: resolve(__dirname, 'public/index.html')
+      }
+    },
+    outDir: 'dist',
+    emptyOutDir: true
   },
 });
