@@ -10,7 +10,7 @@ import MovieTopRated from './components/Pages/MovieTopRated';
 import SeriesTopRated from './components/Pages/SeriesTopRated';
 import SeriesTendencias from './components/Pages/SeriesTendencias';
 import Home from './components/Pages/Home'
-import './index.css'
+import '../public/index.css'
 
 function App() {
   return (
