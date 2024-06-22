@@ -6,11 +6,11 @@ import { ModalSerie } from "../ModalSerie/ModalSerie";
 import { BloqueTendenciasSeries } from "./BloqueTendenciasSeries";
 import { FilmCardRecommendations } from '../FilmCardRecommendations/FilmCardRecommendations';
 import { CardActores } from '../CardActores/CardActores';
-import estrella from '../../../public/assets/img/estrella.png';
-import lapiz from '../../../public/assets/img/lapiz.png';
-import smartTv from '../../../public/assets/img/smart-tv.png';
-import fondoNotFound from '../../../public/assets/img/fondo-not-found.jpeg';
-import avatar from '../../../public/assets/img/avatar.webp';
+import estrella from '../../assets/img/estrella.png';
+import lapiz from '../../assets/img/lapiz.png';
+import smartTv from '../../assets/img/smart-tv.png';
+import fondoNotFound from '../../assets/img/fondo-not-found.jpeg';
+import avatar from '../../assets/img/avatar.webp';
 import '../Novedades/novedades.css';
 import '../FilmCard/filmcard.css';
 import '../InfoMovie/infoMovie.css'
