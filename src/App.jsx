@@ -18,6 +18,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/home" element={<Home />} />
+        <Route path="/index.html" element={<Home />} />
         <Route path="/novedades" element={<MovieNovedades />} />
         <Route path="/novedades_series" element={<SeriesNovedades />} />
         <Route path="/peliculas_populares" element={<MoviePopulares />} />
