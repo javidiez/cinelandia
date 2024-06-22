@@ -12,9 +12,6 @@ node_modules/
 # Production build output
 dist/
 
-# Static files
-public/
-
 # Vite local server HMR state
 .vite
 
