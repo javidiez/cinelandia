@@ -8,9 +8,8 @@ export default defineConfig({
   ],
   build: {
     rollupOptions: {
-      input: './src/main.jsx', // Ruta al archivo JavaScript o TypeScript principal
+      input: './src/index.jsx', // Ruta al archivo JavaScript o TypeScript principal
     },
     outDir: 'dist', // Reemplaza con tu directorio de compilación si es diferente
-    assetsInlineLimit: 10000,
   }
 });
