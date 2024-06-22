@@ -37,7 +37,7 @@ export const Navbar = () => {
             <div className="container-fluid">
                 <div className="d-flex justify-content-between">
                     <Link className="navbar-brand d-flex align-items-center" to="/home">
-                        <img src='../../assets/img/logo.png' className="logo" />
+                        {/* <img src='../../assets/img/logo.png' className="logo" /> */}
                         <p className="text-light fw-bold ps-3">CINELANDIA</p>
                     </Link>
                 </div>
