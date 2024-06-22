@@ -7,7 +7,7 @@ export default defineConfig({
   build: {
     rollupOptions: {
       input: {
-        main: resolve(__dirname, 'src/index.jsx')
+        main: resolve(__dirname, 'public/index.html')
       }
     },
     outDir: 'dist',
