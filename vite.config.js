@@ -4,13 +4,13 @@ import react from '@vitejs/plugin-react';
 export default defineConfig({
   base: '/', // Ajusta la ruta base según sea necesario
   plugins: [
-    react({
-      fastRefresh: true, // Habilitar Fast Refresh
-    }),
+    react(),
   ],
   build: {
     rollupOptions: {
       input: './src/main.jsx', // Ruta al archivo JavaScript o TypeScript principal
-    }
+    },
+    outDir: 'dist', // Reemplaza con tu directorio de compilación si es diferente
+    assetsInlineLimit: 10000,
   }
 });

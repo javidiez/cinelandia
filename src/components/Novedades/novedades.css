@@ -39,6 +39,7 @@
 
 .swiper-slide-paginas{
     min-width: 100% !important;
+
 }
 
 .swiper-wrapper-paginas::-webkit-scrollbar {
@@ -83,7 +84,7 @@
 @media screen and (max-width: 560px){
     .bloque-card-mobile {
         display: flex;
-        justify-content: center; 
+        justify-content: center;
     }
     .bloque-cards-desktop{
         display: none;

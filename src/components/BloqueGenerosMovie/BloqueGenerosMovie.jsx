@@ -15,7 +15,6 @@ import '../BloqueSeriesHome/BloqueSeriesHome.css'
 import '../../../node_modules/swiper/swiper-bundle.min.css';
 import '../BloqueGeneros/bloquegeneros.css'
 import '../Novedades/novedades.css'
-
 import Swiper from 'swiper';
 import { Tooltip } from "flowbite-react";
 
@@ -317,7 +316,7 @@ const BloqueGenerosMovie = () => {
 
 
                                     return (
-                                        <div className='swiper-slide-paginas pt-5 ps-5 fade-in'>
+                                        <div className='swiper-slide-paginas pt-5 ps-4 me-4 fade-in'>
                                             <FilmCard
                                                 key={movie.id}
                                                 size={{ width: 'clamp(16rem,20vw,18rem)' }}
