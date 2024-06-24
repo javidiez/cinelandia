@@ -11,16 +11,10 @@ import SeriesTopRated from './components/Pages/SeriesTopRated';
 import SeriesTendencias from './components/Pages/SeriesTendencias';
 import Home from './components/Pages/Home'
 import '../public/index.css'
-import { Navbar } from './components/Navbar/Navbar';
-import { Buscador } from './components/Buscador/Buscador';
-import { SwitchPeliSerie } from './components/SwitchPeliSerie/SwitchPeliSerie';
 
 function App() {
   return (
     <Router>
-      <Navbar />
-      <Buscador />
-      <SwitchPeliSerie />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/home" element={<Home />} />
