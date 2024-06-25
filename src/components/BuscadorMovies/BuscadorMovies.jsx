@@ -143,8 +143,6 @@ function InfoMovie() {
                     behavior: 'smooth', // Opcional: hacerlo con animación smooth
                 });
             }
-
-
         }
     };
 
@@ -169,6 +167,8 @@ function InfoMovie() {
 
         }
     };
+
+
     const formatDate = (dateString) => {
         const date = new Date(dateString);
         const day = String(date.getDate()).padStart(2, '0');

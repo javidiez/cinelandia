@@ -34,59 +34,57 @@ const BloqueGenerosMovie = () => {
     const [platforms, setPlatforms] = useState(null);
     const [recommendations, setRecommendations] = useState(null);
     const [playing, setPlaying] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
+
+
+    // Obtener lista de géneros al montar el componente
+    const fetchGenres = async () => {
+        try {
+            const { data: { genres } } = await axios.get(`${API_URL}/genre/movie/list`, {
+                params: {
+                    api_key: API_KEY,
+                    language: 'es-ES'
+                },
+            });
+            setGenres(genres);
+        } catch (error) {
+            console.error("Error fetching genres:", error);
+        }
+    };
+
+    const fetchMoviesByGenre = async (page) => {
+        try {
+            const { data: { results, total_pages } } = await axios.get(`${API_URL}/discover/movie`, {
+                params: {
+                    api_key: API_KEY,
+                    language: 'es-ES',
+                    with_genres: selectedGenre,
+                    sort_by: 'popularity.desc',
+                    'vote_count.gte': 30,
+                    page: page
+                },
+            });
+
+            setPage(page);
+            setTotalPages(total_pages);
+            setMovies(results);
+        } catch (error) {
+            console.error("Error fetching movies:", error);
+        }
+    };
 
     useEffect(() => {
-        // Obtener lista de géneros al montar el componente
-        const fetchGenres = async () => {
-            try {
-                const { data: { genres } } = await axios.get(`${API_URL}/genre/movie/list`, {
-                    params: {
-                        api_key: API_KEY,
-                        language: 'es-ES',
-                    },
-                });
-                setGenres(genres);
-            } catch (error) {
-                console.error('Error al obtener la lista de géneros:', error);
-            }
-        };
-
         fetchGenres();
     }, []);
 
-
     useEffect(() => {
-        // Obtener películas por género cuando el género seleccionado o la página cambian
-        if (selectedGenre) {
-            const fetchMoviesByGenre = async () => {
-                try {
-                    const { data: { results, total_pages } } = await axios.get(`${API_URL}/discover/movie`, {
-                        params: {
-                            api_key: API_KEY,
-                            language: 'es-ES',
-                            with_genres: selectedGenre,
-                            sort_by: 'popularity.desc',
-                            'vote_count.gte': 30,
-                            page: page,
-                        },
-                    });
-
-
-                    setMovies(results);
-                    setTotalPages(total_pages);
-                } catch (error) {
-                    console.error('Error al obtener películas por género:', error);
-                }
-            };
-
-            fetchMoviesByGenre();
-        }
+        fetchMoviesByGenre(page);
     }, [selectedGenre, page]);
 
 
     const handleGenreChange = (event) => {
         setSelectedGenre(event.target.value);
-        setPage(1); // Resetear a la primera página al cambiar de género
+        setPage(1);
     };
 
 
@@ -140,6 +138,32 @@ const BloqueGenerosMovie = () => {
     const selectMovie = async (movie) => {
         fetchMovie(movie.id);
         setSelectedMovie(movie);
+    };
+
+
+    const goToPreviousPage = () => {
+        if (page > 1) {
+            setPage(page - 1);
+        }
+    };
+
+    const goToNextPage = () => {
+        if (page < totalPages) {
+            setPage(page + 1);
+            window.scrollTo(0, 150);
+
+            // Seleccionar el contenedor que contiene los elementos desplazables
+            const swiper = document.querySelector('.swiper-wrapper-paginas');
+
+            // Realizar scroll hacia la izquierda
+            if (swiper) {
+                swiper.scrollTo({
+                    top: 200,
+                    left: 0, // Hacer scroll al inicio del contenedor
+                    behavior: 'smooth', // Opcional: hacerlo con animación smooth
+                });
+            }
+        }
     };
 
 
@@ -295,15 +319,9 @@ const BloqueGenerosMovie = () => {
 
                 <div className="col-12 col-lg-10 fade-in fs-5 justify-content-center align-items-center text-center">
 
-
-
                     <div className="text-center container">
-                        {page > 1 && (
-                            <button className='btn btn-dark botones-paginacion ps-3 pe-3' onClick={() => setPage(page - 1)}>Anterior</button>
-                        )}
-                        {page < totalPages && (
-                            <button className='btn btn-dark botones-paginacion ps-3 pe-3' onClick={() => setPage(page + 1)}>Siguiente</button>
-                        )}
+                        <button onClick={goToPreviousPage} disabled={page === 1} className='btn btn-dark botones-paginacion ps-3 pe-3'>Anterior</button>
+                        <button onClick={goToNextPage} disabled={page === totalPages} className='btn btn-dark botones-paginacion ps-3 pe-3'>Siguiente</button>
                     </div>
 
                     <div className="mt-4 novedades bloque-card-mobile fade-in">
@@ -367,12 +385,8 @@ const BloqueGenerosMovie = () => {
                         })}
                     </div>
                     <div className="text-center container mb-5">
-                        {page > 1 && (
-                            <button className='btn btn-dark botones-paginacion ps-3 pe-3' onClick={() => setPage(page - 1)}>Anterior</button>
-                        )}
-                        {page < totalPages && (
-                            <button className='btn btn-dark botones-paginacion ps-3 pe-3' onClick={() => { setPage(page + 1); window.scrollTo(0, 190) }}>Siguiente</button>
-                        )}
+                        <button onClick={goToPreviousPage} disabled={page === 1} className='btn btn-dark botones-paginacion ps-3 pe-3'>Anterior</button>
+                        <button onClick={goToNextPage} disabled={page === totalPages} className='btn btn-dark botones-paginacion ps-3 pe-3'>Siguiente</button>
                     </div>
                 </div>
 

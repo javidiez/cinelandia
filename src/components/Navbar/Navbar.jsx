@@ -48,7 +48,7 @@ export const Navbar = ({reload}) => {
                     <div className="collapse navbar-collapse" id="navbarNav">
                         <ul className="navbar-nav pe-3">
                             <li className="nav-item">
-                                <Link className="nav-link text-light fs-3 fw-bold" aria-current="page" to="/home">Home</Link>
+                                <Link className="nav-link text-light fs-3 fw-bold" aria-current="page" onClick={reload} to="/home">Home</Link>
                             </li>
                             <li className="nav-item dropdown">
                                 <Link className="nav-link dropdown-toggle text-light fs-3 fw-bold" to="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">

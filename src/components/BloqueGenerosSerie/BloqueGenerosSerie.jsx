@@ -35,55 +35,52 @@ const BloqueGenerosSerie = () => {
     const [platforms, setPlatforms] = useState(null);
     const [recommendations, setRecommendations] = useState(null);
     const [playing, setPlaying] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
 
+
+    const fetchGenresSeries = async () => {
+        try {
+            const { data: { genres } } = await axios.get(`${API_URL}/genre/tv/list`, {
+                params: {
+                    api_key: API_KEY,
+                    language: 'es-ES',
+                },
+            });
+            setGenresSeries(genres);
+        } catch (error) {
+            console.error('Error al obtener la lista de géneros:', error);
+        }
+    };
+
+    const fetchMoviesByGenreSeries = async (page) => {
+        try {
+            const { data: { results, total_pages } } = await axios.get(`${API_URL}/discover/tv`, {
+                params: {
+                    api_key: API_KEY,
+                    language: 'es-ES',
+                    with_genres: selectedGenreSerie,
+                    sort_by: 'popularity.desc',
+                    'vote_count.gte': 30,
+                    page: page,
+                },
+            });
+
+            setMovies(results);
+            setTotalPages(total_pages);
+        } catch (error) {
+            console.error('Error al obtener series por género:', error);
+        }
+    };
 
     useEffect(() => {
-        // Obtener lista de géneros al montar el componente
-        const fetchGenresSeries = async () => {
-            try {
-                const { data: { genres } } = await axios.get(`${API_URL}/genre/tv/list`, {
-                    params: {
-                        api_key: API_KEY,
-                        language: 'es-ES',
-                    },
-                });
-                setGenresSeries(genres);
-            } catch (error) {
-                console.error('Error al obtener la lista de géneros:', error);
-            }
-        };
-
         fetchGenresSeries();
     }, []);
 
-
     useEffect(() => {
-        // Obtener series por género cuando el género seleccionado o la página cambian
-        if (selectedGenreSerie) {
-            const fetchMoviesByGenreSeries = async () => {
-                try {
-                    const { data: { results, total_pages } } = await axios.get(`${API_URL}/discover/tv`, {
-                        params: {
-                            api_key: API_KEY,
-                            language: 'es-ES',
-                            with_genres: selectedGenreSerie,
-                            sort_by: 'popularity.desc',
-                            'vote_count.gte': 30,
-                            page: page,
-                        },
-                    });
-
-
-                    setMovies(results);
-                    setTotalPages(total_pages);
-                } catch (error) {
-                    console.error('Error al obtener series por género:', error);
-                }
-            };
-
-            fetchMoviesByGenreSeries();
-        }
+        fetchMoviesByGenreSeries(page);
     }, [selectedGenreSerie, page]);
+
+
 
     const handleGenreChangeSerie = (event) => {
         setSelectedGenreSerie(event.target.value);
@@ -141,6 +138,46 @@ const BloqueGenerosSerie = () => {
         fetchSerie(movie.id);
         setSelectedMovie(movie);
     };
+
+    const goToPreviousPage = () => {
+        if (page > 0) {
+            setPage(page - 1);
+            
+        }
+
+        const swiper = document.querySelector('.swiper-container-paginas');
+
+        // Realizar scroll hacia la izquierda
+        if (swiper) {
+            swiper.scrollTo({
+                top: 200,
+                left: 0, // Hacer scroll al inicio del contenedor
+                behavior: 'smooth', // Opcional: hacerlo con animación smooth
+            });
+        }
+    };
+
+    const goToNextPage = () => {
+        if (page < totalPages) {
+            setPage(page + 1);
+            window.scrollTo(0, 150);
+        }
+    };
+    useEffect(() => {
+        const scrollToLeft = () => {
+            const swiper = document.querySelector('.swiper-wrapper-paginas');
+            if (swiper) {
+                swiper.scrollTo({
+                    top: 0,
+                    left: swiper.scrollWidth - swiper.clientWidth, // Hacer scroll al inicio del contenedor
+                    behavior: 'smooth',
+                });
+            }
+        };
+
+        scrollToLeft();
+    }, [page]); 
+
 
     const formatDate = (dateString) => {
         const date = new Date(dateString);
@@ -313,15 +350,9 @@ const BloqueGenerosSerie = () => {
 
                 <div className="col-12 col-lg-10 fade-in fs-5">
 
-
-
                     <div className="text-center container">
-                        {page > 1 && (
-                            <button className='btn btn-dark botones-paginacion ps-3 pe-3' onClick={() => setPage(page - 1)}>Anterior</button>
-                        )}
-                        {page < totalPages && (
-                            <button className='btn btn-dark botones-paginacion ps-3 pe-3' onClick={() => setPage(page + 1)}>Siguiente</button>
-                        )}
+                        <button onClick={goToPreviousPage} disabled={page <= 1} className='btn btn-dark botones-paginacion ps-3 pe-3'>Anterior</button>
+                        <button onClick={goToNextPage} disabled={page >= totalPages} className='btn btn-dark botones-paginacion ps-3 pe-3'>Siguiente</button>
                     </div>
 
                     <div className="mt-4 novedades bloque-card-mobile fade-in">
@@ -384,12 +415,8 @@ const BloqueGenerosSerie = () => {
                         })}
                     </div>
                     <div className="text-center container mb-5">
-                        {page > 1 && (
-                            <button className='btn btn-dark botones-paginacion ps-3 pe-3' onClick={() => setPage(page - 1)}>Anterior</button>
-                        )}
-                        {page < totalPages && (
-                            <button className='btn btn-dark botones-paginacion ps-3 pe-3' onClick={() => { setPage(page + 1); window.scrollTo(0, 0) }}>Siguiente</button>
-                        )}
+                        <button onClick={goToPreviousPage} disabled={page === 1} className='btn btn-dark botones-paginacion ps-3 pe-3'>Anterior</button>
+                        <button onClick={goToNextPage} disabled={page === totalPages} className='btn btn-dark botones-paginacion ps-3 pe-3'>Siguiente</button>
                     </div>
                 </div>
 
