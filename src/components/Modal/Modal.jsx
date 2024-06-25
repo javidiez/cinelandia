@@ -125,11 +125,12 @@ export const Modal = ({
                             </div>
                             <div className='bloque-derecho-modal'>
                                 <p className='fs-4 texto-modal pb-1'>{overview}</p>
-                                <div className='fs-4 pt-3 row justify-content-start align-items-baseline gap-2'>
-                                    <div className='col-12 col-sm-5 d-flex align-items-baseline'>
+                                <div className='fs-4 pt-3 d-flex align-items-baseline gap-2 puntaje'>
+                                    <div className='d-flex align-items-baseline justify-content-start'>
                                         <img className='icono-modal me-2' src={estrella} alt="Estrella" />
-                                        <span className='fw-bold puntuación'>Puntuación de usuarios:</span></div>
-                                    <div className='col-12 col-sm-1 puntaje'>
+                                        <span className='fw-bold'>Puntuación de usuarios:</span>
+                                        </div>
+                                    <div className='porcentaje-valoracion'>
                                         <span className={classPuntaje}> {voteAverage}%</span>
                                     </div>
 
