@@ -75,10 +75,6 @@
     display: block;
 }
 
-.sin-descripcion{
-    padding-right: 620px;
-}
-
 @media screen and (max-width: 700px){
     .swiper-wrapper-paginas:hover::-webkit-scrollbar {
         display: none;
