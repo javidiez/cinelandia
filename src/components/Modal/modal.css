@@ -46,8 +46,8 @@
   .imagen-modal {
      display: none;
   }
-  .texto-modal{
-      margin-top: -35px;
+  .bloque-poster-modal{
+    display: none;
   }
 }
 
@@ -56,6 +56,6 @@
     flex-direction: column;
   }
   .porcentaje-valoracion{
-    padding-left: 35px
+    padding-left: 30px;
   }
 }
