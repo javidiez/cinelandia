@@ -24,7 +24,7 @@ export const FilmCard = ({ image, title, releaseDate, voteAverage, onclick, topM
               e.target.src = fondoNotFound;
             }}
           />
-          <div className="overlay text-center p-3">
+          <div className="overlay text-center p-3 no-select">
             <div className={classMovieType}>{movieType}</div>
             <p className="card-text pb-4 fw-bold text-uppercase truncate-text">
               {truncateText(title, 55)}
