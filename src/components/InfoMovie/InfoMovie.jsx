@@ -130,16 +130,16 @@ function InfoMovie() {
     if (currentPage <= totalPages) {
       fetchMovies(searchKey, currentPage - 1);
       window.scrollTo(0, 500);
-  
+
       // Seleccionar el contenedor que contiene los elementos desplazables
       const swiper = document.querySelector('.swiper-wrapper-paginas');
       const container = document.querySelector('.bloque-cards-desktop');
-      
+
       // Realizar scroll hacia la izquierda
       if (swiper) {
         swiper.scrollTo({
-            top:400,
-            left: 0, // Hacer scroll al inicio del contenedor
+          top: 400,
+          left: 0, // Hacer scroll al inicio del contenedor
           behavior: 'smooth', // Opcional: hacerlo con animación smooth
         });
       }
@@ -151,17 +151,17 @@ function InfoMovie() {
   const goToNextPage = () => {
     if (currentPage < totalPages) {
       fetchMovies(searchKey, currentPage + 1);
-      window.scrollTo(0, 500);
-  
+      window.scrollTo(0, 430);
+
       // Seleccionar el contenedor que contiene los elementos desplazables
       const swiper = document.querySelector('.swiper-wrapper-paginas');
       const container = document.querySelector('.bloque-cards-desktop');
-      
+
       // Realizar scroll hacia la izquierda
       if (swiper) {
         swiper.scrollTo({
-            top:400,
-            left: 0, // Hacer scroll al inicio del contenedor
+          top: 400,
+          left: 0, // Hacer scroll al inicio del contenedor
           behavior: 'smooth', // Opcional: hacerlo con animación smooth
         });
       }
@@ -465,7 +465,7 @@ function InfoMovie() {
 
         )}
 
-        <div className="mt-4 mb-3 novedades bloque-card-mobile">
+        <div className="mt-4 novedades bloque-card-mobile fade-in">
           <div className="swiper-container-paginas">
             <div className="swiper-wrapper-paginas scrollableDiv-paginas d-flex">
               {movies.map((movie) => {
@@ -475,10 +475,10 @@ function InfoMovie() {
 
 
                 return (
-                  <div className='swiper-slide-paginas pt-5 ps-5'>
+                  <div className='swiper-slide-paginas ps-4 pt-3 fade-in'>
                     <FilmCard
                       key={movie.id}
-                      size={{ width: 'clamp(16rem,20vw,18rem)' }}
+                      size={{ width: 'clamp(15rem,20vw,18rem)' }}
                       image={movie.poster_path}
                       title={movie.title ? movie.title : movie.name}
                       overview={movie.overview}
@@ -533,7 +533,7 @@ function InfoMovie() {
               <button onClick={goToPreviousPage} disabled={currentPage === 1} className='btn btn-dark botones-paginacion ps-3 pe-3'>Anterior</button>
               <button onClick={goToNextPage} disabled={currentPage === totalPages} className='btn btn-dark botones-paginacion ps-3 pe-3'>Siguiente</button>
             </div>
-            <hr className="container-fluid border-2 border-top border-secondary pe-5 ps-5" />
+            <hr className="container-fluid border-2 border-top border-secondary pe-5 ps-5 mb-5" />
           </>
 
         ) : ""

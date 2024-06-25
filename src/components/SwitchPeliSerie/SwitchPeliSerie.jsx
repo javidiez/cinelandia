@@ -13,7 +13,7 @@ export const SwitchPeliSerie = () => {
     };
 
     return (
-        <div className='switcheo mt-5'>
+        <div className='switcheo'>
             <div className="form-check form-switch container d-flex justify-content-center mb-5">
                 <input
                     type="radio"
@@ -43,21 +43,21 @@ export const SwitchPeliSerie = () => {
             <div className="contenedor-contenido">
                 {/* Contenido de películas */}
                 <div className={`container-fluid row ${tipoContenido === 'pelicula' ? 'show fade-in' : 'hide'}`}>
-                    <div className='col-12 col-sm-3'>
-                        <SnippetProximosEstrenos />
-                    </div>
                     <div className='col-12 col-sm-9'>
                         <BloqueNovedades />
+                    </div>
+                    <div className='col-12 col-sm-3'>
+                        <SnippetProximosEstrenos />
                     </div>
                 </div>
 
                 {/* Contenido de series */}
                 <div className={`container-fluid row contenido ${tipoContenido === 'serie' ? 'show fade-in' : 'hide'}`}>
-                    <div className='col-12 col-sm-3'>
-                        <SnippetTendenciasSeries />
-                    </div>
                     <div className='col-12 col-sm-9'>
                         <BloqueSeries />
+                    </div>
+                    <div className='col-12 col-sm-3'>
+                        <SnippetTendenciasSeries />
                     </div>
                 </div>
             </div>

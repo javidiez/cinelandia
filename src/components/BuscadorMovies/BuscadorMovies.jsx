@@ -128,47 +128,47 @@ function InfoMovie() {
 
     const goToPreviousPage = () => {
         if (currentPage <= totalPages) {
-          fetchMovies(searchKey, currentPage - 1);
-          window.scrollTo(0, 500);
-      
-          // Seleccionar el contenedor que contiene los elementos desplazables
-          const swiper = document.querySelector('.swiper-wrapper-paginas');
-          const container = document.querySelector('.bloque-cards-desktop');
-          
-          // Realizar scroll hacia la izquierda
-          if (swiper) {
-            swiper.scrollTo({
-                top:400,
-                left: 0, // Hacer scroll al inicio del contenedor
-              behavior: 'smooth', // Opcional: hacerlo con animación smooth
-            });
-          }
-    
-    
+            fetchMovies(searchKey, currentPage - 1);
+            window.scrollTo(0, 500);
+
+            // Seleccionar el contenedor que contiene los elementos desplazables
+            const swiper = document.querySelector('.swiper-wrapper-paginas');
+            const container = document.querySelector('.bloque-cards-desktop');
+
+            // Realizar scroll hacia la izquierda
+            if (swiper) {
+                swiper.scrollTo({
+                    top: 400,
+                    left: 0, // Hacer scroll al inicio del contenedor
+                    behavior: 'smooth', // Opcional: hacerlo con animación smooth
+                });
+            }
+
+
         }
-      };
-    
-      const goToNextPage = () => {
+    };
+
+    const goToNextPage = () => {
         if (currentPage < totalPages) {
-          fetchMovies(searchKey, currentPage + 1);
-          window.scrollTo(0, 500);
-      
-          // Seleccionar el contenedor que contiene los elementos desplazables
-          const swiper = document.querySelector('.swiper-wrapper-paginas');
-          const container = document.querySelector('.bloque-cards-desktop');
-          
-          // Realizar scroll hacia la izquierda
-          if (swiper) {
-            swiper.scrollTo({
-                top:400,
-                left: 0, // Hacer scroll al inicio del contenedor
-              behavior: 'smooth', // Opcional: hacerlo con animación smooth
-            });
-          }
-    
-    
+            fetchMovies(searchKey, currentPage + 1);
+            window.scrollTo(0, 430);
+
+            // Seleccionar el contenedor que contiene los elementos desplazables
+            const swiper = document.querySelector('.swiper-wrapper-paginas');
+            const container = document.querySelector('.bloque-cards-desktop');
+
+            // Realizar scroll hacia la izquierda
+            if (swiper) {
+                swiper.scrollTo({
+                    top: 400,
+                    left: 0, // Hacer scroll al inicio del contenedor
+                    behavior: 'smooth', // Opcional: hacerlo con animación smooth
+                });
+            }
+
+
         }
-      };
+    };
     const formatDate = (dateString) => {
         const date = new Date(dateString);
         const day = String(date.getDate()).padStart(2, '0');
@@ -335,39 +335,39 @@ function InfoMovie() {
 
                 )}
 
-<div className="mt-4 mb-3 novedades bloque-card-mobile">
-          <div className="swiper-container-paginas">
-            <div className="swiper-wrapper-paginas scrollableDiv-paginas d-flex">
-              {movies.map((movie) => {
-                const releaseDate = new Date(movie.release_date);
-                const today = new Date();
-                const isUpcoming = releaseDate > today ? "Próximo estreno" : "";
+                <div className="mt-4 novedades bloque-card-mobile fade-in">
+                    <div className="swiper-container-paginas">
+                        <div className="swiper-wrapper-paginas scrollableDiv-paginas d-flex">
+                            {movies.map((movie) => {
+                                const releaseDate = new Date(movie.release_date);
+                                const today = new Date();
+                                const isUpcoming = releaseDate > today ? "Próximo estreno" : "";
 
 
-                return (
-                  <div className='swiper-slide-paginas pt-5 ps-5'>
-                    <FilmCard
-                      key={movie.id}
-                      size={{ width: 'clamp(16rem,20vw,18rem)' }}
-                      image={movie.poster_path}
-                      title={movie.title ? movie.title : movie.name}
-                      overview={movie.overview}
-                      releaseDate={movie.title && movie.release_date ? <><span className='fw-bold'>Fecha:</span> {formatDate(movie.release_date)}</> : movie.name && movie.first_air_date ? <><span className='fw-bold'>Fecha: </span>{formatDate(movie.first_air_date)}</> : 'Fecha no informada'}
-                      voteAverage={isUpcoming || isNaN(movie.vote_average) ? '' : <><span className="fw-bold">Valoración:</span> {(movie.vote_average * 10).toFixed(2)}%</>}
-                      onclick={() => selectMovie(movie)}
-                      movieType={movie.title ? 'Película' : 'Serie'}
-                      classMovieType={movie.title ? 'movie-type-movie' : 'movie-type-serie'}
-                      topMovie={movie.vote_average > 7.75 && movie.vote_count > 99 ? "Destacada" : ''}
-                      proxEstreno={isUpcoming}
-                    />
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </div>
+                                return (
+                                    <div className='swiper-slide-paginas ps-4 pt-3 fade-in'>
+                                        <FilmCard
+                                            key={movie.id}
+                                            size={{ width: 'clamp(15rem,20vw,18rem)' }}
+                                            image={movie.poster_path}
+                                            title={movie.title ? movie.title : movie.name}
+                                            overview={movie.overview}
+                                            releaseDate={movie.title && movie.release_date ? <><span className='fw-bold'>Fecha:</span> {formatDate(movie.release_date)}</> : movie.name && movie.first_air_date ? <><span className='fw-bold'>Fecha: </span>{formatDate(movie.first_air_date)}</> : 'Fecha no informada'}
+                                            voteAverage={isUpcoming || isNaN(movie.vote_average) ? '' : <><span className="fw-bold">Valoración:</span> {(movie.vote_average * 10).toFixed(2)}%</>}
+                                            onclick={() => selectMovie(movie)}
+                                            movieType={movie.title ? 'Película' : 'Serie'}
+                                            classMovieType={movie.title ? 'movie-type-movie' : 'movie-type-serie'}
+                                            topMovie={movie.vote_average > 7.75 && movie.vote_count > 99 ? "Destacada" : ''}
+                                            proxEstreno={isUpcoming}
+                                        />
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </div>
+                </div>
 
-        <div className="row justify-content-center mx-auto gap-5 mt-5 novedades fs-5 bloque-cards-desktop">
+                <div className="row justify-content-center mx-auto gap-5 mt-5 novedades fs-5 bloque-cards-desktop">
                     {movies.map((movie) => {
 
                         const releaseDate = new Date(movie.release_date);
@@ -403,7 +403,7 @@ function InfoMovie() {
                             <button onClick={goToPreviousPage} disabled={currentPage === 1} className='btn btn-dark botones-paginacion ps-3 pe-3'>Anterior</button>
                             <button onClick={goToNextPage} disabled={currentPage === totalPages} className='btn btn-dark botones-paginacion ps-3 pe-3'>Siguiente</button>
                         </div>
-                        <hr className="container-fluid border-2 border-top border-secondary pe-5 ps-5" />
+                        <hr className="container-fluid border-2 border-top border-secondary pe-5 ps-5 mb-5" />
                     </>
 
                 ) : ""

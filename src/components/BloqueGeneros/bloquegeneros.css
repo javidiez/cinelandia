@@ -1,6 +1,7 @@
 .title-select-generos{
     font-weight: 500;
     font-size: 2.2rem;
+    text-align: center;
 }
 
 @media screen and (max-width: 500px){

@@ -249,39 +249,38 @@ export const BloqueNovedades = () => {
             </div>
 
             <h2 className="text-center text-light snippet_novedades_title fade-in">Novedades</h2>
+            <div className="mt-4 novedades bloque-card-mobile fade-in">
+                <div className="swiper-container-paginas">
+                    <div className="swiper-wrapper-paginas scrollableDiv-paginas d-flex">
+                        {movies.map((movie) => {
+                            const releaseDate = new Date(movie.release_date);
+                            const today = new Date();
+                            const isUpcoming = releaseDate > today ? "Próximo estreno" : "";
 
-            <div className="mt-4 mb-3 novedades bloque-card-mobile fade-in">
-                        <div className="swiper-container-paginas">
-                            <div className="swiper-wrapper-paginas scrollableDiv-paginas d-flex">
-                                {moviesToShow.map((movie) => {
-                                    const releaseDate = new Date(movie.release_date);
-                                    const today = new Date();
-                                    const isUpcoming = releaseDate > today ? "Próximo estreno" : "";
 
-
-                                    return (
-                                        <div className='swiper-slide-paginas pt-5 ps-5 fade-in'>
-                                            <FilmCard
-                                                key={movie.id}
-                                                size={{ width: 'clamp(16rem,20vw,18rem)' }}
-                                                image={movie.poster_path}
-                                                title={movie.title ? movie.title : movie.name}
-                                                overview={movie.overview}
-                                                releaseDate={movie.title && movie.release_date ? <><span className='fw-bold'>Fecha:</span> {formatDate(movie.release_date)}</> : movie.name && movie.first_air_date ? <><span className='fw-bold'>Fecha: </span>{formatDate(movie.first_air_date)}</> : 'Fecha no informada'}
-                                                voteAverage={<><span className='fw-bold'>Valoración:</span> {(movie.vote_average * 10).toFixed(2)} %</>}
-                                                onclick={() => selectMovie(movie)}
-                                                movieType={''}
-                                                classMovieType={movie.title ? 'movie-type-movie' : 'movie-type-serie'}
-                                                topMovie={movie.vote_average > 7.75 && movie.vote_count > 99 ? "Destacada" : ''}
-                                                proxEstreno={isUpcoming}
-                                            />
-                                        </div>
-                                    );
-                                })}
-                            </div>
-                        </div>
+                            return (
+                                <div className='swiper-slide-paginas ps-5 pt-3 fade-in'>
+                                    <FilmCard
+                                        key={movie.id}
+                                        size={{ width: 'clamp(15rem,20vw,18rem)' }}
+                                        image={movie.poster_path}
+                                        title={movie.title ? movie.title : movie.name}
+                                        overview={movie.overview}
+                                        releaseDate={movie.title && movie.release_date ? <><span className='fw-bold'>Fecha:</span> {formatDate(movie.release_date)}</> : movie.name && movie.first_air_date ? <><span className='fw-bold'>Fecha: </span>{formatDate(movie.first_air_date)}</> : 'Fecha no informada'}
+                                        voteAverage={<><span className='fw-bold'>Valoración:</span> {(movie.vote_average * 10).toFixed(2)} %</>}
+                                        onclick={() => selectMovie(movie)}
+                                        movieType={''}
+                                        classMovieType={movie.title ? 'movie-type-movie' : 'movie-type-serie'}
+                                        topMovie={movie.vote_average > 7.75 && movie.vote_count > 99 ? "Destacada" : ''}
+                                        proxEstreno={isUpcoming}
+                                    />
+                                </div>
+                            );
+                        })}
                     </div>
-                    <div className="flex-wrap justify-content-center mx-auto gap-5 mt-5 mb-3 novedades fade-in fs-5 bloque-cards-desktop-generos">
+                </div>
+            </div>
+            <div className="flex-wrap justify-content-center mx-auto gap-5 mt-5 mb-3 novedades fade-in fs-5 bloque-cards-desktop-generos">
                 {moviesToShow.map((movie) => {
                     const releaseDateMovie = new Date(movie.release_date);
                     const today = new Date();

@@ -9,7 +9,7 @@
 
 .botones-paginacion {
     padding: 5px;
-    font-size: 1.5rem;
+    font-size: clamp(1.2rem, 3vw, 1.5rem);
     margin: 50px 15px 0px 0px;
     border: none;
 }

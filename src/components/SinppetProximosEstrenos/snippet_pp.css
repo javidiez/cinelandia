@@ -6,7 +6,7 @@
 
 .snippet_pp_title{
     font-size: clamp(2.2rem,5vw,3.1rem);
-    margin-bottom: 70px;
+    margin-bottom: 40px;
     padding-top: 20px
 }
 
@@ -23,10 +23,11 @@
 
 .btn-mas-info-estrenos{
     font-weight: 500;
+    font-size: clamp(0.7rem,3.5vw, 1rem);
 }
 
 .snippet_tendencias_title{
     font-size: clamp(2.5rem,5vw, 3.4rem);
-    margin-bottom: 70px;
+    margin-bottom: 40px;
     padding-top: 20px
 }

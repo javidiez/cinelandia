@@ -291,20 +291,20 @@ export const TopRated = () => {
                     </div>
 
                     <div>
-            <div className="mt-4 mb-3 novedades bloque-card-mobile">
-            <div className="swiper-container-paginas">
+                    <div className="mt-4 novedades bloque-card-mobile fade-in">
+          <div className="swiper-container-paginas">
             <div className="swiper-wrapper-paginas scrollableDiv-paginas d-flex">
-                {movies.map((movie) => {
-                    const releaseDate = new Date(movie.release_date);
-                    const today = new Date();
-                    const isUpcoming = releaseDate > today ? "Próximo estreno" : "";
+              {movies.map((movie) => {
+                const releaseDate = new Date(movie.release_date);
+                const today = new Date();
+                const isUpcoming = releaseDate > today ? "Próximo estreno" : "";
 
 
-                    return (
-                        <div className='swiper-slide-paginas pt-5 ps-5'>
-                        <FilmCard
-                            key={movie.id}
-                            size={{ width: 'clamp(16rem,20vw,18rem)' }}
+                return (
+                  <div className='swiper-slide-paginas ps-4 pt-3 fade-in'>
+                    <FilmCard
+                      key={movie.id}
+                      size={{ width: 'clamp(15rem,20vw,18rem)' }}
                             image={movie.poster_path}
                             title={movie.title}
                             overview={movie.overview}

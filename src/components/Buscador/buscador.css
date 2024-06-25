@@ -10,7 +10,6 @@
 
 .hero {
     background-image: url(../../assets/img/fondo_buscador.webp);
-    min-height: 35vh;
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
@@ -48,7 +47,7 @@
 }
 
 .btn-check-buscador{
-    width: clamp(60px,20vw,120px);
+    width: clamp(60px,22vw,120px);
     font-size: clamp(1rem,4vw,1.5rem);
     font-weight: 500;
     margin-right: 5px;

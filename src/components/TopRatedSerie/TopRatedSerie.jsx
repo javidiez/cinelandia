@@ -32,32 +32,32 @@ export const TopRatedSerie = () => {
     const [recommendations, setRecommendations] = useState(null);
     const [playing, setPlaying] = useState(false);
 
-const fetchTopRatedSeries = async (page = 1) => {
-    setLoading(true);
+    const fetchTopRatedSeries = async (page = 1) => {
+        setLoading(true);
 
-    try {
-        const { data: { results, total_pages } } = await axios.get(`${API_URL}/discover/tv`, {
-            params: {
-                api_key: API_KEY,
-                language: 'es-ES',
-                sort_by: 'popularity.desc',
-                'vote_count.gte': 100,
-                'vote_average.gte': 8,
-                page: page
-            },
-        });
+        try {
+            const { data: { results, total_pages } } = await axios.get(`${API_URL}/discover/tv`, {
+                params: {
+                    api_key: API_KEY,
+                    language: 'es-ES',
+                    sort_by: 'popularity.desc',
+                    'vote_count.gte': 100,
+                    'vote_average.gte': 8,
+                    page: page
+                },
+            });
 
 
-        // Establece las series filtradas y la cantidad total de páginas en el estado
-        setMovies(results);
-        setTotalPages(total_pages);
-        setCurrentPage(page);
-    } catch (error) {
-        console.error("Error fetching top rated series:", error);
-    } finally {
-        setLoading(false);
-    }
-};
+            // Establece las series filtradas y la cantidad total de páginas en el estado
+            setMovies(results);
+            setTotalPages(total_pages);
+            setCurrentPage(page);
+        } catch (error) {
+            console.error("Error fetching top rated series:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
 
 
@@ -113,7 +113,7 @@ const fetchTopRatedSeries = async (page = 1) => {
         await fetchTopRatedSeries(page);
         window.scrollTo({ top: 200, left: 0, behavior: 'smooth' });
     };
-    
+
 
     const handleSerieSelect = async (serie) => {
         await fetchSerie(serie.id);
@@ -295,9 +295,9 @@ const fetchTopRatedSeries = async (page = 1) => {
                         <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages} className='btn btn-dark botones-paginacion ps-3 pe-3'>Siguiente</button>
                     </div>
                     <div>
-                        <div className="mb-3 novedades bloque-card-mobile">
+                        <div className="mt-4 novedades bloque-card-mobile fade-in">
                             <div className="swiper-container-paginas">
-                                <div className="swiper-wrapper-paginas scrollableDiv-paginas d-flex gap-2">
+                                <div className="swiper-wrapper-paginas scrollableDiv-paginas d-flex">
                                     {movies.map((movie) => {
                                         const releaseDate = new Date(movie.release_date);
                                         const today = new Date();
@@ -305,10 +305,10 @@ const fetchTopRatedSeries = async (page = 1) => {
 
 
                                         return (
-                                            <div className='swiper-slide-paginas pt-5 ps-5'>
+                                            <div className='swiper-slide-paginas ps-4 pt-3 fade-in'>
                                                 <FilmCard
                                                     key={movie.id}
-                                                    size={{ width: 'clamp(16rem,20vw,18rem)' }}
+                                                    size={{ width: 'clamp(15rem,20vw,18rem)' }}
                                                     image={movie.poster_path}
                                                     title={movie.name}
                                                     overview={movie.overview}

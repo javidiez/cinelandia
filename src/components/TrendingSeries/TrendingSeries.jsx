@@ -144,25 +144,25 @@ export const TrendingSerie = () => {
             setMovies([]);
             setCurrentPage(currentPage + 1);
             window.scrollTo(0, 150);
-      
-          // Seleccionar el contenedor que contiene los elementos desplazables
-          const swiper = document.querySelector('.swiper-wrapper-paginas');
-          
-          // Realizar scroll hacia la izquierda
-          if (swiper) {
-            swiper.scrollTo({
-                top:150,
-                left: 0, // Hacer scroll al inicio del contenedor
-              behavior: 'smooth', // Opcional: hacerlo con animación smooth
-            });
-          }
 
-          if (currentPage > 0) {
-            setCurrentPage(currentPage + 1);
-            window.scrollTo(0, 150);
+            // Seleccionar el contenedor que contiene los elementos desplazables
+            const swiper = document.querySelector('.swiper-wrapper-paginas');
+
+            // Realizar scroll hacia la izquierda
+            if (swiper) {
+                swiper.scrollTo({
+                    top: 150,
+                    left: 0, // Hacer scroll al inicio del contenedor
+                    behavior: 'smooth', // Opcional: hacerlo con animación smooth
+                });
+            }
+
+            if (currentPage > 0) {
+                setCurrentPage(currentPage + 1);
+                window.scrollTo(0, 150);
+            }
         }
-        }
-      };
+    };
 
     const formatDate = (dateString) => {
         const date = new Date(dateString);
@@ -326,9 +326,9 @@ export const TrendingSerie = () => {
             </div>
 
             <div>
-            <div className="mt-4 mb-3 novedades bloque-card-mobile">
+                <div className="mt-4 novedades bloque-card-mobile fade-in">
                     <div className="swiper-container-paginas">
-                        <div className="swiper-wrapper-paginas scrollableDiv-paginas d-flex gap-2">
+                        <div className="swiper-wrapper-paginas scrollableDiv-paginas d-flex">
                             {movies.map((movie) => {
                                 const releaseDate = new Date(movie.release_date);
                                 const today = new Date();
@@ -336,10 +336,10 @@ export const TrendingSerie = () => {
 
 
                                 return (
-                                    <div className='swiper-slide-paginas pt-5 ps-5'>
+                                    <div className='swiper-slide-paginas ps-4 pt-3 fade-in'>
                                         <FilmCard
                                             key={movie.id}
-                                            size={{ width: 'clamp(16rem,20vw,18rem)' }}
+                                            size={{ width: 'clamp(15rem,20vw,18rem)' }}
                                             image={movie.poster_path}
                                             title={movie.name}
                                             overview={movie.overview}

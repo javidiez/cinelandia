@@ -320,9 +320,9 @@ export const PopularesSerie = () => {
             </div>
 
             <div>
-                <div className="mt-4 mb-3 novedades bloque-card-mobile">
+                <div className="mt-4 novedades bloque-card-mobile fade-in">
                     <div className="swiper-container-paginas">
-                        <div className="swiper-wrapper-paginas scrollableDiv-paginas d-flex gap-2">
+                        <div className="swiper-wrapper-paginas scrollableDiv-paginas d-flex">
                             {movies.map((movie) => {
                                 const releaseDate = new Date(movie.release_date);
                                 const today = new Date();
@@ -330,10 +330,10 @@ export const PopularesSerie = () => {
 
 
                                 return (
-                                    <div className='swiper-slide-paginas pt-5 ps-5'>
+                                    <div className='swiper-slide-paginas ps-4 pt-3 fade-in'>
                                         <FilmCard
                                             key={movie.id}
-                                            size={{ width: 'clamp(16rem,20vw,18rem)' }}
+                                            size={{ width: 'clamp(15rem,20vw,18rem)' }}
                                             image={movie.poster_path}
                                             title={movie.name}
                                             overview={movie.overview}

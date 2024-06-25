@@ -14,6 +14,7 @@ import '../SnippetNovedades/bloque_novedades.css'
 import '../BloqueSeriesHome/BloqueSeriesHome.css'
 import '../../../node_modules/swiper/swiper-bundle.min.css';
 import '../BloqueGeneros/bloquegeneros.css'
+import '../FilmCard/filmcard.css';
 import Swiper from 'swiper';
 import { Tooltip } from "flowbite-react";
 import '../Novedades/novedades.css'
@@ -323,7 +324,7 @@ const BloqueGenerosSerie = () => {
                         )}
                     </div>
 
-                    <div className="mt-4 mb-3 novedades bloque-card-mobile fade-in">
+                    <div className="mt-4 novedades bloque-card-mobile fade-in">
                         <div className="swiper-container-paginas">
                             <div className="swiper-wrapper-paginas scrollableDiv-paginas d-flex">
                                 {movies.map((movie) => {
@@ -333,10 +334,10 @@ const BloqueGenerosSerie = () => {
 
 
                                     return (
-                                        <div className='swiper-slide-paginas pt-5 ps-5 fade-in'>
+                                        <div className='swiper-slide-paginas ps-4 pt-3 fade-in'>
                                             <FilmCard
                                                 key={movie.id}
-                                                size={{ width: 'clamp(16rem,20vw,18rem)' }}
+                                                size={{ width: 'clamp(15rem,20vw,18rem)' }}
                                                 image={movie.poster_path}
                                                 title={movie.title ? movie.title : movie.name}
                                                 overview={movie.overview}

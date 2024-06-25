@@ -1,11 +1,12 @@
 .snippet_novedades_title{
-    font-size: clamp(3rem,5vw, 3.6rem);
+    font-size: clamp(2.5rem,5vw, 3.6rem);
 }
 
 .botones-ver-mas{
-    font-size: 1.5rem;
+    font-size: clamp(1.2rem,5vw,1.5rem);
     background-color: #0071a5;
-    border: none
+    border: none;
+    margin-top: -15px
 }
 
 .botones-ver-mas:hover{
@@ -15,12 +16,8 @@
     width: 60px;
 }
 
-/* bloque_novedades.css */
-
-/* Estilo para los contenedores de Swiper */
 .swiper-container {
     max-width: 55vw
-
 }
 
 .scrollableDiv {

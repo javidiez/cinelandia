@@ -4,7 +4,7 @@ import logo from '../../assets/img/logo.png'
 import './navbar.css';
 import { Link } from "react-router-dom";
 
-export const Navbar = () => {
+export const Navbar = ({reload}) => {
 
     useEffect(() => {
         const handleScroll = () => {
@@ -36,7 +36,7 @@ export const Navbar = () => {
         <nav className="navbar navbar-expand-lg sticky-top">
             <div className="container-fluid">
                 <div className="d-flex justify-content-between">
-                    <Link className="navbar-brand d-flex align-items-center" to="/home">
+                    <Link className="navbar-brand d-flex align-items-center" to="/home" onClick={reload}>
                         <img src={logo} className="logo" />
                         <p className="text-light fw-bold ps-3">CINELANDIA</p>
                     </Link>

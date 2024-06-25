@@ -71,7 +71,7 @@ p {
     color: #000000;
     z-index: 10;
     margin: -15px;
-    /* Ajusta este valor según sea necesario */
+    font-size: clamp(1.3rem,4vw,1.3rem);
 
 }
 
@@ -86,8 +86,7 @@ p {
     color: #ffffff;
     z-index: 10;
     margin: -15px;
-    /* Ajusta este valor según sea necesario */
-
+    font-size: clamp(1.2rem,4vw,1.3rem);
 }
 
 .movie-type-serie {

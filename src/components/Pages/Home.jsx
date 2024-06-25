@@ -4,9 +4,15 @@ import { Navbar } from '../Navbar/Navbar';
 
 function Home() {
 
+  const recargar = () => {
+    window.location.reload()
+    window.scrollTo(0, 0);
+}
+
+
   return (
     <>
-      <Navbar/>
+      <Navbar reload={() => recargar()}/>
       <Buscador/>
       <SwitchPeliSerie />
     </>
