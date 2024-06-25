@@ -239,7 +239,7 @@ const BloqueGenerosMovie = () => {
 
                                 <>
 
-                                    <h2 className='pt-5 pb-2 text-info subtitle-modal'>Te puede interesar</h2>
+                                    <h2 className='pt-5 text-info subtitle-modal'>Te puede interesar</h2>
 
                                     <div className='d-flex flex-wrap gap-4'>
                                         <div className="swiper-container">

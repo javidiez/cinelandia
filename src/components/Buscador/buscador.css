@@ -18,7 +18,7 @@
 .hero-text {
     font-size: clamp(2rem, 3vw, 7rem);
     text-wrap: balance;
-    padding: 0 15px;
+    padding: 25px 15px 10px 15px;
 }
 
 .buscar {
@@ -26,7 +26,7 @@
     border: none;
     font-size: 1.7rem !important;
     width: 40vw;
-    margin-bottom: 70px;
+    margin-bottom: 50px;
 }
 
 .buscar:hover {

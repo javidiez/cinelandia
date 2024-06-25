@@ -20,7 +20,7 @@ export const Buscador = () => {
         <div className="hero text-center">
 
             <div className='switcheo'>
-            <h2 className="hero-text text-center text-light pb-4 pt-5">Todas tus películas y series favoritas</h2>
+            <h2 className="hero-text text-center text-light ">Todas tus películas y series favoritas</h2>
                 <div className="form-check form-switch botones-buscador pb-3">
                     <input
                         type="radio"

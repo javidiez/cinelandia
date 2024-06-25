@@ -291,7 +291,7 @@ function InfoMovie() {
 
                 <>
 
-                  <h2 className='pt-4 pb-4 text-info subtitle-modal'>Te puede interesar</h2>
+                  <h2 className='pt-5 text-info subtitle-modal'>Te puede interesar</h2>
 
                   <div className='d-flex flex-wrap gap-4'>
                     <div className="swiper-container">
