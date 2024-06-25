@@ -125,14 +125,18 @@ export const Modal = ({
                             </div>
                             <div className='bloque-derecho-modal'>
                                 <p className='fs-4 texto-modal pb-1'>{overview}</p>
-                                <p className='fs-4 pt-4 d-flex align-items-baseline gap-2'>
-                                    <img className='icono-modal' src={estrella} alt="Estrella" />
-                                    <span className='fw-bold'>Puntuación de usuarios:</span>
-                                    <span className={classPuntaje}> {voteAverage}%</span>
-                                </p>
+                                <div className='fs-4 pt-3 row justify-content-start align-items-baseline gap-2'>
+                                    <div className='col-12 col-sm-5 d-flex align-items-baseline'>
+                                        <img className='icono-modal me-2' src={estrella} alt="Estrella" />
+                                        <span className='fw-bold puntuación'>Puntuación de usuarios:</span></div>
+                                    <div className='col-12 col-sm-1 puntaje'>
+                                        <span className={classPuntaje}> {voteAverage}%</span>
+                                    </div>
+
+                                </div>
                                 <p className='fs-4 pt-1 d-flex align-items-baseline gap-2'>
                                     <img className='icono-modal' src={lapiz} alt="Lapiz" />
-                                    <span className='fw-bold'>Valoraciones:</span> {voteCount}
+                                    <span className='fw-bold pt-2'>Valoraciones:</span> {voteCount}
                                 </p>
                                 <p className='fs-4 pt-1 align-items-baseline gap-2'>
                                     {providers}
@@ -142,7 +146,7 @@ export const Modal = ({
                         <div>
                             <h2 className='pt-5 pb-3 text-info subtitle-modal'>Más información</h2>
                             <p className='fs-4'><span className='fw-bold'>Productora: </span>{mapProductionCompanies}</p>
-                            <p className='fs-4'><span className='fw-bold pe-2'>País: </span>{mapCountries}</p>
+                            <p className='fs-4'><span className='fw-bold'>País: </span>{mapCountries}</p>
                             <p className='fs-4'>{budget}</p>
                             <p className='fs-4'>{revenue}</p>
                             <div className='d-flex gap-3 flex-wrap'>

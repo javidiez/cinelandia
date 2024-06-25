@@ -11,6 +11,8 @@ import SeriesTopRated from './components/Pages/SeriesTopRated';
 import SeriesTendencias from './components/Pages/SeriesTendencias';
 import Home from './components/Pages/Home'
 import '../public/index.css'
+import { Footer } from './components/Footer/Footer';
+
 
 function App() {
   return (
@@ -29,6 +31,7 @@ function App() {
         <Route path="/series_trending" element={<SeriesTendencias />} />
         <Route path="/generos" element={<Generos />} />
       </Routes>
+      <Footer/>
     </Router>
 
   );

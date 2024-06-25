@@ -27,6 +27,10 @@
     font-size: clamp(1.9rem, 5vw, 2.5rem);
   }
 
+  .puntaje{
+    margin-left: -45px
+  }
+
   @media screen and (max-width: 950px){
     .reproductor{
         min-width: 100%;
@@ -40,4 +44,16 @@
 
   .modal-body {
    overflow-x: hidden; /* Oculta la barra de desplazamiento */
+}
+
+@media screen and (max-width: 1200px){
+  .imagen-modal {
+     display: none;
+  }
+  .texto-modal{
+      margin-top: -35px;
+  }
+  .puntaje{
+    margin-left: 30px
+  }
 }

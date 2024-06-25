@@ -187,7 +187,7 @@ export const TopRated = () => {
                             voteAverage={(selectedMovie.vote_average * 10).toFixed(2)}
                             voteCount={selectedMovie.vote_count}
                             mapProductionCompanies={selectedMovie.production_companies && selectedMovie.production_companies.map((company, index) => (
-                                <span className='ps-2' key={company.id}>{company.name}{index < selectedMovie.production_companies.length - 1 ? ', ' : ''}</span>
+                                <span key={company.id}>{company.name}{index < selectedMovie.production_companies.length - 1 ? ', ' : ''}</span>
                             ))}
                             mapCountries={selectedMovie.production_countries && selectedMovie.production_countries.map((country, index) => (
                                 <span key={country.iso_3166_1}>{country.name}{index < selectedMovie.production_countries.length - 1 ? ', ' : ''}</span>

@@ -203,7 +203,7 @@ export const PopularesSerie = () => {
                             voteAverage={selectedSerie.vote_average ? (selectedSerie.vote_average * 10).toFixed(2) : '0'}
                             voteCount={selectedSerie.vote_count ? selectedSerie.vote_count : 0}
                             mapProductionCompanies={selectedSerie.production_companies && selectedSerie.production_companies.length > 0 ? selectedSerie.production_companies.map((company, index) => (
-                                <span className='ps-2' key={company.id}>{company.name}{index < selectedSerie.production_companies.length - 1 ? ', ' : ''}</span>
+                                <span key={company.id}>{company.name}{index < selectedSerie.production_companies.length - 1 ? ', ' : ''}</span>
                             )) : 'No informado'}
                             mapCountries={selectedSerie.production_countries && selectedSerie.production_countries.length > 0 ? selectedSerie.production_countries.map((country, index) => (
                                 <span key={country.iso_3166_1}>{country.name}{index < selectedSerie.production_countries.length - 1 ? ', ' : ''}</span>
