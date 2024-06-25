@@ -37,8 +37,8 @@ export const Navbar = ({reload}) => {
             <div className="container-fluid">
                 <div className="d-flex justify-content-between">
                     <Link className="navbar-brand d-flex align-items-center" to="/home" onClick={reload}>
-                        <img src={logo} className="logo" />
-                        <p className="text-light fw-bold ps-3">CINELANDIA</p>
+                        <img src={logo} className="logo user-select-none" />
+                        <p className="text-light fw-bold ps-3 user-select-none">CINELANDIA</p>
                     </Link>
                 </div>
                 <div>

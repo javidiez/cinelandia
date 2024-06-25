@@ -35,3 +35,9 @@ label{
 .btn-check:checked+.btn{
     color: #023249;
 }
+
+@media screen and (max-width: 600px){
+    .switcheo-movie-series{
+        margin-left: -15px;
+    }
+}

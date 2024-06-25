@@ -42,7 +42,8 @@
 }
 
 .data-extra {
-    color: rgb(158, 158, 158)
+    color: rgb(158, 158, 158);
+    line-height: 1.8rem;
 }
 
 .bloque-derecho-modal {

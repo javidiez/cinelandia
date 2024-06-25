@@ -278,7 +278,7 @@ function InfoMovie() {
                     <img className='icono-modal me-2' alt="smarttv" src={smartTv} />
                     <span className='fw-bold'>Plataformas</span>
                   </div>
-                  <div className='d-flex'>
+                  <div className='d-flex flex-wrap'>
                     {platforms.map((platform, index) => (
                       <Tooltip content={platform.provider_name} trigger="hover" placement="bottom" className='d-flex align-items-start bg-dark text-light ps-2 pe-0 pt-0 pb-0 fs-5 rounded'>
                         <img key={index} className='border platforms me-2 mt-2' src={`https://image.tmdb.org/t/p/w200${platform.logo_path}`} alt={platform.provider_name} />

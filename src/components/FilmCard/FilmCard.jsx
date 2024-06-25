@@ -27,7 +27,7 @@ export const FilmCard = ({ image, title, releaseDate, voteAverage, onclick, topM
           <div className="overlay text-center p-3 no-select">
             <div className={classMovieType}>{movieType}</div>
             <p className="card-text pb-4 fw-bold text-uppercase truncate-text">
-              {truncateText(title, 55)}
+              {truncateText(title,40)}
             </p>
             <p className="card-text">{releaseDate}</p>
             <p className="card-text"><span className="fw-bold"></span>{voteAverage}</p>

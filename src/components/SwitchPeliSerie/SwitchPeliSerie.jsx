@@ -14,7 +14,7 @@ export const SwitchPeliSerie = () => {
 
     return (
         <div className='switcheo'>
-            <div className="form-check form-switch container d-flex justify-content-center mb-5">
+            <div className="form-check form-switch container d-flex justify-content-center mb-5 switcheo-movie-series">
                 <input
                     type="radio"
                     className="btn-check"
