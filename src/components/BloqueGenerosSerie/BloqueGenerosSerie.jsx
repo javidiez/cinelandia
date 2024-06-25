@@ -35,7 +35,6 @@ const BloqueGenerosSerie = () => {
     const [platforms, setPlatforms] = useState(null);
     const [recommendations, setRecommendations] = useState(null);
     const [playing, setPlaying] = useState(false);
-    const [currentPage, setCurrentPage] = useState(1);
 
 
     const fetchGenresSeries = async () => {

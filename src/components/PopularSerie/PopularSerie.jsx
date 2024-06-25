@@ -198,7 +198,7 @@ export const PopularesSerie = () => {
                             firstAirDate={selectedSerie.first_air_date ? formatDate(selectedSerie.first_air_date) : 'Fecha desconocida'}
                             lastAirDate={selectedSerie.last_air_date ? formatDate(selectedSerie.last_air_date) : 'No informado'}
                             originalLanguage={selectedSerie.original_language ? selectedSerie.original_language : <span className='text-lowercase'>Idioma desconocido</span>}
-                            overview={selectedMovie.overview ? selectedMovie.overview : <span className='sin-descripcion'>Sin descripción</span>}
+                            overview={selectedSerie.overview ? selectedSerie.overview : <span className='sin-descripcion'>Sin descripción</span>}
                             classPuntaje={`${selectedSerie.vote_average * 10 >= 80 ? 'puntaje-verde' : selectedSerie.vote_average * 10 > 60 ? 'puntaje-amarillo' : 'puntaje-rojo'}`}
                             voteAverage={selectedSerie.vote_average ? (selectedSerie.vote_average * 10).toFixed(2) : '0'}
                             voteCount={selectedSerie.vote_count ? selectedSerie.vote_count : 0}
