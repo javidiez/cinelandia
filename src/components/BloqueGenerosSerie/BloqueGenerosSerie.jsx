@@ -221,7 +221,7 @@ const BloqueGenerosSerie = () => {
                             firstAirDate={selectedMovie.first_air_date ? formatDate(selectedMovie.first_air_date) : 'Fecha desconocida'}
                             lastAirDate={selectedMovie.last_air_date ? formatDate(selectedMovie.last_air_date) : 'No informado'}
                             originalLanguage={selectedMovie.original_language ? selectedMovie.original_language : <span className='text-lowercase'>Idioma desconocido</span>}
-                            overview={selectedMovie.overview}
+                            overview={selectedMovie.overview ? selectedMovie.overview : <span className='sin-descripcion'>Sin descripción</span>}
                             classPuntaje={`${selectedMovie.vote_average * 10 >= 80 ? 'puntaje-verde' : selectedMovie.vote_average * 10 > 60 ? 'puntaje-amarillo' : 'puntaje-rojo'}`}
                             voteAverage={selectedMovie.vote_average ? (selectedMovie.vote_average * 10).toFixed(2) : '0'}
                             voteCount={selectedMovie.vote_count ? selectedMovie.vote_count : 0}

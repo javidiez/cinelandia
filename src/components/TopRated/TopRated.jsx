@@ -182,7 +182,7 @@ export const TopRated = () => {
                             ))}
                             releaseDate={formatDate(selectedMovie.release_date)}
                             originalLanguage={selectedMovie.original_language}
-                            overview={selectedMovie.overview}
+                            overview={selectedMovie.overview ? selectedMovie.overview : <span className='sin-descripcion'>Sin descripción</span>}
                             classPuntaje={`${selectedMovie.vote_average * 10 >= 80 ? 'puntaje-verde' : selectedMovie.vote_average * 10 > 60 ? 'puntaje-amarillo' : 'puntaje-rojo'}`}
                             voteAverage={(selectedMovie.vote_average * 10).toFixed(2)}
                             voteCount={selectedMovie.vote_count}
