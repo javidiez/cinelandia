@@ -25,6 +25,15 @@
     transition: padding 0.3s ease-in-out, background-color 0.3s ease-in-out, max-width 0.3s ease-in-out;
 }
 
+.offcanvas{
+    background-color: #023249;
+    width: 80% !important;
+}
+
+.btn-close{
+    color: #fff !important;
+}
+
 .navbar.shrink {
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
@@ -76,4 +85,10 @@
         font-size: 1.7rem !important; /* Ajusta según el tamaño deseado al hacer scroll */
     }
     
+}
+
+@media screen and (min-width: 991px){
+    .offcanvas-header{
+        display:none !important; 
+    }
 }
