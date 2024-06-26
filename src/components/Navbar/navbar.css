@@ -15,11 +15,6 @@
     box-shadow: none;
 }
 
-.btn-lupa{
-    
-    border-radius: 6px; /* Esquinas: superior izquierda, superior derecha, inferior derecha, inferior izquierda */
-}
-
 .navbar{
     background-color: #023249 !important;
     transition: padding 0.3s ease-in-out, background-color 0.3s ease-in-out, max-width 0.3s ease-in-out;
@@ -28,10 +23,6 @@
 .offcanvas{
     background-color: #023249;
     width: 80% !important;
-}
-
-.btn-close{
-    color: #fff !important;
 }
 
 .navbar.shrink {
@@ -72,6 +63,10 @@
 .dropdown-item:hover{
     background-color: #fff;
     color: #023249 !important;
+}
+
+.btn-close {
+    filter: invert(1) grayscale(1) brightness(1.5); /* Esto invierte el color y lo hace blanco */
 }
 
 @media screen and (max-width: 575px){
