@@ -21,7 +21,7 @@
 }
 
 .navbar{
-    background-color: #023249;
+    background-color: #023249 !important;
     transition: padding 0.3s ease-in-out, background-color 0.3s ease-in-out, max-width 0.3s ease-in-out;
 }
 
@@ -88,7 +88,7 @@
 }
 
 @media screen and (min-width: 991px){
-    .offcanvas-header{
+    .navbar-mobile{
         display:none !important; 
     }
 }
