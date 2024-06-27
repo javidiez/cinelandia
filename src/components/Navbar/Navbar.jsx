@@ -92,7 +92,7 @@ export const Navbar = ({ reload }) => {
 
             <nav className="navbar bg-body-tertiary fixed-top navbar-mobile">
                 <div className="container-fluid">
-                    <a className="navbar-brand d-flex align-items-center" href="/home" onClick={reload}>
+                    <a className="navbar-brand d-flex align-items-center" href="/" onClick={reload}>
                         <img src={logo} className="logo user-select-none" />
                         <p className="text-light fw-bold ps-3 user-select-none">CINELANDIA</p>
                     </a>
@@ -108,7 +108,7 @@ export const Navbar = ({ reload }) => {
                         <div class="offcanvas-body">
                             <ul className="navbar-nav pe-3">
                                 <li className="nav-item">
-                                    <a className="nav-link text-light fs-3 fw-bold" aria-current="page" onClick={reload} href="/home">Home</a>
+                                    <a className="nav-link text-light fs-3 fw-bold" aria-current="page" onClick={reload} href="/">Home</a>
                                 </li>
                                 <li className="nav-item dropdown">
                                     <a className="nav-link dropdown-toggle text-light fs-3 fw-bold" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
