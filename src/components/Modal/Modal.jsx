@@ -64,8 +64,7 @@ export const Modal = ({
     return (
             <div className="modal fade" id={idModal} tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
                 <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl modal-block">
-                    <div className="modal-content modal-movie text-start modal-background" style={{ backgroundImage }}>
-                        <div class="modal-overlay"></div>
+                    <div className="modal-content modal-movie text-start" style={{ backgroundImage }}>
                         <div className="modal-header text-light border-0">
                             <h1 className="modal-title position-relative text-light" id="exampleModalLabel">{title}</h1>
                             <button type="button" className="btn-close btn-close-white" aria-label="Close" data-bs-dismiss="modal" onClick={closeModal}></button>
@@ -114,7 +113,7 @@ export const Modal = ({
                                     </div>
                                 )}
                             </div>
-                            <div className='d-flex gap-4 pt-3 flex-wrap'>
+                            <div className='d-flex gap-4 pt-2 flex-wrap'>
                                 <div className='bloque-poster-modal'>
                                     <div>
                                         <img src={postherPad || noImg} className='imagen-modal' onError={(e) => {

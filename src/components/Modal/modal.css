@@ -10,7 +10,7 @@
   position: absolute;
   content: "";
   background-blend-mode: soft-light;
-  background-color: rgba(0, 0, 0, 0.85);
+  background-color: rgba(0, 0, 0, 0.75);
   backdrop-filter: blur(6px);
   inset: 0;
 }
@@ -64,7 +64,7 @@
 
 .data-extra {
   color: rgb(158, 158, 158);
-  line-height: 1.8rem;
+  line-height: 1.2rem;
 }
 
 .bloque-derecho-modal {
@@ -142,4 +142,8 @@
   .porcentaje-valoracion{
     padding-left: 30px;
   }
+  .data-extra p{
+    font-size: 1rem !important;
+  }
+  
 }
