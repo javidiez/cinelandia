@@ -90,17 +90,17 @@ export const Navbar = ({ reload }) => {
             </nav>
 
 
-            <nav class="navbar bg-body-tertiary fixed-top navbar-mobile">
-                <div class="container-fluid">
+            <nav className="navbar bg-body-tertiary fixed-top navbar-mobile">
+                <div className="container-fluid">
                     <a className="navbar-brand d-flex align-items-center" href="/home" onClick={reload}>
                         <img src={logo} className="logo user-select-none" />
                         <p className="text-light fw-bold ps-3 user-select-none">CINELANDIA</p>
                     </a>
-                    <button class="navbar-toggler custom-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
+                    <button className="navbar-toggler custom-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+                        <span className="navbar-toggler-icon"></span>
                     </button>
-                    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-                        <div class="offcanvas-header">
+                    <div className="offcanvas offcanvas-end" tabIndex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+                        <div className="offcanvas-header">
                             <img src={logo} className="logo user-select-none" />
                             <p className="text-light fw-bold ps-3 user-select-none">CINELANDIA</p>
                             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
