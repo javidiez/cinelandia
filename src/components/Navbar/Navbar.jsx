@@ -103,9 +103,9 @@ export const Navbar = ({ reload }) => {
                         <div className="offcanvas-header">
                             <img src={logo} className="logo user-select-none" />
                             <p className="text-light fw-bold ps-3 user-select-none">CINELANDIA</p>
-                            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                            <button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                         </div>
-                        <div class="offcanvas-body">
+                        <div className="offcanvas-body">
                             <ul className="navbar-nav pe-3">
                                 <li className="nav-item">
                                     <a className="nav-link text-light fs-3 fw-bold" aria-current="page" onClick={reload} href="/">Home</a>
