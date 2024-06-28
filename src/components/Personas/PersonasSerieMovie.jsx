@@ -181,9 +181,9 @@ export const PersonasSerieMovie = () => {
 
             <h2 className="text-center text-light novedades-title">Personas</h2>
 
-            <div className="text-center container">
-                <button onClick={goToPreviousPage} disabled={currentPage === 1} className='btn btn-dark botones-paginacion ps-3 pe-3'>Anterior</button>
-                <button onClick={goToNextPage} disabled={currentPage === totalPages} className='btn btn-dark botones-paginacion ps-3 pe-3'>Siguiente</button>
+            <div className="text-center container mt-5">
+                <button onClick={goToPreviousPage} disabled={currentPage === 1} className='btn btn-dark botones-paginacion-persons ps-3 pe-3'>Anterior</button>
+                <button onClick={goToNextPage} disabled={currentPage === totalPages} className='btn btn-dark botones-paginacion-persons ps-3 pe-3'>Siguiente</button>
             </div>
 
             <div>
@@ -231,8 +231,8 @@ export const PersonasSerieMovie = () => {
 
             </div>
             <div className="text-center container pb-5">
-                <button onClick={goToPreviousPage} disabled={currentPage === 1} className='btn btn-dark botones-paginacion ps-3 pe-3'>Anterior</button>
-                <button onClick={goToNextPage} disabled={currentPage === totalPages} className='btn btn-dark botones-paginacion ps-3 pe-3'>Siguiente</button>
+                <button onClick={goToPreviousPage} disabled={currentPage === 1} className='btn btn-dark botones-paginacion-persons ps-3 pe-3'>Anterior</button>
+                <button onClick={goToNextPage} disabled={currentPage === totalPages} className='btn btn-dark botones-paginacion-persons ps-3 pe-3'>Siguiente</button>
             </div>
         </>
     );
