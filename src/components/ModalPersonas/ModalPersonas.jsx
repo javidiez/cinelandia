@@ -49,7 +49,7 @@ export const ModalPersonas = ({
                         <div className='d-flex gap-4 pt-2 flex-wrap'>
                             <div className='bloque-poster-modal'>
                                 <div>
-                                    <img src={profilePad || noImg} className='imagen-modal' onError={(e) => {
+                                    <img src={profilePad || noImg} className='imagen-modal film-card-modal' onError={(e) => {
                                         e.target.onerror = null;
                                         e.target.src = noImg;
                                     }} alt="Actor" />
@@ -59,15 +59,15 @@ export const ModalPersonas = ({
                                 <p className='fs-4 texto-modal pb-1'>{birthday}</p>
                                 <p className='fs-4 texto-modal pb-1'>{deathday}</p>
                                 <p className='fs-4 texto-modal pb-1'>{place_of_birth}</p>
-                                <div class="accordion mt-3" id="biografia">
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header">
-                                            <button class="accordion-button collapsed bg-dark text-light" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                <div className="accordion mt-3" id="biografia">
+                                    <div className="accordion-item">
+                                        <h2 className="accordion-header">
+                                            <button className="accordion-button collapsed bg-dark text-light" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
                                                 <span className='fs-5'>Biografía</span>
                                             </button>
                                         </h2>
-                                        <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#biografia">
-                                            <div class="accordion-body bg-dark text-light fs-5">
+                                        <div id="collapseOne" className="accordion-collapse collapse" data-bs-parent="#biografia">
+                                            <div className="accordion-body bg-dark text-light fs-5">
                                                 {biography}
                                             </div>
                                         </div>

@@ -2,7 +2,7 @@ export const CardPersonas = ({castImg, castName, noImg,verMas}) => {
     return(
         <button className="btn" onClick={verMas}>
         <div className="card" style={{ width: '15rem' }}>
-            <img src={castImg || noImg} className="card-img-top" onError={(e) => {
+            <img src={castImg || noImg} className="card-img-top" style={{ height: '22rem' }} onError={(e) => {
                 e.target.onerror = null;
                 e.target.src = noImg;
             }} alt="Cast" />

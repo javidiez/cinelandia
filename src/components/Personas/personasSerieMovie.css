@@ -36,6 +36,59 @@
     border: none;
   }
 
+.buscador_central-person{
+    width: 40vw;
+}
+
+.botones-buscador-person{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.buscar-person {
+    background-color: #014e72;
+    border: none;
+    font-size: 1.7rem !important;
+    width: 40vw;
+}
+
+.buscar-person:hover {
+    background-color: #024768;
+}
+
+#buscador-person {
+    letter-spacing: 1px;
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    width: 40vw;
+}
+
+input[type="search"]::-webkit-search-cancel-button {
+    cursor: pointer;
+}
+
+
+
+@media screen and (max-width: 600px){
+    .buscar-person{
+        font-size: 1.3rem !important;
+        height: 45px;
+        width: 80vw;
+    }
+    #buscador-person{
+        height: 45px;
+        width: 80vw;
+        font-size: 1.2rem;
+    }
+    .botones-buscador-person{
+        margin-right: 30px;
+    }
+    .form-control{
+        padding: 10px !important;
+    }
+}
+
 @media screen and (max-width: 560px){
     .bloque-card-mobile {
         display: flex;

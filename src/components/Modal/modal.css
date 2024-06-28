@@ -111,6 +111,14 @@
     font-size: clamp(1.9rem, 5vw, 2.5rem);
   }
 
+  .accordion-button::after {
+    filter: invert(1);
+}
+
+/* Cambiar el color del icono de la flecha cuando está expandido */
+.accordion-button:not(.collapsed)::after {
+  filter: invert(1);
+}
 
   @media screen and (max-width: 950px){
     .reproductor{
