@@ -5,6 +5,14 @@ import fondoNotFound from '../../assets/img/fondo-not-found.jpeg'
 
 export const FilmCardRecommendations = ({ image, title, releaseDate, voteAverage, topMovie, proxEstreno, movieType, classMovieType, size }) => {
 
+  const truncateText = (text, maxLength) => {
+    if (text.length > maxLength) {
+      return text.slice(0, maxLength) + '...';
+    }
+    return text;
+  };
+
+
   return (
     <>
 
@@ -22,7 +30,8 @@ export const FilmCardRecommendations = ({ image, title, releaseDate, voteAverage
           />
           <div className="overlay text-center p-3">
             <div className={classMovieType}>{movieType}</div>
-            <p className="card-text card-text-recommend fw-bold text-uppercase">{title}</p>
+            <p className="card-text card-text-recommend fw-bold text-uppercase truncate-text-recommend">{truncateText(title,34)}</p>
+            
             <hr className="hr-border mt-2 mb-2 pe-5 ps-5" />
             <p className="card-text card-text-recommend">{releaseDate}</p>
             <p className="card-text"><span className="fw-bold"></span>{voteAverage}</p>

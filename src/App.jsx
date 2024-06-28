@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Generos from './components/Pages/Generos';
+import Gente from './components/Pages/Personas';
 import MovieNovedades from './components/Pages/MovieNovedades';
 import MovieEstrenos from './components/Pages/MovieEstrenos';
 import SeriesNovedades from './components/Pages/SeriesNovedades';
@@ -10,6 +11,7 @@ import MovieTopRated from './components/Pages/MovieTopRated';
 import SeriesTopRated from './components/Pages/SeriesTopRated';
 import SeriesTendencias from './components/Pages/SeriesTendencias';
 import Home from './components/Pages/Home'
+import Personas from './components/Pages/Personas';
 import '../public/index.css'
 import { Footer } from './components/Footer/Footer';
 
@@ -30,6 +32,7 @@ function App() {
         <Route path="/series_toprated" element={<SeriesTopRated />} />
         <Route path="/series_trending" element={<SeriesTendencias />} />
         <Route path="/generos" element={<Generos />} />
+        <Route path="/personas" element={<Personas />} />
       </Routes>
       <Footer/>
     </Router>

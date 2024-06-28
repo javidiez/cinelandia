@@ -10,3 +10,14 @@ hr{
 .prox-estreno-recommend{
     font-size: 0.9rem;
 }
+
+.truncate-text-recommend {
+    display: inline-block;
+    white-space: nowrap; /* Evita que el texto haga un wrap (salto de línea) */
+    overflow: hidden; /* Oculta el texto que se desborda */
+    text-overflow: ellipsis; /* Añade puntos suspensivos al final del texto truncado */
+    width: 150px;
+    text-wrap: balance;
+    font-size: 1rem;
+    padding: 20px 20px;
+}

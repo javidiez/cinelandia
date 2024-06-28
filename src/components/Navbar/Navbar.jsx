@@ -76,6 +76,9 @@ export const Navbar = ({ reload }) => {
                                 <li className="nav-item">
                                     <Link className="nav-link text-light fs-3 fw-bold" to="/generos">Géneros</Link>
                                 </li>
+                                <li className="nav-item">
+                                    <Link className="nav-link text-light fs-3 fw-bold" to="/personas">Personas</Link>
+                                </li>
                             </ul>
                             <div className="d-flex pe-5">
                                 <Link to="/home#search-focus" id="search-icon">
@@ -134,6 +137,9 @@ export const Navbar = ({ reload }) => {
                                 </li>
                                 <li className="nav-item">
                                     <a className="nav-link text-light fs-3 fw-bold" href="/generos">Géneros</a>
+                                </li>
+                                <li className="nav-item">
+                                    <a className="nav-link text-light fs-3 fw-bold" href="/personas">Personas</a>
                                 </li>
                             </ul>
                             <div className="d-flex pe-5">

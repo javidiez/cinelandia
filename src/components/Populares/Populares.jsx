@@ -301,7 +301,8 @@ export const Populares = () => {
                                             title={movie.title}
                                             overview={movie.overview}
                                             releaseDate={movie.release_date ? <><span className='fw-bold'>Fecha</span> {formatDate(movie.release_date)}</> : ''}
-                                            voteAverage={isUpcoming ? '' : <><span className="fw-bold">Valoración:</span> {(movie.vote_average * 10).toFixed(2)}%</>} onclick={() => selectMovie(movie)}
+                                            voteAverage={isUpcoming ? '' : <><span className="fw-bold">Valoración:</span> {(movie.vote_average * 10).toFixed(2)}%</>}
+                                            onclick={() => selectMovie(movie)}
                                             movieType={''}
                                             classMovieType={movie.title ? 'movie-type-movie' : 'movie-type-serie'}
                                             topMovie={movie.vote_average > 7.75 && movie.vote_count > 99 ? "Destacada" : ''}

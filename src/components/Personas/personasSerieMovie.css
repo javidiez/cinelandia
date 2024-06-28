@@ -1,0 +1,46 @@
+.person-block{
+    width: 90%;
+}
+
+.person-block-mobile{
+    margin-bottom: -80px;
+}
+
+.bloque-cards-desktop-person{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.movie-type-serie-person {
+    position: absolute;
+    background-color: #0ea700;
+    font-size: 0.9rem;
+    top: 5px;
+    left: 5px;
+    font-weight: 500;
+    padding: 0 3px;
+    border-radius: 5px;
+}
+
+.movie-type-movie-person {
+    position: absolute;
+    background-color: #0072a7;
+    font-size: 0.9rem;
+    top: 5px;
+    left: 5px;
+    font-weight: 500;
+    padding: 0 3px;
+    border-radius: 5px;
+}
+
+
+
+@media screen and (max-width: 560px){
+    .bloque-card-mobile {
+        display: flex;
+        justify-content: center;
+    }
+    .bloque-cards-desktop-person{
+        display: none;
+    }
+}
