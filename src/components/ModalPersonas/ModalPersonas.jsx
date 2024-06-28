@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import '../Novedades/novedades.css';
 import '../Modal/modal.css';
 
@@ -12,10 +12,26 @@ export const ModalPersonas = ({
     birthday,
     deathday,
     place_of_birth,
-    moviesSeriesActing
+    moviesSeriesActing,
+    onClose
 }) => {
 
     const backgroundImage = `url("${noImg}")`;
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            const modal = document.getElementById(idModal);
+            if (modal && !modal.contains(event.target)) {
+                onClose && onClose();
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [idModal, onClose]);
+
 
     const closeModal = () => {
         onClose && onClose();
