@@ -80,6 +80,13 @@ export const Navbar = ({ reload }) => {
                                     <Link className="nav-link text-light fs-3 fw-bold" to="/personas">Personas</Link>
                                 </li>
                             </ul>
+                            <div className="d-flex pe-3">
+                                <Link to="/watchlist">
+                                    <button className="btn btn-primary fw-bold fs-5">
+                                        Watchlist <i className="fa-solid fa-bookmark ps-2"></i>
+                                    </button>
+                                </Link>
+                            </div>
                             <div className="d-flex pe-5">
                                 <Link to="/home#search-focus" id="search-icon">
                                     <button className="btn text-light p-2 btn-lupa" onClick={handleLupaClick}>

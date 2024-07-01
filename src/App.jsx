@@ -1,7 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Generos from './components/Pages/Generos';
-import Gente from './components/Pages/Personas';
 import MovieNovedades from './components/Pages/MovieNovedades';
 import MovieEstrenos from './components/Pages/MovieEstrenos';
 import SeriesNovedades from './components/Pages/SeriesNovedades';
@@ -14,6 +13,8 @@ import Home from './components/Pages/Home'
 import Personas from './components/Pages/Personas';
 import '../public/index.css'
 import { Footer } from './components/Footer/Footer';
+import Watchlist from './components/Pages/Watchlist';
+import injectContext from './store/appContext.jsx';
 
 
 function App() {
@@ -33,11 +34,11 @@ function App() {
         <Route path="/series_trending" element={<SeriesTendencias />} />
         <Route path="/generos" element={<Generos />} />
         <Route path="/personas" element={<Personas />} />
+        <Route path="/watchlist" element={<Watchlist />} />
       </Routes>
       <Footer/>
     </Router>
 
   );
 }
-
-export default App;
+export default injectContext(App);
