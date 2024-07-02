@@ -64,6 +64,24 @@ export const Modal = ({
         }, 0);
     };
 
+    const handleShare = async () => {
+        if (navigator.share) {
+          try {
+            await navigator.share({
+              title: title,
+              text: overview,
+              url: window.location.href // Puedes cambiar esto por la URL de la película
+            });
+            console.log('Content shared successfully');
+          } catch (error) {
+            console.error('Error sharing', error);
+          }
+        } else {
+          alert('Web Share API not supported in this browser.');
+        }
+      };
+    
+
     return (
             <div className="modal fade" id={idModal} tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
                 <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl modal-block">
@@ -88,6 +106,7 @@ export const Modal = ({
                                     </button>
                                 )}
                                 {watchlistButtons}
+                       
                             </div>
                             <div ref={videoContainerRef} className="video-container mt-3">
                                 {playing && (
