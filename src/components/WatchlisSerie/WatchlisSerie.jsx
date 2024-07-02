@@ -15,13 +15,13 @@ import '../FilmCard/filmcard.css';
 import '../InfoMovie/infoMovie.css'
 import '../SnippetNovedades/bloque_novedades.css'
 import '../SwitchPeliSerie/SwitchPeliSerie.css'
-import './BloqueSeriesHome.css'
+import '../BloqueSeriesHome/BloqueSeriesHome.css'
 import '../../../node_modules/swiper/swiper-bundle.min.css';
 import Swiper from 'swiper';
 import { Tooltip } from "flowbite-react";
 import { Link } from 'react-router-dom';
 
-export const BloqueSeries = () => {
+export const WatchlistSerie = () => {
     const API_URL = "https://api.themoviedb.org/3";
     const API_KEY = "4f5f43495afcc67e9553f6c684a82f84";
     const sixMonthsAgo = new Date();
@@ -29,8 +29,6 @@ export const BloqueSeries = () => {
 
     const [movies, setMovies] = useState([]);
     const [selectedSerie, setSelectedSerie] = useState(null);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [totalPages, setTotalPages] = useState(1);
     const [loading, setLoading] = useState(true);
     const [trailer, setTrailer] = useState(null);
     const [cast, setCast] = useState(null);
@@ -38,30 +36,6 @@ export const BloqueSeries = () => {
     const [recommendations, setRecommendations] = useState(null);
     const [playing, setPlaying] = useState(false);
     const { store, actions } = useContext(Context);
-
-    const fetchNovedadesSerie = async (page) => {
-        const { data: { results, total_pages } } = await axios.get(`${API_URL}/discover/tv`, {
-            params: {
-                api_key: API_KEY,
-                language: 'es-ES',
-                sort_by: 'popularity.desc',
-                'vote_count.gte': 30,
-                'first_air_date.gte': sixMonthsAgo.toISOString().split('T')[0],
-                page: page,
-            },
-        });
-
-        setCurrentPage(page);
-        setTotalPages(total_pages);
-        setMovies(results);
-    };
-
-    useEffect(() => {
-        if (selectedSerie) {
-            const modal = new bootstrap.Modal(document.getElementById(`modalNovedadSerie-${selectedSerie.id}`));
-            modal.show();
-        }
-    }, [selectedSerie]);
 
     const fetchSerie = async (id) => {
         const { data } = await axios.get(`${API_URL}/tv/${id}?language=es-ES`, {
@@ -102,19 +76,21 @@ export const BloqueSeries = () => {
             setRecommendations(recommend.slice(0, 10));
         }
 
-
         setSelectedSerie(data);
+        const modal = new bootstrap.Modal(document.getElementById(`modalWatchlistSerie-${selectedSerie.id}`));
+        modal.show();
     };
+
+    useEffect(() => {
+        if (selectedSerie) {
+            const modal = new bootstrap.Modal(document.getElementById(`modalWatchlistSerie-${selectedSerie.id}`));
+            modal.show();
+        }
+    }, [selectedSerie]);
 
     const selectMovie = async (movie) => {
         await fetchSerie(movie.id);
     };
-
-    useEffect(() => {
-        fetchNovedadesSerie(currentPage);
-    }, [currentPage]);
-
-
 
     const formatDate = (dateString) => {
         const date = new Date(dateString);
@@ -147,27 +123,27 @@ export const BloqueSeries = () => {
                     {selectedSerie && (
                         <ModalSerie
                             key={selectedSerie.id}
-                            idModal={`modalNovedadSerie-${selectedSerie.id}`}
+                            idModal={`modalWatchlistSerie-${selectedSerie.id}`}
                             watchlistButtons={
                                 selectedSerie && (
                                     <Tooltip
-                                        content={store.watchlist?.some(movie => movie.id === selectedSerie.id) ? "Quitar de Watchlist" : "Agregar a Watchlist"}
-                                        trigger="hover"
-                                        placement="top"
-                                        className="d-flex align-items-start bg-dark text-light ps-2 pe-0 px-0 fs-5 rounded"
+                                    content={store.watchlistSerie?.some(movie => movie.id === selectedSerie.id) ? "Quitar de Watchlist" : "Agregar a Watchlist"}
+                                    trigger="hover"
+                                    placement="top"
+                                    className="d-flex align-items-start bg-dark text-light ps-2 pe-0 px-0 fs-5 rounded"
+                                >
+                                    <button
+                                        className="btn btn-primary"
+                                        type="button"
+                                        onClick={store.watchlistSerie?.some(movie => movie.id === selectedSerie.id)
+                                            ? () => actions.deleteFavouriteSerie(selectedSerie)
+                                            : () => actions.addFavouriteSerie(selectedSerie)}
                                     >
-                                        <button
-                                            className="btn btn-primary ver-trailer"
-                                            type="button"
-                                            onClick={store.watchlistSerie?.some(movie => movie.id === selectedSerie.id)
-                                                ? () => actions.deleteFavouriteMovie(selectedSerie)
-                                                : () => actions.addFavouriteMovie(selectedSerie)}
-                                        >
-                                            {store.watchlistSerie?.some(movie => movie.id === selectedSerie.id)
-                                                ? <i className="fa-solid fa-bookmark"></i>
-                                                : <i className="fa-regular fa-bookmark"></i>}
-                                        </button>
-                                    </Tooltip>
+                                        {store.watchlistSerie?.some(movie => movie.id === selectedSerie.id)
+                                            ? <i className="fa-solid fa-bookmark"></i>
+                                            : <i className="fa-regular fa-bookmark"></i>}
+                                    </button>
+                                </Tooltip>
                                 )
                             }
                             postherPad={selectedSerie.poster_path ? `https://image.tmdb.org/t/p/w500${selectedSerie.poster_path}` : fondoNotFound}
@@ -295,97 +271,52 @@ export const BloqueSeries = () => {
                 </main>
             </div>
 
-            <h2 className="text-center text-light snippet_novedades_title fade-in">Novedades</h2>
-
-            <div className="mt-4 novedades bloque-card-mobile fade-in">
-                <div className="swiper-container-paginas">
-                    <div className="swiper-wrapper-paginas scrollableDiv-paginas d-flex">
-                        {movies.map((movie) => {
-                            const releaseDate = new Date(movie.release_date);
-                            const today = new Date();
-                            const isUpcoming = releaseDate > today ? "Próximo estreno" : "";
-
-
-                            return (
-                                <div className='swiper-slide-paginas ps-5 pt-3 fade-in'>
-                                    <FilmCard
-                                        key={movie.id}
-                                        size={{ width: 'clamp(15rem,20vw,18rem)' }}
-                                        image={movie.poster_path}
-                                        title={movie.title ? movie.title : movie.name}
-                                        overview={movie.overview}
-                                        releaseDate={movie.title && movie.release_date ? <><span className='fw-bold'>Fecha:</span> {formatDate(movie.release_date)}</> : movie.name && movie.first_air_date ? <><span className='fw-bold'>Fecha: </span>{formatDate(movie.first_air_date)}</> : 'Fecha no informada'}
-                                        voteAverage={<><span className='fw-bold'>Valoración:</span> {(movie.vote_average * 10).toFixed(2)} %</>}
-                                        onclick={() => selectMovie(movie)}
-                                        movieType={''}
-                                        classMovieType={movie.title ? 'movie-type-movie' : 'movie-type-serie'}
-                                        topMovie={movie.vote_average > 7.75 && movie.vote_count > 99 ? "Destacada" : ''}
-                                        proxEstreno={isUpcoming}
-                                        saveButton={<button
-                                            className="btn btn-primary mt-4 fw-bold fs-5"
-                                            type="button"
-                                            onClick={store.watchlistSerie?.some(pelicula => pelicula.id === movie.id)
-                                                ? () => actions.deleteFavouriteSerie(movie)
-                                                : () => actions.addFavouriteSerie(movie)}
-                                        >
-                                            {store.watchlistSerie?.some(pelicula => pelicula.id === movie.id)
-                                                ? <i className="fa-solid fa-bookmark"></i>
-                                                : <i className="fa-regular fa-bookmark"></i>}
-                                        </button>}
-                                    />
-                                </div>
-                            );
-                        })}
+            <div className="mt-4 bloque-card-mobile-watchlist fade-in ps-5">
+                <div className="swiper-container-watchlist">
+                    <h2 className="ms-3 title-watchlist text-light">Series</h2>
+                    <div className="swiper-wrapper-watchlist scrollableDiv-watchlist gap-5 pt-5 mb-5">
+                    {store.watchlistSerie && store.watchlistSerie.length > 0 ? (
+                            store.watchlistSerie.map((fav, index) => {
+                                const releaseDate = new Date(fav.release_date);
+                                const today = new Date();
+                                const isUpcoming = releaseDate > today ? "Próximo estreno" : "";
+                                return (
+                                    <div key={index} className='fade-in novedades mb-4'>
+                                        <FilmCard
+                                            key={fav.id}
+                                            size={{ width: 'clamp(15rem,20vw,18rem)' }}
+                                            image={fav.poster_path}
+                                            title={fav.title ? fav.title : fav.name}
+                                            overview={fav.overview}
+                                            releaseDate={fav.title && fav.release_date ? <><span className='fw-bold'>Fecha:</span> {formatDate(fav.release_date)}</> : fav.name && fav.first_air_date ? <><span className='fw-bold'>Fecha: </span>{formatDate(fav.first_air_date)}</> : 'Fecha no informada'}
+                                            voteAverage={<><span className='fw-bold'>Valoración:</span> {(fav.vote_average * 10).toFixed(2)} %</>}
+                                            onclick={() => selectMovie(fav)}
+                                            movieType={''}
+                                            classMovieType={fav.title ? 'movie-type-movie' : 'movie-type-serie'}
+                                            topMovie={fav.vote_average > 7.75 && fav.vote_count > 99 ? "Destacada" : ''}
+                                            proxEstreno={isUpcoming}
+                                            saveButton={
+                                                    <button
+                                                        className="btn btn-primary mt-4 fw-bold fs-5"
+                                                        type="button"
+                                                        onClick={store.watchlistSerie?.some(pelicula => pelicula.id === fav.id)
+                                                            ? () => actions.deleteFavouriteSerie(fav)
+                                                            : () => actions.addFavouriteSerie(fav)}
+                                                    >
+                                                        {store.watchlistSerie?.some(pelicula => pelicula.id === fav.id)
+                                                            ? <i className="fa-solid fa-bookmark"></i>
+                                                            : <i className="fa-regular fa-bookmark"></i>}
+                                                    </button>
+                                        }
+                                        />
+                                    </div>
+                                )
+                            })) :
+                            <p className="text-light fs-1">Ninguna serie en Watchlist, haga clic en <i className="btn btn-primary fa-regular fa-bookmark fs-1"></i> para guardar series</p>
+                        }
                     </div>
                 </div>
             </div>
-            <div className="flex-wrap justify-content-center mx-auto gap-5 mt-5 mb-3 novedades fade-in fs-5 bloque-cards-desktop-generos">
-                {seriesToShow.map((movie) => {
-                    const releaseDate = new Date(movie.first_air_date);
-                    const today = new Date();
-                    const isUpcoming = releaseDate > today ? "Próximo estreno" : "";
-
-
-                    return (
-
-                        <FilmCard
-                            key={movie.id}
-                            size={{ width: '15.5rem' }}
-                            image={movie.poster_path}
-                            title={movie.name}
-                            overview={movie.overview}
-                            releaseDate={movie.title && movie.release_date ? <><span className='fw-bold'>Fecha:</span> {formatDate(movie.release_date)}</> : movie.name && movie.first_air_date ? <><span className='fw-bold'>Fecha: </span>{formatDate(movie.first_air_date)}</> : 'Fecha no informada'}
-                            voteAverage={isUpcoming || isNaN(movie.vote_average) ? '' : <><span className="fw-bold">Valoración:</span> {(movie.vote_average * 10).toFixed(2)}%</>}
-                            onclick={() => selectMovie(movie)}
-                            movieType={''}
-                            classMovieType={movie.title ? 'movie-type-movie' : 'movie-type-serie'}
-                            topMovie={movie.vote_average > 7.75 && movie.vote_count > 99 ? "Destacada" : ''}
-                            proxEstreno={isUpcoming}
-                            saveButton={
-                            
-                                    <button
-                                        className="btn btn-primary mt-4 fw-bold fs-5"
-                                        type="button"
-                                        onClick={store.watchlistSerie?.some(pelicula => pelicula.id === movie.id)
-                                            ? () => actions.deleteFavouriteSerie(movie)
-                                            : () => actions.addFavouriteSerie(movie)}
-                                    >
-                                        {store.watchlistSerie?.some(pelicula => pelicula.id === movie.id)
-                                            ? <i className="fa-solid fa-bookmark"></i>
-                                            : <i className="fa-regular fa-bookmark"></i>}
-                                    </button>
-                               
-                        }
-                        />
-
-                    );
-                })}
-            </div>
-
-            <div className="container pb-5 mt-5 text-center ">
-                <Link to="/novedades_series"><button className='btn btn-primary botones-ver-mas ps-3 pe-3'>Ver más</button></Link>
-            </div>
-
         </>
     );
 };

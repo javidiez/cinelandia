@@ -2,7 +2,7 @@ import React from "react";
 import './filmcard.css';
 import fondoNotFound from '../../assets/img/fondo-not-found.jpeg';
 
-export const FilmCard = ({ image, title, releaseDate, voteAverage, onclick, topMovie, proxEstreno, movieType, classMovieType, size }) => {
+export const FilmCard = ({ image, title, releaseDate, voteAverage, onclick, topMovie, proxEstreno, movieType, classMovieType, size, saveButton }) => {
 
   const truncateText = (text, maxLength) => {
     if (text.length > maxLength) {
@@ -31,7 +31,10 @@ export const FilmCard = ({ image, title, releaseDate, voteAverage, onclick, topM
             </p>
             <p className="card-text">{releaseDate}</p>
             <p className="card-text"><span className="fw-bold"></span>{voteAverage}</p>
-            <button className="btn btn-primary mt-4 fw-bold fs-5" onClick={onclick}>VER MÁS</button>
+            <div className="d-flex gap-2">
+            <button className="btn btn-success mt-4 fw-bold fs-5" onClick={onclick}>VER MÁS</button>
+            {saveButton}
+            </div>
           </div>
         </div>
         <div className="position-absolute top-movie"><p>{topMovie}</p></div>

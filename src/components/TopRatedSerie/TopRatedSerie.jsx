@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
+import { Context } from '../../store/appContext';
 import axios from 'axios';
 import { FilmCard } from '../FilmCard/FilmCard';
 import { ModalSerie } from '../ModalSerie/ModalSerie';
@@ -31,6 +32,7 @@ export const TopRatedSerie = () => {
     const [platforms, setPlatforms] = useState(null);
     const [recommendations, setRecommendations] = useState(null);
     const [playing, setPlaying] = useState(false);
+    const { store, actions } = useContext(Context);
 
     const fetchTopRatedSeries = async (page = 1) => {
         setLoading(true);
@@ -159,6 +161,28 @@ export const TopRatedSerie = () => {
                         <ModalSerie
                             key={selectedSerie.id}
                             idModal={`modalTopRatedSerie-${selectedSerie.id}`}
+                            watchlistButtons={
+                                selectedSerie && (
+                                    <Tooltip
+                                    content={store.watchlistSerie?.some(movie => movie.id === selectedSerie.id) ? "Quitar de Watchlist" : "Agregar a Watchlist"}
+                                    trigger="hover"
+                                    placement="top"
+                                    className="d-flex align-items-start bg-dark text-light ps-2 pe-0 px-0 fs-5 rounded"
+                                >
+                                    <button
+                                        className="btn btn-primary"
+                                        type="button"
+                                        onClick={store.watchlistSerie?.some(movie => movie.id === selectedSerie.id)
+                                            ? () => actions.deleteFavouriteSerie(selectedSerie)
+                                            : () => actions.addFavouriteSerie(selectedSerie)}
+                                    >
+                                        {store.watchlistSerie?.some(movie => movie.id === selectedSerie.id)
+                                            ? <i className="fa-solid fa-bookmark"></i>
+                                            : <i className="fa-regular fa-bookmark"></i>}
+                                    </button>
+                                </Tooltip>
+                                )
+                            }
                             postherPad={selectedSerie.poster_path ? `https://image.tmdb.org/t/p/w500${selectedSerie.poster_path}` : fondoNotFound}
                             noImg={fondoNotFound}
                             originalName={selectedSerie.name}
@@ -319,6 +343,19 @@ export const TopRatedSerie = () => {
                                                     classMovieType={''}
                                                     topMovie={''}
                                                     proxEstreno={isUpcoming}
+                                                    saveButton={
+                                                        <button
+                                                            className="btn btn-primary mt-4 fw-bold fs-5"
+                                                            type="button"
+                                                            onClick={store.watchlistSerie?.some(pelicula => pelicula.id === movie.id)
+                                                                ? () => actions.deleteFavouriteSerie(movie)
+                                                                : () => actions.addFavouriteSerie(movie)}
+                                                        >
+                                                            {store.watchlistSerie?.some(pelicula => pelicula.id === movie.id)
+                                                                ? <i className="fa-solid fa-bookmark"></i>
+                                                                : <i className="fa-regular fa-bookmark"></i>}
+                                                        </button>
+                                                    }
                                                 />
                                             </div>
                                         );
@@ -347,6 +384,19 @@ export const TopRatedSerie = () => {
                                         classMovieType={''}
                                         topMovie={''}
                                         proxEstreno={isUpcoming}
+                                        saveButton={
+                                            <button
+                                                className="btn btn-primary mt-4 fw-bold fs-5"
+                                                type="button"
+                                                onClick={store.watchlistSerie?.some(pelicula => pelicula.id === movie.id)
+                                                    ? () => actions.deleteFavouriteSerie(movie)
+                                                    : () => actions.addFavouriteSerie(movie)}
+                                            >
+                                                {store.watchlistSerie?.some(pelicula => pelicula.id === movie.id)
+                                                    ? <i className="fa-solid fa-bookmark"></i>
+                                                    : <i className="fa-regular fa-bookmark"></i>}
+                                            </button>
+                                        }
                                     />
                                 );
                             })}

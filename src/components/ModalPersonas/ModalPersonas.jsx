@@ -47,9 +47,9 @@ export const ModalPersonas = ({
                     </div>
                     <div className="modal-body pt-0 text-light position-relative">
                         <div className='d-flex gap-4 pt-2 flex-wrap'>
-                            <div className='bloque-poster-modal'>
+                            <div className='bloque-poster-modal-person'>
                                 <div>
-                                    <img src={profilePad || noImg} className='imagen-modal film-card-modal' onError={(e) => {
+                                    <img src={profilePad || noImg} className='imagen-modal-person film-card-modal' onError={(e) => {
                                         e.target.onerror = null;
                                         e.target.src = noImg;
                                     }} alt="Actor" />

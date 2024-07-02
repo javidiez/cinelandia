@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
+import { Context } from '../../store/appContext';
 import axios from 'axios';
 import { FilmCard } from '../FilmCard/FilmCard';
 import { FilmCardRecommendations } from '../FilmCardRecommendations/FilmCardRecommendations';
@@ -34,6 +35,7 @@ export const ProximosEstrenos = () => {
     const [platforms, setPlatforms] = useState(null);
     const [recommendations, setRecommendations] = useState(null);
     const [playing, setPlaying] = useState(false);
+    const { store, actions } = useContext(Context);
 
     const fetchNowPlaying = async (page) => {
         const { data: { results, total_pages } } = await axios.get(`${API_URL}/discover/movie`, {
@@ -172,6 +174,28 @@ export const ProximosEstrenos = () => {
                         <Modal
                             key={selectedMovie.id}
                             idModal={`modalEstrenos-${selectedMovie.id}`}
+                            watchlistButtons={
+                                selectedMovie && (
+                                    <Tooltip
+                                        content={store.watchlist?.some(movie => movie.id === selectedMovie.id) ? "Quitar de Watchlist" : "Agregar a Watchlist"}
+                                        trigger="hover"
+                                        placement="top"
+                                        className="d-flex align-items-start bg-dark text-light ps-2 pe-0 px-0 fs-5 rounded"
+                                    >
+                                        <button
+                                            className="btn btn-primary"
+                                            type="button"
+                                            onClick={store.watchlist?.some(movie => movie.id === selectedMovie.id)
+                                                ? () => actions.deleteFavouriteMovie(selectedMovie)
+                                                : () => actions.addFavouriteMovie(selectedMovie)}
+                                        >
+                                            {store.watchlist?.some(movie => movie.id === selectedMovie.id)
+                                                ? <i className="fa-solid fa-bookmark"></i>
+                                                : <i className="fa-regular fa-bookmark"></i>}
+                                        </button>
+                                    </Tooltip>
+                                )
+                            }
                             postherPad={selectedMovie.poster_path ? `https://image.tmdb.org/t/p/w500${selectedMovie.poster_path}` : fondoNotFound}
                             noImg={fondoNotFound}
                             title={selectedMovie.title}
@@ -309,6 +333,19 @@ export const ProximosEstrenos = () => {
                                             classMovieType={movie.title ? 'movie-type-movie' : 'movie-type-serie'}
                                             topMovie={movie.vote_average > 7.75 && movie.vote_count > 99 ? "Destacada" : ''}
                                             proxEstreno={''}
+                                            saveButton={
+                                                <button
+                                                    className="btn btn-primary mt-4 fw-bold fs-5"
+                                                    type="button"
+                                                    onClick={store.watchlist?.some(pelicula => pelicula.id === movie.id)
+                                                        ? () => actions.deleteFavouriteMovie(movie)
+                                                        : () => actions.addFavouriteMovie(movie)}
+                                                >
+                                                    {store.watchlist?.some(pelicula => pelicula.id === movie.id)
+                                                        ? <i className="fa-solid fa-bookmark"></i>
+                                                        : <i className="fa-regular fa-bookmark"></i>}
+                                                </button>
+                                            }
                                         />
                                     </div>
                                 );
@@ -338,6 +375,19 @@ export const ProximosEstrenos = () => {
                                 classMovieType={movie.title ? 'movie-type-movie' : 'movie-type-serie'}
                                 topMovie={movie.vote_average > 7.75 && movie.vote_count > 99 ? "Destacada" : ''}
                                 proxEstreno={''}
+                                saveButton={
+                                    <button
+                                        className="btn btn-primary mt-4 fw-bold fs-5"
+                                        type="button"
+                                        onClick={store.watchlist?.some(pelicula => pelicula.id === movie.id)
+                                            ? () => actions.deleteFavouriteMovie(movie)
+                                            : () => actions.addFavouriteMovie(movie)}
+                                    >
+                                        {store.watchlist?.some(pelicula => pelicula.id === movie.id)
+                                            ? <i className="fa-solid fa-bookmark"></i>
+                                            : <i className="fa-regular fa-bookmark"></i>}
+                                    </button>
+                        }
                             />
                         );
                     })}

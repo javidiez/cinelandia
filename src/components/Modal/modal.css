@@ -34,6 +34,10 @@
   width: clamp(10rem, 20vh, 20rem);
 }
 
+.imagen-modal-person {
+  width: clamp(10rem, 20vh, 20rem);
+}
+
 
 .icono-modal {
   width: 1.5rem;
@@ -124,10 +128,6 @@
     .reproductor{
         min-width: 100%;
         height: 400px;
-      }
-      .bloque-poster-modal{
-        display: flex;
-        margin:auto;
       }
   }
 

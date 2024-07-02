@@ -33,7 +33,8 @@ export const ModalSerie = ({
     cast,
     trailer,
     providers,
-    recommendations
+    recommendations,
+    watchlistButtons
 }) => {
     const backgroundImage = postherPad ? `url("${postherPad}")` : `url("${noImg}")`;
     const videoContainerRef = useRef(null);
@@ -117,6 +118,7 @@ export const ModalSerie = ({
                                     VER TRAILER
                                 </button>
                             )}
+                            {watchlistButtons}
                         </div>
                         <div ref={videoContainerRef} className="video-container mt-3">
                             {playing && (

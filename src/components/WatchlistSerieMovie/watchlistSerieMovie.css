@@ -41,12 +41,16 @@
     display: block;
 }
 
-.shadow-watchlist{
-    box-shadow: 0 0 8px #ffffff96;
+.title-watchlist{
+    font-size: clamp(2.5rem,5vw,3rem);
+    margin-bottom: -20px;
 }
 
 @media screen and (max-width: 700px){
     .swiper-wrapper-watchlist:hover::-webkit-scrollbar {
         display: none;
+    }
+    .title-watchlist{
+        margin-top: -30px
     }
 }
