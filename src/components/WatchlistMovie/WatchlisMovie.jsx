@@ -244,7 +244,7 @@ export const WatchlistMovie = () => {
             </main>
             {/* MODAL */}
 
-            <div className="mt-4 bloque-card-mobile-watchlist fade-in ps-5">
+            <div className="mt-4 bloque-card-mobile-watchlist fade-in">
                 <div className="swiper-container-watchlist">
                     <h2 className="ms-3 title-watchlist text-light mt-5">Películas</h2>
                     <div className="swiper-wrapper-watchlist scrollableDiv-watchlist pt-5 gap-5 mb-5">

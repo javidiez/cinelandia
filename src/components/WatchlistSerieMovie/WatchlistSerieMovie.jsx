@@ -1,5 +1,5 @@
-import { WatchlistMovie } from '../WatchlisMovie/WatchlisMovie';
-import { WatchlistSerie } from '../WatchlisSerie/WatchlisSerie';
+import { WatchlistMovie } from '../WatchlistMovie/WatchlisMovie';
+import { WatchlistSerie } from '../WatchlistSerie/WatchlisSerie';
 import '../Novedades/novedades.css';
 import '../FilmCard/filmcard.css';
 import '../InfoMovie/infoMovie.css';

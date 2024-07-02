@@ -271,7 +271,7 @@ export const WatchlistSerie = () => {
                 </main>
             </div>
 
-            <div className="mt-4 bloque-card-mobile-watchlist fade-in ps-5">
+            <div className="mt-4 bloque-card-mobile-watchlist fade-in ">
                 <div className="swiper-container-watchlist">
                     <h2 className="ms-3 title-watchlist text-light">Series</h2>
                     <div className="swiper-wrapper-watchlist scrollableDiv-watchlist gap-5 pt-5 mb-5">

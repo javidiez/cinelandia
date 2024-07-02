@@ -46,6 +46,10 @@
     margin-bottom: -20px;
 }
 
+.bloque-card-mobile-watchlist{
+    padding-left: 75px;
+}
+
 @media screen and (max-width: 700px){
     .swiper-wrapper-watchlist:hover::-webkit-scrollbar {
         display: none;
@@ -53,4 +57,7 @@
     .title-watchlist{
         margin-top: -30px
     }
+    .bloque-card-mobile-watchlist{
+        padding-left: 25px;
+}
 }
