@@ -15,6 +15,7 @@ import '../public/index.css'
 import { Footer } from './components/Footer/Footer';
 import Watchlist from './components/Pages/Watchlist';
 import injectContext from './store/appContext.jsx';
+import PeliculaIndividual from './components/Pages/PeliculaIndividual.jsx';
 
 
 function App() {
@@ -35,6 +36,7 @@ function App() {
         <Route path="/generos" element={<Generos />} />
         <Route path="/personas" element={<Personas />} />
         <Route path="/watchlist" element={<Watchlist />} />
+        <Route path="/pelicula/:id" element={<PeliculaIndividual />} />
       </Routes>
       <Footer/>
     </Router>

@@ -141,6 +141,7 @@ export const BloqueNovedades = () => {
                     {selectedMovie && (
                         <Modal
                             key={selectedMovie.id}
+                            shareUrl = {`${window.location.origin}/pelicula/${selectedMovie.id}`}
                             watchlistButtons={
                                 selectedMovie && (
                                     <Tooltip
