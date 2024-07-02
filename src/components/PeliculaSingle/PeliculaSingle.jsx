@@ -112,7 +112,7 @@ export const PeliculaSingle = () => {
             {selectedMovie && (
                 <>
 
-                    <div className='contenedor-multimedia container rounded mt-5' style={{ backgroundImage: selectedMovie.backdrop_path ? `url(https://image.tmdb.org/t/p/w500${selectedMovie.backdrop_path})` : `url(${fondoNotFound})` }}>
+                    <div className='contenedor-multimedia container rounded' style={{ backgroundImage: selectedMovie.backdrop_path ? `url(https://image.tmdb.org/t/p/w500${selectedMovie.backdrop_path})` : `url(${fondoNotFound})` }}>
                         <div className='contenido_multimedia p-4'>
                             <div className='row'>
                                 <div className='col-sm-auto container-posther_path'>
