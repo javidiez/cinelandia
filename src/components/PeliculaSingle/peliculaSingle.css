@@ -1,0 +1,54 @@
+.contenedor-multimedia {
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-blend-mode: soft-light;
+    background-color: rgba(0, 0, 0, 0.85);
+    position: relative;
+}
+
+
+.contenedor-multimedia::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(5px);
+    opacity: 0.9;
+}
+
+.contenido_multimedia{
+    z-index: 1;
+    position: relative;
+}
+
+.poster_path {
+    width: clamp(12rem, 15vw, 18rem);
+
+}
+
+.multimedia_single_title{
+    font-size: clamp(2rem,5vw,3.5rem);
+    font-weight: 500;
+}
+
+@media screen and (max-width: 650px){
+    .container-posther_path {
+        display: flex;
+        justify-content: center;
+    
+    }
+    .multimedia_single_title{
+        margin-bottom: 15px;
+        margin-top: 15px;
+    }
+
+    .save-button-single-multimedia{
+        position: absolute;
+        top: 25px;
+        right: 5px;
+    }
+    
+}
