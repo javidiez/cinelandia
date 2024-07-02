@@ -92,7 +92,7 @@ export const Modal = ({
                             )}
                             {watchlistButtons}
                             <WhatsappShareButton url={shareUrl}>
-                                <WhatsappIcon size={35} round />
+                            <i class="fa-solid fa-share-nodes fs-2 text-light"></i>
                             </WhatsappShareButton>
 
                         </div>

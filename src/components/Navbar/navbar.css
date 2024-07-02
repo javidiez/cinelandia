@@ -17,19 +17,19 @@
 }
 
 .navbar{
-    background-color: #023249 !important;
+    background-color: #002231 !important;
     transition: padding 0.3s ease-in-out, background-color 0.3s ease-in-out, max-width 0.3s ease-in-out;
 }
 
 .offcanvas{
-    background-color: #023249;
+    background-color: #002231;
     width: 80% !important;
 }
 
 .navbar.shrink {
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
-    background-color: #023249; /* Cambiar el color de fondo si es necesario */
+    background-color: #002231; /* Cambiar el color de fondo si es necesario */
     filter: drop-shadow(0 0 25px #000000);
 }
 
@@ -56,14 +56,14 @@
 
 
 .dropdown-menu{
-    background-color: #023249;
+    background-color: #002231;
     font-size: 1.5rem;
     border: 1px solid #fff;
 
 }
 .dropdown-item:hover{
     background-color: #fff;
-    color: #023249 !important;
+    color: #002231 !important;
 }
 
 .btn-close {

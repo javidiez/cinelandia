@@ -61,7 +61,7 @@ export const PeliculaSingle = () => {
             // Extraer el elenco de la respuesta de la API
             const castMembers = data.credits.cast;
             // Configurar el estado 'cast' con la lista de miembros del elenco
-            setCast(castMembers.slice(0, 10));
+            setCast(castMembers.slice(0, 20));
         }
         if (data["watch/providers"] && data["watch/providers"].results) {
             const country = data["watch/providers"].results.ES; // Cambia 'ES' por el código del país que desees
@@ -76,7 +76,7 @@ export const PeliculaSingle = () => {
 
         if (data.recommendations && data.recommendations.results) {
             const recommend = data.recommendations.results;
-            setRecommendations(recommend.slice(0, 10));
+            setRecommendations(recommend.slice(0, 20));
         }
 
         setSelectedMovie(data);
@@ -98,6 +98,14 @@ export const PeliculaSingle = () => {
         }, 0);
     };
 
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const year = date.getFullYear();
+        return `${day}/${month}/${year}`;
+    };
+
 
     return (
         <>
@@ -115,21 +123,21 @@ export const PeliculaSingle = () => {
                                     />
                                 </div>
                                 <div className='col'>
-                                    <div className='d-flex'>
-                                    <p className='text-light multimedia_single_title'>{selectedMovie.title}</p>
-                                    <div className='mt-4 ms-5'>
-                                        <button
-                                            className="btn btn-primary ver-trailer save-button-single-multimedia"
-                                            type="button"
-                                            onClick={store.watchlist?.some(movie => movie.id === selectedMovie.id)
-                                                ? () => actions.deleteFavouriteMovie(selectedMovie)
-                                                : () => actions.addFavouriteMovie(selectedMovie)}
-                                        >
-                                            {store.watchlist?.some(movie => movie.id === selectedMovie.id)
-                                                ? <i className="fa-solid fa-bookmark"></i>
-                                                : <i className="fa-regular fa-bookmark"></i>}
-                                        </button>
-                                    </div>
+                                    <div className='d-flex justify-content-between'>
+                                        <p className='text-light multimedia_single_title'>{selectedMovie.title}</p>
+                                        <div className='mt-4 ms-5'>
+                                            <button
+                                                className="btn btn-primary ver-trailer save-button-single-multimedia"
+                                                type="button"
+                                                onClick={store.watchlist?.some(movie => movie.id === selectedMovie.id)
+                                                    ? () => actions.deleteFavouriteMovie(selectedMovie)
+                                                    : () => actions.addFavouriteMovie(selectedMovie)}
+                                            >
+                                                {store.watchlist?.some(movie => movie.id === selectedMovie.id)
+                                                    ? <i className="fa-solid fa-bookmark"></i>
+                                                    : <i className="fa-regular fa-bookmark"></i>}
+                                            </button>
+                                        </div>
                                     </div>
                                     <p className='text-light fs-5'>{selectedMovie.overview ? selectedMovie.overview : <span className='sin-descripcion'>Sin descripción</span>}</p>
                                     <div className='fs-4 pt-3 d-flex align-items-baseline gap-2 puntaje'>
@@ -156,18 +164,21 @@ export const PeliculaSingle = () => {
                                                 <div className='d-flex flex-wrap'>
                                                     {platforms.map((platform, index) => (
                                                         <Tooltip content={platform.provider_name} trigger="hover" placement="bottom" className='d-flex align-items-start bg-dark text-light ps-2 pe-0 pt-0 pb-0 fs-5 rounded'>
-                                                            <img key={index} className='border platforms me-2 mt-2' src={`https://image.tmdb.org/t/p/w200${platform.logo_path}`} alt={platform.provider_name} />
+                                                            <img key={index} className='border platforms me-2 mt-3' src={`https://image.tmdb.org/t/p/w200${platform.logo_path}`} alt={platform.provider_name} />
                                                         </Tooltip>
                                                     ))}
                                                 </div>
                                             </>
                                         ) : ''}
                                     </p>
-                                
-                                    <div>
+
+
+                                </div>
+
+                                <div>
                                     {!playing && trailer && (
                                         <button
-                                            className="btn btn-success fw-bold ver-trailer mt-3"
+                                            className="btn btn-success fw-bold ver-trailer mt-4"
                                             onClick={handlePlayTrailer}
                                             type="button"
                                         >
@@ -201,13 +212,123 @@ export const PeliculaSingle = () => {
                                                 />
                                             </div>
                                         )}
-                                
-                                    </div>
+
                                     </div>
                                 </div>
+                                <div className='d-flex flex-wrap'>
+                                    <div className='me-5 mb-3'>
+                                        <div className='fs-2 text-light fw-bold'>Duración</div>
+                                        <div className='text-light fs-5'>{selectedMovie.runtime > 0 ? `${selectedMovie.runtime} minutos` : 'Duración no informada'}</div>
+                                    </div>
+                                    <div className='me-5  mb-3'>
+                                        <div className='fs-2 text-light fw-bold'>Géneros</div>
+                                        <div className='d-flex text-light fs-5'>{selectedMovie.genres && selectedMovie.genres.map((genre, index) => (
+                                            <p className='pe-1' key={genre.id}>{genre.name}{index < selectedMovie.genres.length - 1 ? ', ' : ''}</p>
+                                        ))}</div>
+                                    </div>
+                                    <div className='me-5  mb-3'>
+                                        <div className='fs-2 text-light fw-bold'>Fecha de estreno</div>
+                                        <div className='text-light fs-5'>{formatDate(selectedMovie.release_date)}</div>
+                                    </div>
+                                    <div className='me-5  mb-3'>
+                                        <div className='fs-2 text-light fw-bold'>Idioma</div>
+                                        <div className='text-light text-uppercase fs-5'>{selectedMovie.original_language}</div>
+                                    </div>
+                                </div>
+                                {cast && cast.length > 0 ?
+
+                                    <div className='d-flex flex-column'>
+                                        <div>
+                                            <h2 className='pt-4 pb-4 text-info subtitle-modal'>Reparto principal</h2>
+                                        </div>
+                                        <div className="swiper-container">
+                                            <div className="swiper-wrapper scrollableDiv">
+                                                {cast.map((actor, index) => (
+                                                    <div key={index} className="swiper-slide gap-5">
+                                                        <CardActores
+                                                            castImg={`https://image.tmdb.org/t/p/w200${actor.profile_path}`}
+                                                            castName={actor.name}
+                                                            noImg={avatar}
+                                                            castCharacter={actor.character ? ` (${actor.character})` : ''}
+                                                        />
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    </div> : ''}
+                                <h2 className='pt-4 text-info subtitle-modal'>Más información</h2>
+                                <div className='text-light'>
+                                    <div>
+                                        <div>
+                                            <p className='fs-2 fw-bold mt-3'>Productoras:</p>
+                                            {selectedMovie.production_companies && selectedMovie.production_companies.map((company, index) => (
+                                                <span className='fs-4' key={company.id}>{company.name}{index < selectedMovie.production_companies.length - 1 ? ', ' : ''}</span>
+                                            ))}
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <p className='fs-2 fw-bold mt-3'>País:</p>
+                                        <div>
+                                            {selectedMovie.production_countries && selectedMovie.production_countries.map((country, index) => (
+                                                <span className='fs-4' key={country.iso_3166_1}>{country.name}{index < selectedMovie.production_countries.length - 1 ? ', ' : ''}</span>
+                                            ))}
+                                        </div>
+                                    </div>
+                                    <div className='d-flex flex-column'>
+                                        {selectedMovie.budget > 0 ? <><span className='fw-bold fs-2 mt-3'>Presupuesto:</span> <span className='fs-4'>{new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'USD' }).format(selectedMovie.budget)}</span></> : <><span className='fw-bold fs-2 mt-3'>Presupuesto: </span>No informado</>}
+                                    </div>
+                                    <div className='d-flex flex-column'>
+                                        {selectedMovie.revenue > 0 ? <><span className='fw-bold fs-2 mt-3'>Recaudación:</span><span className='fs-4'> {new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'USD' }).format(selectedMovie.revenue)}</span></> : <><span className='fw-bold fs-2 mt-3'>Recaudación: </span>No informado</>}
+                                    </div>
+                                </div>
+
+                                {recommendations && recommendations.length > 0 ? (
+
+                                    <>
+
+                                        <h2 className='pt-5 text-info subtitle-modal'>Te puede interesar</h2>
+
+                                        <div className='d-flex flex-wrap gap-4 mb-4'>
+                                            <div className="swiper-container">
+                                                <div className="swiper-wrapper scrollableDiv">
+                                                    {recommendations.map((recommend) => {
+
+                                                        const releaseDate = new Date(recommend.release_date);
+                                                        const today = new Date();
+                                                        const isUpcoming = releaseDate > today ? "Próximo estreno" : "";
+
+
+                                                        return (
+
+                                                            <div className='film-card-modal swiper-slide gap-5'>
+                                                                <FilmCardRecommendations
+                                                                    key={recommend.id}
+                                                                    size={{ width: '9rem' }}
+                                                                    image={recommend.poster_path}
+                                                                    title={recommend.title}
+                                                                    overview={recommend.overview}
+                                                                    releaseDate={<><span className='fw-bold'>Fecha</span> {formatDate(recommend.release_date)}</>}
+                                                                    voteAverage={''}
+                                                                    movieType={''}
+                                                                    classMovieType={recommend.title ? 'movie-type-movie' : 'movie-type-serie'}
+                                                                    topMovie={''}
+                                                                    proxEstreno={isUpcoming}
+                                                                />
+                                                            </div>
+                                                        );
+
+                                                    })}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </>
+                                ) : ''}
                             </div>
+
+
                         </div>
                     </div>
+
 
                 </>
             )}
