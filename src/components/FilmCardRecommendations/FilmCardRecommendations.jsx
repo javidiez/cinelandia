@@ -6,12 +6,16 @@ import fondoNotFound from '../../assets/img/fondo-not-found.jpeg'
 export const FilmCardRecommendations = ({ image, title, releaseDate, voteAverage, topMovie, proxEstreno, movieType, classMovieType, size }) => {
 
   const truncateText = (text, maxLength) => {
+    if (!text) {
+      return ''; // Devolver una cadena vacía si el texto es undefined o null
+    }
+    console.log(`Truncating text: "${text}" with maxLength: ${maxLength}`);
     if (text.length > maxLength) {
+      console.log(`Text is longer than ${maxLength} characters. Truncating...`);
       return text.slice(0, maxLength) + '...';
     }
     return text;
   };
-
 
   return (
     <>

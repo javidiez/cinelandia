@@ -8,6 +8,7 @@
 }
 .navbar-toggler{
     border-color: #ffffffb0;
+    padding: 3px 5px;
 
 }
 
@@ -69,6 +70,10 @@
     filter: invert(1) grayscale(1) brightness(1.5); /* Esto invierte el color y lo hace blanco */
 }
 
+.navbar-watchlist-icon{
+    margin-right: 7px;
+}
+
 @media screen and (max-width: 575px){
     .logo{
         width: 2.5rem;
@@ -82,7 +87,7 @@
     
 }
 
-@media screen and (min-width: 991px){
+@media screen and (min-width: 1208px){
     .navbar-mobile{
         display:none !important; 
     }

@@ -266,7 +266,7 @@ export const PersonasSerieMovie = () => {
 
                 )}
 
-                <div className="mt-4 novedades bloque-card-mobile fade-in">
+                <div className="mt-4 bloque-card-mobile fade-in">
                     <div className="swiper-container-paginas">
                         <div className="swiper-wrapper-paginas scrollableDiv-paginas d-flex">
                             {personsSearch.map((actor) => {
@@ -335,7 +335,7 @@ export const PersonasSerieMovie = () => {
 
             <div>
 
-                <div className="novedades bloque-card-mobile fade-in">
+                <div className="bloque-card-mobile fade-in">
                     <div className="swiper-container-paginas person-block-mobile">
                         <div className="swiper-wrapper-paginas scrollableDiv-paginas d-flex gap-5">
                             {persons.map((actor) => {

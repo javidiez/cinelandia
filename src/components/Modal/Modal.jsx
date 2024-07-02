@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import YouTube from 'react-youtube';
 import '../Novedades/novedades.css';
 import './modal.css';
+import { Context } from '../../store/appContext';
 
 
 export const Modal = ({
@@ -27,8 +28,10 @@ export const Modal = ({
     trailer, // Pasar el trailer como prop
     cast,
     providers,
-    recommendations
+    recommendations,
+    watchlistButtons
 }) => {
+
     const videoContainerRef = useRef(null);
     const [playing, setPlaying] = useState(false);
 
@@ -84,6 +87,7 @@ export const Modal = ({
                                         VER TRAILER
                                     </button>
                                 )}
+                                {watchlistButtons}
                             </div>
                             <div ref={videoContainerRef} className="video-container mt-3">
                                 {playing && (

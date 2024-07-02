@@ -1,0 +1,56 @@
+.swiper-container-watchlist {
+    max-width: 100vw;
+
+}
+
+.scrollableDiv-watchlist {
+    top: 0; /* Ajusta la posición desde la parte superior del contenedor padre */
+    left: 0; /* Ajusta la posición desde la parte izquierda del contenedor padre */
+    width: 100%; /* Opcional: Usa el ancho completo del contenedor */
+    overflow-x: auto; /* Permite el scroll vertical solo cuando sea necesario */
+    padding: 10px; /* Opcional: Agrega relleno para el contenido */
+    box-sizing: border-box; /* Asegura que el padding esté incluido en el ancho y alto */
+    padding-right: 80px;
+}
+
+.swiper-wrapper-watchlist {
+    display: flex;
+    justify-content: start;
+}
+
+.swiper-wrapper-watchlist::-webkit-scrollbar {
+    height: 5px;
+    border-radius: 5px;
+    display: none;
+}
+
+.swiper-wrapper-watchlist::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.swiper-wrapper-watchlist::-webkit-scrollbar-thumb {
+    background-color: #9e9e9e;
+    border-radius: 5px;
+
+}
+
+.swiper-wrapper-watchlist:hover::-webkit-scrollbar {
+    width: 1px;
+    height: 5px;
+    border-radius: 5px;
+    display: block;
+}
+
+.title-watchlist{
+    font-size: clamp(2.5rem,5vw,3rem);
+    margin-bottom: -20px;
+}
+
+@media screen and (max-width: 700px){
+    .swiper-wrapper-watchlist:hover::-webkit-scrollbar {
+        display: none;
+    }
+    .title-watchlist{
+        margin-top: -30px
+    }
+}
