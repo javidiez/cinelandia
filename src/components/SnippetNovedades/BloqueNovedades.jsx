@@ -10,6 +10,7 @@ import lapiz from '../../assets/img/lapiz.png';
 import smartTv from '../../assets/img/smart-tv.png';
 import fondoNotFound from '../../assets/img/fondo-not-found.jpeg';
 import avatar from '../../assets/img/avatar.webp';
+import calendar from '../../assets/img/calendar.png';
 import '../Novedades/novedades.css';
 import '../FilmCard/filmcard.css';
 import '../InfoMovie/infoMovie.css';
@@ -293,8 +294,8 @@ export const BloqueNovedades = () => {
                                         image={movie.poster_path}
                                         title={movie.title ? movie.title : movie.name}
                                         overview={movie.overview}
-                                        releaseDate={movie.title && movie.release_date ? <><span className='fw-bold'>Fecha:</span> {formatDate(movie.release_date)}</> : movie.name && movie.first_air_date ? <><span className='fw-bold'>Fecha: </span>{formatDate(movie.first_air_date)}</> : 'Fecha no informada'}
-                                        voteAverage={<><span className='fw-bold'>Valoración:</span> {(movie.vote_average * 10).toFixed(2)} %</>}
+                                        releaseDate={<div className='d-flex align-items-center gap-2'><img className='icon-filmcard' src={calendar}/> {formatDate(movie.release_date)}</div>}
+                                        voteAverage={isUpcoming || isNaN(movie.vote_average) ? <div className='d-flex align-items-baseline gap-2'><img className='icon-filmcard' src={estrella}/> 0 %</div> : <div className='d-flex align-items-baseline gap-2'><img className='icon-filmcard' src={estrella}/> {Math.round(movie.vote_average * 10)} %</div>}
                                         onclick={() => selectMovie(movie)}
                                         movieType={''}
                                         classMovieType={movie.title ? 'movie-type-movie' : 'movie-type-serie'}
@@ -340,8 +341,8 @@ export const BloqueNovedades = () => {
                             image={movie.poster_path}
                             title={movie.title}
                             overview={movie.overview}
-                            releaseDate={<><span className='fw-bold'>Fecha</span> {formatDate(movie.release_date)}</>}
-                            voteAverage={<><span className='fw-bold'>Valoración:</span> {(movie.vote_average * 10).toFixed(2)} %</>}
+                            releaseDate={<div className='d-flex align-items-center gap-2'><img className='icon-filmcard' src={calendar}/> {formatDate(movie.release_date)}</div>}
+                            voteAverage={isUpcoming || isNaN(movie.vote_average) ? <div className='d-flex align-items-baseline gap-2'><img className='icon-filmcard' src={estrella}/> 0 %</div> : <div className='d-flex align-items-baseline gap-2'><img className='icon-filmcard' src={estrella}/> {Math.round(movie.vote_average * 10)} %</div>}
                             onclick={() => selectMovie(movie)}
                             movieType={''}
                             classMovieType={movie.title ? 'movie-type-movie' : 'movie-type-serie'}

@@ -10,6 +10,7 @@ import lapiz from '../../assets/img/lapiz.png';
 import smartTv from '../../assets/img/smart-tv.png';
 import fondoNotFound from '../../assets/img/fondo-not-found.jpeg';
 import avatar from '../../assets/img/avatar.webp';
+import calendar from '../../assets/img/calendar.png';
 import '../Novedades/novedades.css';
 import '../FilmCard/filmcard.css';
 import '../InfoMovie/infoMovie.css'
@@ -288,8 +289,8 @@ export const WatchlistSerie = () => {
                                             image={fav.poster_path}
                                             title={fav.title ? fav.title : fav.name}
                                             overview={fav.overview}
-                                            releaseDate={fav.title && fav.release_date ? <><span className='fw-bold'>Fecha:</span> {formatDate(fav.release_date)}</> : fav.name && fav.first_air_date ? <><span className='fw-bold'>Fecha: </span>{formatDate(fav.first_air_date)}</> : 'Fecha no informada'}
-                                            voteAverage={<><span className='fw-bold'>Valoración:</span> {(fav.vote_average * 10).toFixed(2)} %</>}
+                                            voteAverage={isUpcoming || isNaN(movie.vote_average) ? <div className='d-flex align-items-baseline gap-2'><img className='icon-filmcard' src={estrella}/> 0 %</div> : <div className='d-flex align-items-baseline gap-2'><img className='icon-filmcard' src={estrella}/> {Math.round(movie.vote_average * 10)} %</div>}
+                                            releaseDate={fav.title && fav.release_date ? <div className='d-flex align-items-center gap-2'><img className='icon-filmcard' src={calendar}/>  {formatDate(fav.release_date)}</div> : fav.name && fav.first_air_date ? <div className='d-flex align-items-center gap-2'><img className='icon-filmcard' src={calendar}/>{formatDate(fav.first_air_date)}</div> : 'Fecha no informada'}
                                             onclick={() => selectMovie(fav)}
                                             movieType={''}
                                             classMovieType={fav.title ? 'movie-type-movie' : 'movie-type-serie'}

@@ -101,14 +101,18 @@ p {
 }
 
 .movie-type-movie {
-    position: absolute;
     background-color: #0072a7;
     font-size: 1.2rem;
+    position: absolute;
     top: 10px;
     left: 10px;
     font-weight: 500;
     padding: 0 7px;
     border-radius: 5px;
+}
+
+.icon-filmcard{
+    width: clamp(1.7rem, 5vw, 2rem)
 }
 
 .truncate-text {

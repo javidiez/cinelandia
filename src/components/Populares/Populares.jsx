@@ -10,6 +10,7 @@ import lapiz from '../../assets/img/lapiz.png';
 import smartTv from '../../assets/img/smart-tv.png';
 import fondoNotFound from '../../assets/img/fondo-not-found.jpeg';
 import avatar from '../../assets/img/avatar.webp';
+import calendar from '../../assets/img/calendar.png';
 import '../Novedades/novedades.css';
 import '../FilmCard/filmcard.css';
 import '../InfoMovie/infoMovie.css';
@@ -173,23 +174,23 @@ export const Populares = () => {
                             watchlistButtons={
                                 selectedMovie && (
                                     <Tooltip
-                                    content={store.watchlist?.some(movie => movie.id === selectedMovie.id) ? "Quitar de Watchlist" : "Agregar a Watchlist"}
-                                    trigger="hover"
-                                    placement="top"
-                                    className="d-flex align-items-start bg-dark text-light ps-2 pe-0 px-0 fs-5 rounded"
-                                >
-                                    <button
-                                        className="btn btn-primary"
-                                        type="button"
-                                        onClick={store.watchlist?.some(movie => movie.id === selectedMovie.id)
-                                            ? () => actions.deleteFavouriteMovie(selectedMovie)
-                                            : () => actions.addFavouriteMovie(selectedMovie)}
+                                        content={store.watchlist?.some(movie => movie.id === selectedMovie.id) ? "Quitar de Watchlist" : "Agregar a Watchlist"}
+                                        trigger="hover"
+                                        placement="top"
+                                        className="d-flex align-items-start bg-dark text-light ps-2 pe-0 px-0 fs-5 rounded"
                                     >
-                                        {store.watchlist?.some(movie => movie.id === selectedMovie.id)
-                                            ? <i className="fa-solid fa-bookmark"></i>
-                                            : <i className="fa-regular fa-bookmark"></i>}
-                                    </button>
-                                </Tooltip>
+                                        <button
+                                            className="btn btn-primary"
+                                            type="button"
+                                            onClick={store.watchlist?.some(movie => movie.id === selectedMovie.id)
+                                                ? () => actions.deleteFavouriteMovie(selectedMovie)
+                                                : () => actions.addFavouriteMovie(selectedMovie)}
+                                        >
+                                            {store.watchlist?.some(movie => movie.id === selectedMovie.id)
+                                                ? <i className="fa-solid fa-bookmark"></i>
+                                                : <i className="fa-regular fa-bookmark"></i>}
+                                        </button>
+                                    </Tooltip>
                                 )
                             }
                             postherPad={selectedMovie.poster_path ? `https://image.tmdb.org/t/p/w500${selectedMovie.poster_path}` : fondoNotFound}
@@ -283,7 +284,7 @@ export const Populares = () => {
                                                                 classMovieType={recommend.title ? 'movie-type-movie' : 'movie-type-serie'}
                                                                 topMovie={''}
                                                                 proxEstreno={isUpcoming}
-                                                                
+
                                                             />
                                                         </div>
                                                     );
@@ -325,8 +326,8 @@ export const Populares = () => {
                                             image={movie.poster_path}
                                             title={movie.title}
                                             overview={movie.overview}
-                                            releaseDate={movie.release_date ? <><span className='fw-bold'>Fecha</span> {formatDate(movie.release_date)}</> : ''}
-                                            voteAverage={isUpcoming ? '' : <><span className="fw-bold">Valoración:</span> {(movie.vote_average * 10).toFixed(2)}%</>}
+                                            voteAverage={isUpcoming || isNaN(movie.vote_average) ? <div className='d-flex align-items-baseline gap-2'><img className='icon-filmcard' src={estrella} /> 0 %</div> : <div className='d-flex align-items-baseline gap-2'><img className='icon-filmcard' src={estrella} /> {Math.round(movie.vote_average * 10)} %</div>}
+                                            releaseDate={movie.title && movie.release_date ? <div className='d-flex align-items-center gap-2'><img className='icon-filmcard' src={calendar} />  {formatDate(movie.release_date)}</div> : movie.name && movie.first_air_date ? <div className='d-flex align-items-center gap-2'><img className='icon-filmcard' src={calendar} />{formatDate(movie.first_air_date)}</div> : 'Fecha no informada'}
                                             onclick={() => selectMovie(movie)}
                                             movieType={''}
                                             classMovieType={movie.title ? 'movie-type-movie' : 'movie-type-serie'}
@@ -344,7 +345,7 @@ export const Populares = () => {
                                                         ? <i className="fa-solid fa-bookmark"></i>
                                                         : <i className="fa-regular fa-bookmark"></i>}
                                                 </button>
-                                    }
+                                            }
                                         />
                                     </div>
                                 );
@@ -367,9 +368,10 @@ export const Populares = () => {
                                 image={movie.poster_path}
                                 title={movie.title}
                                 overview={movie.overview}
-                                releaseDate={<><span className='fw-bold'>Fecha</span> {formatDate(movie.release_date)}</>}
-                                voteAverage={isUpcoming ? '' : <><span className="fw-bold">Valoración:</span> {(movie.vote_average * 10).toFixed(2)}%</>} onclick={() => selectMovie(movie)}
+                                voteAverage={isUpcoming || isNaN(movie.vote_average) ? <div className='d-flex align-items-baseline gap-2'><img className='icon-filmcard' src={estrella} /> 0 %</div> : <div className='d-flex align-items-baseline gap-2'><img className='icon-filmcard' src={estrella} /> {Math.round(movie.vote_average * 10)} %</div>}
+                                releaseDate={movie.title && movie.release_date ? <div className='d-flex align-items-center gap-2'><img className='icon-filmcard' src={calendar} />  {formatDate(movie.release_date)}</div> : movie.name && movie.first_air_date ? <div className='d-flex align-items-center gap-2'><img className='icon-filmcard' src={calendar} />{formatDate(movie.first_air_date)}</div> : 'Fecha no informada'}
                                 movieType={''}
+                                onclick={() => selectMovie(movie)}
                                 classMovieType={""}
                                 topMovie={movie.vote_average > 7.75 && movie.vote_count > 99 ? "Destacada" : ''}
                                 proxEstreno={isUpcoming}
@@ -385,7 +387,7 @@ export const Populares = () => {
                                             ? <i className="fa-solid fa-bookmark"></i>
                                             : <i className="fa-regular fa-bookmark"></i>}
                                     </button>
-                        }
+                                }
                             />
                         );
                     })}

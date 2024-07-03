@@ -10,6 +10,7 @@ import lapiz from '../../assets/img/lapiz.png';
 import smartTv from '../../assets/img/smart-tv.png';
 import fondoNotFound from '../../assets/img/fondo-not-found.jpeg';
 import avatar from '../../assets/img/avatar.webp';
+import calendar from '../../assets/img/calendar.png';
 import '../Novedades/novedades.css';
 import '../FilmCard/filmcard.css';
 import '../InfoMovie/infoMovie.css'
@@ -327,9 +328,10 @@ export const ProximosEstrenos = () => {
                                             image={movie.poster_path}
                                             title={movie.title}
                                             overview={movie.overview}
-                                            releaseDate={movie.release_date ? <><span className='fw-bold'>Fecha</span> {formatDate(movie.release_date)}</> : ''}
-                                            voteAverage={isUpcoming ? '' : <><span className="fw-bold">Valoración:</span> {(movie.vote_average * 10).toFixed(2)}%</>} onclick={() => selectMovie(movie)}
+                                            voteAverage={''}
+                                            releaseDate={movie.title && movie.release_date ? <div className='d-flex align-items-center gap-2'><img className='icon-filmcard' src={calendar}/>  {formatDate(movie.release_date)}</div> : movie.name && movie.first_air_date ? <div className='d-flex align-items-center gap-2'><img className='icon-filmcard' src={calendar}/>{formatDate(movie.first_air_date)}</div> : 'Fecha no informada'}
                                             movieType={''}
+                                            onclick={() => selectMovie(movie)}
                                             classMovieType={movie.title ? 'movie-type-movie' : 'movie-type-serie'}
                                             topMovie={movie.vote_average > 7.75 && movie.vote_count > 99 ? "Destacada" : ''}
                                             proxEstreno={''}
@@ -368,7 +370,7 @@ export const ProximosEstrenos = () => {
                                 image={movie.poster_path}
                                 title={movie.title}
                                 overview={movie.overview}
-                                releaseDate={<><span className='fw-bold'>Fecha</span> {formatDate(movie.release_date)}</>}
+                                releaseDate={movie.title && movie.release_date ? <div className='d-flex align-items-center gap-2'><img className='icon-filmcard' src={calendar} />  {formatDate(movie.release_date)}</div> : movie.name && movie.first_air_date ? <div className='d-flex align-items-center gap-2'><img className='icon-filmcard' src={calendar} />{formatDate(movie.first_air_date)}</div> : 'Fecha no informada'}
                                 voteAverage={''}
                                 onclick={() => selectMovie(movie)}
                                 movieType={''}
@@ -387,7 +389,7 @@ export const ProximosEstrenos = () => {
                                             ? <i className="fa-solid fa-bookmark"></i>
                                             : <i className="fa-regular fa-bookmark"></i>}
                                     </button>
-                        }
+                                }
                             />
                         );
                     })}
