@@ -222,8 +222,10 @@ export const PersonasSerieMovie = () => {
                                                             voteAverage={''}
                                                             movieType={actor.media_type == "movie" ? 'Película' : 'Serie'}
                                                             classMovieType={actor.media_type == "movie" ? 'movie-type-movie-person' : 'movie-type-serie-person'}
-                                                            topMovie={''}
+                                                            topMovie={actor.vote_average > 7.75 && actor.vote_count > 99 ? <span className='destacada-recommend'>Destacada</span> : ''}
                                                             proxEstreno={isUpcoming}
+                                                            info_multimedia={`${window.location.origin}/pelicula/${actor.id}`}
+                                                            verMas={() => window.scrollTo(0, 0)}
 
                                                         />
                                                     </div>
@@ -300,13 +302,13 @@ export const PersonasSerieMovie = () => {
 
                         return (
                             <div className='film-card-modal mb-4'>
-                            <CardPersonas
-                                castImg={`https://image.tmdb.org/t/p/w200${actor.profile_path}`}
-                                castName={actor.name}
-                                noImg={avatar}
-                                castCharacter={''}
-                                verMas={() => selectPersona(actor)}
-                            />
+                                <CardPersonas
+                                    castImg={`https://image.tmdb.org/t/p/w200${actor.profile_path}`}
+                                    castName={actor.name}
+                                    noImg={avatar}
+                                    castCharacter={''}
+                                    verMas={() => selectPersona(actor)}
+                                />
                             </div>
                         );
                     })}
