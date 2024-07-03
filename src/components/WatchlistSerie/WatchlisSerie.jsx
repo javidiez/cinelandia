@@ -289,7 +289,7 @@ export const WatchlistSerie = () => {
                                             image={fav.poster_path}
                                             title={fav.title ? fav.title : fav.name}
                                             overview={fav.overview}
-                                            voteAverage={isUpcoming || isNaN(movie.vote_average) ? <div className='d-flex align-items-baseline gap-2'><img className='icon-filmcard' src={estrella}/> 0 %</div> : <div className='d-flex align-items-baseline gap-2'><img className='icon-filmcard' src={estrella}/> {Math.round(movie.vote_average * 10)} %</div>}
+                                            voteAverage={isUpcoming || isNaN(fav.vote_average) ? <div className='d-flex align-items-baseline gap-2'><img className='icon-filmcard' src={estrella}/> 0 %</div> : <div className='d-flex align-items-baseline gap-2'><img className='icon-filmcard' src={estrella}/> {Math.round(fav.vote_average * 10)} %</div>}
                                             releaseDate={fav.title && fav.release_date ? <div className='d-flex align-items-center gap-2'><img className='icon-filmcard' src={calendar}/>  {formatDate(fav.release_date)}</div> : fav.name && fav.first_air_date ? <div className='d-flex align-items-center gap-2'><img className='icon-filmcard' src={calendar}/>{formatDate(fav.first_air_date)}</div> : 'Fecha no informada'}
                                             onclick={() => selectMovie(fav)}
                                             movieType={''}
