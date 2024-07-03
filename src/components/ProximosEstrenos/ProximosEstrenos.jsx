@@ -351,7 +351,7 @@ export const ProximosEstrenos = () => {
                                             voteAverage={''}
                                             releaseDate={movie.title && movie.release_date ? <div className='d-flex align-items-center gap-2'><img className='icon-filmcard' src={calendar}/>  {formatDate(movie.release_date)}</div> : movie.name && movie.first_air_date ? <div className='d-flex align-items-center gap-2'><img className='icon-filmcard' src={calendar}/>{formatDate(movie.first_air_date)}</div> : 'Fecha no informada'}
                                             movieType={''}
-                                            onclick={() => selectMovie(movie)}
+                                            info_multimedia={`${window.location.origin}/pelicula/${movie.id}`}
                                             classMovieType={movie.title ? 'movie-type-movie' : 'movie-type-serie'}
                                             topMovie={movie.vote_average > 7.75 && movie.vote_count > 99 ? "Destacada" : ''}
                                             proxEstreno={''}
@@ -392,7 +392,7 @@ export const ProximosEstrenos = () => {
                                 overview={movie.overview}
                                 releaseDate={movie.title && movie.release_date ? <div className='d-flex align-items-center gap-2'><img className='icon-filmcard' src={calendar} />  {formatDate(movie.release_date)}</div> : movie.name && movie.first_air_date ? <div className='d-flex align-items-center gap-2'><img className='icon-filmcard' src={calendar} />{formatDate(movie.first_air_date)}</div> : 'Fecha no informada'}
                                 voteAverage={''}
-                                onclick={() => selectMovie(movie)}
+                                info_multimedia={`${window.location.origin}/pelicula/${movie.id}`}
                                 movieType={''}
                                 classMovieType={movie.title ? 'movie-type-movie' : 'movie-type-serie'}
                                 topMovie={movie.vote_average > 7.75 && movie.vote_count > 99 ? "Destacada" : ''}

@@ -143,10 +143,8 @@ export const PeliculaSingle = () => {
                                     <div className='fs-4 pt-3 d-flex align-items-baseline gap-2 puntaje'>
                                         <div className='d-flex align-items-baseline justify-content-start'>
                                             <img className='icono-modal me-2' src={estrella} alt="Estrella" />
-                                            <span className='fw-bold text-light'>Puntuación de usuarios:</span>
-                                        </div>
-                                        <div className='porcentaje-valoracion'>
-                                            <span className={selectedMovie.vote_average * 10 >= 80 ? 'puntaje-verde' : selectedMovie.vote_average * 10 > 60 ? 'puntaje-amarillo' : 'puntaje-rojo'}> {selectedMovie.vote_average ? Math.round(selectedMovie.vote_average * 10) : '0'} %</span>
+                                            <span className='fw-bold text-light me-2'>Puntuación:</span>
+                                            <span className={selectedMovie.vote_average * 10 >= 80 ? 'puntaje-verde py-0' : selectedMovie.vote_average * 10 > 60 ? 'puntaje-amarillo py-0' : 'puntaje-rojo py-0'}> {selectedMovie.vote_average ? Math.round(selectedMovie.vote_average * 10) : '0'} %</span>
                                         </div>
 
                                     </div>
@@ -174,18 +172,37 @@ export const PeliculaSingle = () => {
 
 
                                 </div>
-
+                                <div className='d-flex flex-wrap mt-4'>
+                                    <div className='me-5 mb-3'>
+                                        <div className='fs-2 text-light fw-bold'>Duración</div>
+                                        <div className='text-light fs-5'>{selectedMovie.runtime > 0 ? `${selectedMovie.runtime} minutos` : 'Duración no informada'}</div>
+                                    </div>
+                                    <div className='me-5  mb-3'>
+                                        <div className='fs-2 text-light fw-bold'>Géneros</div>
+                                        <div className='d-flex flex-wrap text-light fs-5'>{selectedMovie.genres && selectedMovie.genres.map((genre, index) => (
+                                            <p className='pe-1' key={genre.id}>{genre.name}{index < selectedMovie.genres.length - 1 ? ', ' : ''}</p>
+                                        ))}</div>
+                                    </div>
+                                    <div className='me-5  mb-3'>
+                                        <div className='fs-2 text-light fw-bold'>Fecha de estreno</div>
+                                        <div className='text-light fs-5'>{formatDate(selectedMovie.release_date)}</div>
+                                    </div>
+                                    <div className='me-5  mb-3'>
+                                        <div className='fs-2 text-light fw-bold'>Idioma</div>
+                                        <div className='text-light text-uppercase fs-5'>{selectedMovie.original_language}</div>
+                                    </div>
+                                </div>
                                 <div>
                                     {!playing && trailer && (
                                         <button
-                                            className="btn btn-success fw-bold ver-trailer mt-4"
+                                            className="btn btn-success fw-bold ver-trailer mt-2"
                                             onClick={handlePlayTrailer}
                                             type="button"
                                         >
                                             VER TRAILER
                                         </button>
                                     )}
-                                    <div ref={videoContainerRef} className="video-container mt-3">
+                                    <div ref={videoContainerRef} className="video-container mt-2">
                                         {playing && (
                                             <div>
                                                 <button onClick={() => setPlaying(false)} className="btn btn-primary fw-bold mb-3">
@@ -213,26 +230,6 @@ export const PeliculaSingle = () => {
                                             </div>
                                         )}
 
-                                    </div>
-                                </div>
-                                <div className='d-flex flex-wrap'>
-                                    <div className='me-5 mb-3'>
-                                        <div className='fs-2 text-light fw-bold'>Duración</div>
-                                        <div className='text-light fs-5'>{selectedMovie.runtime > 0 ? `${selectedMovie.runtime} minutos` : 'Duración no informada'}</div>
-                                    </div>
-                                    <div className='me-5  mb-3'>
-                                        <div className='fs-2 text-light fw-bold'>Géneros</div>
-                                        <div className='d-flex flex-wrap text-light fs-5'>{selectedMovie.genres && selectedMovie.genres.map((genre, index) => (
-                                            <p className='pe-1' key={genre.id}>{genre.name}{index < selectedMovie.genres.length - 1 ? ', ' : ''}</p>
-                                        ))}</div>
-                                    </div>
-                                    <div className='me-5  mb-3'>
-                                        <div className='fs-2 text-light fw-bold'>Fecha de estreno</div>
-                                        <div className='text-light fs-5'>{formatDate(selectedMovie.release_date)}</div>
-                                    </div>
-                                    <div className='me-5  mb-3'>
-                                        <div className='fs-2 text-light fw-bold'>Idioma</div>
-                                        <div className='text-light text-uppercase fs-5'>{selectedMovie.original_language}</div>
                                     </div>
                                 </div>
                                 {cast && cast.length > 0 ?

@@ -214,23 +214,23 @@ function InfoMovie() {
                             watchlistButtons={
                                 selectedMovie && (
                                     <Tooltip
-                                    content={store.watchlist?.some(movie => movie.id === selectedMovie.id) ? "Quitar de Watchlist" : "Agregar a Watchlist"}
-                                    trigger="hover"
-                                    placement="top"
-                                    className="d-flex align-items-start bg-dark text-light ps-2 pe-0 px-0 fs-5 rounded"
-                                >
-                                    <button
-                                        className="btn btn-primary"
-                                        type="button"
-                                        onClick={store.watchlist?.some(movie => movie.id === selectedMovie.id)
-                                            ? () => actions.deleteFavouriteMovie(selectedMovie)
-                                            : () => actions.addFavouriteMovie(selectedMovie)}
+                                        content={store.watchlist?.some(movie => movie.id === selectedMovie.id) ? "Quitar de Watchlist" : "Agregar a Watchlist"}
+                                        trigger="hover"
+                                        placement="top"
+                                        className="d-flex align-items-start bg-dark text-light ps-2 pe-0 px-0 fs-5 rounded"
                                     >
-                                        {store.watchlist?.some(movie => movie.id === selectedMovie.id)
-                                            ? <i className="fa-solid fa-bookmark"></i>
-                                            : <i className="fa-regular fa-bookmark"></i>}
-                                    </button>
-                                </Tooltip>
+                                        <button
+                                            className="btn btn-primary"
+                                            type="button"
+                                            onClick={store.watchlist?.some(movie => movie.id === selectedMovie.id)
+                                                ? () => actions.deleteFavouriteMovie(selectedMovie)
+                                                : () => actions.addFavouriteMovie(selectedMovie)}
+                                        >
+                                            {store.watchlist?.some(movie => movie.id === selectedMovie.id)
+                                                ? <i className="fa-solid fa-bookmark"></i>
+                                                : <i className="fa-regular fa-bookmark"></i>}
+                                        </button>
+                                    </Tooltip>
                                 )
                             }
                             postherPad={selectedMovie.poster_path ? `https://image.tmdb.org/t/p/w500${selectedMovie.poster_path}` : fondoNotFound}
@@ -381,9 +381,9 @@ function InfoMovie() {
                                             image={movie.poster_path}
                                             title={movie.title ? movie.title : movie.name}
                                             overview={movie.overview}
-                                voteAverage={isUpcoming || isNaN(movie.vote_average) ? <div className='d-flex align-items-baseline gap-2'><img className='icon-filmcard' src={estrella}/> 0 %</div> : <div className='d-flex align-items-baseline gap-2'><img className='icon-filmcard' src={estrella}/> {Math.round(movie.vote_average * 10)} %</div>}
-                                            releaseDate={movie.title && movie.release_date ? <div className='d-flex align-items-center gap-2'><img className='icon-filmcard' src={calendar}/>  {formatDate(movie.release_date)}</div> : movie.name && movie.first_air_date ? <div className='d-flex align-items-center gap-2'><img className='icon-filmcard' src={calendar}/>{formatDate(movie.first_air_date)}</div> : 'Fecha no informada'}
-                                            onclick={() => selectMovie(movie)}
+                                            voteAverage={isUpcoming || isNaN(movie.vote_average) ? <div className='d-flex align-items-baseline gap-2'><img className='icon-filmcard' src={estrella} /> 0 %</div> : <div className='d-flex align-items-baseline gap-2'><img className='icon-filmcard' src={estrella} /> {Math.round(movie.vote_average * 10)} %</div>}
+                                            releaseDate={movie.title && movie.release_date ? <div className='d-flex align-items-center gap-2'><img className='icon-filmcard' src={calendar} />  {formatDate(movie.release_date)}</div> : movie.name && movie.first_air_date ? <div className='d-flex align-items-center gap-2'><img className='icon-filmcard' src={calendar} />{formatDate(movie.first_air_date)}</div> : 'Fecha no informada'}
+                                            info_multimedia={`${window.location.origin}/pelicula/${movie.id}`}
                                             movieType={movie.title ? 'Película' : 'Serie'}
                                             classMovieType={movie.title ? 'movie-type-movie' : 'movie-type-serie'}
                                             topMovie={movie.vote_average > 7.75 && movie.vote_count > 99 ? "Destacada" : ''}
@@ -400,7 +400,7 @@ function InfoMovie() {
                                                         ? <i className="fa-solid fa-bookmark"></i>
                                                         : <i className="fa-regular fa-bookmark"></i>}
                                                 </button>
-                                    }
+                                            }
                                         />
                                     </div>
                                 );
@@ -424,9 +424,9 @@ function InfoMovie() {
                                 image={movie.poster_path}
                                 title={movie.title ? movie.title : movie.name}
                                 overview={movie.overview}
-                                voteAverage={isUpcoming || isNaN(movie.vote_average) ? <div className='d-flex align-items-baseline gap-2'><img className='icon-filmcard' src={estrella}/> 0 %</div> : <div className='d-flex align-items-baseline gap-2'><img className='icon-filmcard' src={estrella}/> {Math.round(movie.vote_average * 10)} %</div>}
-                                releaseDate={movie.title && movie.release_date ? <div className='d-flex align-items-center gap-2'><img className='icon-filmcard' src={calendar}/>  {formatDate(movie.release_date)}</div> : movie.name && movie.first_air_date ? <div className='d-flex align-items-center gap-2'><img className='icon-filmcard' src={calendar}/>{formatDate(movie.first_air_date)}</div> : 'Fecha no informada'}
-                                onclick={() => selectMovie(movie)}
+                                voteAverage={isUpcoming || isNaN(movie.vote_average) ? <div className='d-flex align-items-baseline gap-2'><img className='icon-filmcard' src={estrella} /> 0 %</div> : <div className='d-flex align-items-baseline gap-2'><img className='icon-filmcard' src={estrella} /> {Math.round(movie.vote_average * 10)} %</div>}
+                                releaseDate={movie.title && movie.release_date ? <div className='d-flex align-items-center gap-2'><img className='icon-filmcard' src={calendar} />  {formatDate(movie.release_date)}</div> : movie.name && movie.first_air_date ? <div className='d-flex align-items-center gap-2'><img className='icon-filmcard' src={calendar} />{formatDate(movie.first_air_date)}</div> : 'Fecha no informada'}
+                                info_multimedia={`${window.location.origin}/pelicula/${movie.id}`}
                                 movieType={movie.title ? 'Película' : 'Serie'}
                                 classMovieType={movie.title ? 'movie-type-movie' : 'movie-type-serie'}
                                 topMovie={movie.vote_average > 7.75 && movie.vote_count > 99 ? "Destacada" : ''}
@@ -443,7 +443,7 @@ function InfoMovie() {
                                             ? <i className="fa-solid fa-bookmark"></i>
                                             : <i className="fa-regular fa-bookmark"></i>}
                                     </button>
-                        }
+                                }
                             />
                         );
                     })}

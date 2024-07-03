@@ -1,7 +1,8 @@
 import React from "react";
 import './snippet_pp.css'
+import { Link } from "react-router-dom";
 
-export const BloqueProximosEstrenos = ({ img, title, description, date, onclick }) => {
+export const BloqueProximosEstrenos = ({ img, title, description, date, onclick, info_multimedia }) => {
     return (
 
         <div className='text-light d-flex'>
@@ -14,7 +15,7 @@ export const BloqueProximosEstrenos = ({ img, title, description, date, onclick 
             <div className='fs-5'>{description}</div>
             <div className="fs-5">{date}</div>
             <div className="mt-3">
-            <button className="btn btn-success btn-mas-info-estrenos" onClick={onclick}>Más información</button>
+            <Link to={info_multimedia}><button className="btn btn-success btn-mas-info-estrenos" onClick={onclick}>Más información</button></Link>
             </div>
             </div>
             

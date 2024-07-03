@@ -112,7 +112,7 @@ p {
 }
 
 .icon-filmcard{
-    width: clamp(1.7rem, 5vw, 2rem)
+    width: clamp(1.7rem, 5vw, 1.8rem)
 }
 
 .truncate-text {
