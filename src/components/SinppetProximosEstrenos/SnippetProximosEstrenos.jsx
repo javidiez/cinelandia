@@ -11,6 +11,7 @@ import lapiz from '../../assets/img/lapiz.png';
 import smartTv from '../../assets/img/smart-tv.png';
 import fondoNotFound from '../../assets/img/fondo-not-found.jpeg';
 import avatar from '../../assets/img/avatar.webp';
+import calendar from '../../assets/img/calendar.png';
 import '../Novedades/novedades.css';
 import '../FilmCard/filmcard.css';
 import '../InfoMovie/infoMovie.css'
@@ -54,11 +55,13 @@ export const SnippetProximosEstrenos = () => {
             },
         });
 
-        // const sortedResults = results.sort((a, b) => new Date(a.release_date) - new Date(b.release_date));
+        const filteredResults = results.filter(movie => {
+            return !['tl', 'ja', 'ko', 'th', 'ar'].includes(movie.original_language);
+        });
 
         setCurrentPage(page);
         setTotalPages(total_pages);
-        setMovies(results);
+        setMovies(filteredResults);
     };
 
     const fetchMovie = async (id) => {
@@ -151,6 +154,7 @@ export const SnippetProximosEstrenos = () => {
                         <Modal
                             key={selectedMovie.id}
                             idModal={`modalEstrenos-${selectedMovie.id}`}
+                            shareUrl={`${window.location.origin}/pelicula/${selectedMovie.id}`}
                             watchlistButtons={
                                 selectedMovie && (
                                     <Tooltip
@@ -184,7 +188,7 @@ export const SnippetProximosEstrenos = () => {
                             originalLanguage={selectedMovie.original_language}
                             overview={selectedMovie.overview ? selectedMovie.overview : <span className='sin-descripcion'>Sin descripción</span>}
                             classPuntaje={`${selectedMovie.vote_average * 10 >= 80 ? 'puntaje-verde' : selectedMovie.vote_average * 10 > 60 ? 'puntaje-amarillo' : 'puntaje-rojo'}`}
-                            voteAverage={selectedMovie.vote_average ? (selectedMovie.vote_average * 10).toFixed(2) : '0'}
+                            voteAverage={selectedMovie.vote_average ? Math.round(selectedMovie.vote_average * 10) : '0'}
                             voteCount={selectedMovie.vote_count ? selectedMovie.vote_count : 0}
                             mapProductionCompanies={selectedMovie.production_companies && selectedMovie.production_companies.length > 0 ? selectedMovie.production_companies.map((company, index) => (
                                 <span key={company.id}>{company.name}{index < selectedMovie.production_companies.length - 1 ? ', ' : ''}</span>
@@ -262,8 +266,10 @@ export const SnippetProximosEstrenos = () => {
                                                                 voteAverage={''}
                                                                 movieType={''}
                                                                 classMovieType={recommend.title ? 'movie-type-movie' : 'movie-type-serie'}
-                                                                topMovie={''}
+                                                                topMovie={recommend.vote_average > 7.75 && recommend.vote_count > 99 ? <span className='destacada-recommend'>Destacada</span> : ''}
                                                                 proxEstreno={isUpcoming}
+                                                                info_multimedia={`${window.location.origin}/pelicula/${recommend.id}`}
+                                                                verMas={() => window.scrollTo(0, 0)}
                                                             />
                                                         </div>
                                                     );
@@ -300,7 +306,7 @@ export const SnippetProximosEstrenos = () => {
                                     img={`${IMAGE_PATH}${movie.poster_path}`}
                                     title={movie.title}
                                     description={''}
-                                    date={formatDate(movie.release_date)}
+                                    date={<div className="d-flex align-items-center"><img style={{ width:'1.5rem' }} src={calendar}/><span className="fs-4 ms-2">{formatDate(movie.release_date)}</span></div>}
                                     onclick={() => selectMovie(movie)}
                                 />
                                 <hr className="border-2 border-top border-secondary mt-4 mb-4" />

@@ -184,7 +184,7 @@ export const BloqueSeries = () => {
                             originalLanguage={selectedSerie.original_language ? selectedSerie.original_language : <span className='text-lowercase'>Idioma desconocido</span>}
                             overview={selectedSerie.overview ? selectedSerie.overview : <span className='sin-descripcion'>Sin descripción</span>}
                             classPuntaje={`${selectedSerie.vote_average * 10 >= 80 ? 'puntaje-verde' : selectedSerie.vote_average * 10 > 60 ? 'puntaje-amarillo' : 'puntaje-rojo'}`}
-                            voteAverage={selectedSerie.vote_average ? (selectedSerie.vote_average * 10).toFixed(2) : '0'}
+                            voteAverage={selectedSerie.vote_average ? Math.round(selectedSerie.vote_average * 10) : '0'}
                             voteCount={selectedSerie.vote_count ? selectedSerie.vote_count : 0}
                             mapProductionCompanies={selectedSerie.production_companies && selectedSerie.production_companies.length > 0 ? selectedSerie.production_companies.map((company, index) => (
                                 <span key={company.id}>{company.name}{index < selectedSerie.production_companies.length - 1 ? ', ' : ''}</span>

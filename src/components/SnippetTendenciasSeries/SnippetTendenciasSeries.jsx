@@ -12,6 +12,7 @@ import lapiz from '../../assets/img/lapiz.png';
 import smartTv from '../../assets/img/smart-tv.png';
 import fondoNotFound from '../../assets/img/fondo-not-found.jpeg';
 import avatar from '../../assets/img/avatar.webp';
+import calendar from '../../assets/img/calendar.png';
 import '../Novedades/novedades.css';
 import '../FilmCard/filmcard.css';
 import '../InfoMovie/infoMovie.css'
@@ -45,38 +46,21 @@ export const SnippetTendenciasSeries = () => {
         setLoading(true);
 
         try {
-            let allResultsMap = {}; // Objeto de mapa para almacenar las series sin duplicados
-            let totalPages = 1;
-            let currentPage = 1;
+            const { data: { results, total_pages } } = await axios.get(`${API_URL}/discover/tv`, {
+                params: {
+                    api_key: API_KEY,
+                    language: 'es-ES',
+                    sort_by: 'popularity.desc',
+                    'vote_count.gte': 1000,
+                    'vote_average.gte': 8.1,
+                },
+            });
 
-            // Realiza bucle hasta que hayas obtenido todas las páginas de resultados
-            while (currentPage <= totalPages) {
-                const { data: { results, total_pages } } = await axios.get(`${API_URL}/tv/top_rated`, {
-                    params: {
-                        api_key: API_KEY,
-                        language: 'es-ES',
-                        page: currentPage,
-                    },
-                });
 
-                // Agrega cada serie al objeto de mapa utilizando el id como clave
-                results.forEach(serie => {
-                    allResultsMap[serie.id] = serie;
-                });
-
-                totalPages = total_pages;
-                currentPage++;
-            }
-
-            // Extrae los valores del objeto de mapa (las series únicas) y conviértelos en una matriz
-            const allResults = Object.values(allResultsMap);
-
-            // Ordena todas las películas por fecha de first_air_date
-            allResults.sort((a, b) => new Date(b.first_air_date) - new Date(a.first_air_date));
-
-            // Establece las películas ordenadas en el estado
-            setMovies(allResults);
-            setTotalPages(totalPages);
+            // Establece las series filtradas y la cantidad total de páginas en el estado
+            setMovies(results);
+            setTotalPages(total_pages);
+            setCurrentPage(page);
         } catch (error) {
             console.error("Error fetching top rated series:", error);
         } finally {
@@ -210,7 +194,7 @@ export const SnippetTendenciasSeries = () => {
                             originalLanguage={selectedSerie.original_language ? selectedSerie.original_language : <span className='text-lowercase'>Idioma desconocido</span>}
                             overview={selectedSerie.overview ? selectedSerie.overview : <span className='sin-descripcion'>Sin descripción</span>}
                             classPuntaje={`${selectedSerie.vote_average * 10 >= 80 ? 'puntaje-verde' : selectedSerie.vote_average * 10 > 60 ? 'puntaje-amarillo' : 'puntaje-rojo'}`}
-                            voteAverage={selectedSerie.vote_average ? (selectedSerie.vote_average * 10).toFixed(2) : '0'}
+                            voteAverage={selectedSerie.vote_average ? Math.round(selectedSerie.vote_average * 10) : '0'}
                             voteCount={selectedSerie.vote_count ? selectedSerie.vote_count : 0}
                             mapProductionCompanies={selectedSerie.production_companies && selectedSerie.production_companies.length > 0 ? selectedSerie.production_companies.map((company, index) => (
                                 <span key={company.id}>{company.name}{index < selectedSerie.production_companies.length - 1 ? ', ' : ''}</span>
@@ -339,9 +323,9 @@ export const SnippetTendenciasSeries = () => {
                                     img={`${IMAGE_PATH}${movie.poster_path}`}
                                     title={movie.name}
                                     description={''}
-                                    voteAverage={<><span className="fw-bold">Valoración:</span> {(movie.vote_average * 10).toFixed(2)}%</>}
+                                    voteAverage={<div className="d-flex align-items-baseline"><img style={{ width:'1.5rem' }} src={estrella}/><span className="fs-3 ms-2">{Math.round(movie.vote_average * 10)} %</span></div>}
                                     selectedSerie
-                                    date={formatDate(movie.first_air_date)}
+                                    date={<div className="d-flex align-items-center"><img style={{ width:'1.5rem' }} src={calendar}/><span className="fs-5 ms-2">{formatDate(movie.first_air_date)}</span></div>}
                                     onclick={() => selectMovie(movie)}
                                 />
                                 <hr className="border-2 border-top border-secondary mt-4 mb-4" />

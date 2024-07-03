@@ -200,6 +200,7 @@ const BloqueGenerosMovie = () => {
                         <Modal
                             key={selectedMovie.id}
                             idModal={`modalGenero-${selectedMovie.id}`}
+                            shareUrl={`${window.location.origin}/pelicula/${selectedMovie.id}`}
                             watchlistButtons={
                                 selectedMovie && (
                                     <Tooltip
@@ -233,7 +234,7 @@ const BloqueGenerosMovie = () => {
                             originalLanguage={selectedMovie.original_language}
                             overview={selectedMovie.overview ? selectedMovie.overview : <span className='sin-descripcion'>Sin descripción</span>}
                             classPuntaje={`${selectedMovie.vote_average * 10 >= 80 ? 'puntaje-verde' : selectedMovie.vote_average * 10 > 60 ? 'puntaje-amarillo' : 'puntaje-rojo'}`}
-                            voteAverage={(selectedMovie.vote_average * 10).toFixed(2)}
+                            voteAverage={selectedMovie.vote_average ? Math.round(selectedMovie.vote_average * 10) : '0'}
                             voteCount={selectedMovie.vote_count}
                             mapProductionCompanies={selectedMovie.production_companies && selectedMovie.production_companies.length > 0 ? selectedMovie.production_companies.map((company, index) => (
                                 <span key={company.id}>{company.name}{index < selectedMovie.production_companies.length - 1 ? ', ' : ''}</span>
@@ -313,8 +314,10 @@ const BloqueGenerosMovie = () => {
                                                                 voteAverage={''}
                                                                 movieType={''}
                                                                 classMovieType={recommend.title ? 'movie-type-movie' : 'movie-type-serie'}
-                                                                topMovie={''}
+                                                                topMovie={recommend.vote_average > 7.75 && recommend.vote_count > 99 ? <span className='destacada-recommend'>Destacada</span> : ''}
                                                                 proxEstreno={isUpcoming}
+                                                                info_multimedia={`${window.location.origin}/pelicula/${recommend.id}`}
+                                                                verMas={() => window.scrollTo(0, 0)}
                                                             />
                                                         </div>
                                                     );

@@ -112,7 +112,7 @@ export const PeliculaSingle = () => {
             {selectedMovie && (
                 <>
 
-                    <div className='contenedor-multimedia container rounded' style={{ backgroundImage: selectedMovie.backdrop_path ? `url(https://image.tmdb.org/t/p/w500${selectedMovie.backdrop_path})` : `url(${fondoNotFound})` }}>
+                    <div className='contenedor-multimedia container' style={{ backgroundImage: selectedMovie.backdrop_path ? `url(https://image.tmdb.org/t/p/w500${selectedMovie.backdrop_path})` : `url(${fondoNotFound})` }}>
                         <div className='contenido_multimedia p-4'>
                             <div className='row'>
                                 <div className='col-sm-auto container-posther_path'>
@@ -139,14 +139,14 @@ export const PeliculaSingle = () => {
                                             </button>
                                         </div>
                                     </div>
-                                    <p className='text-light fs-5'>{selectedMovie.overview ? selectedMovie.overview : <span className='sin-descripcion'>Sin descripción</span>}</p>
+                                    <p className='text-light fs-5'>{selectedMovie.overview ? selectedMovie.overview : <span className='sin-descripcion fs-5'>Sin descripción</span>}</p>
                                     <div className='fs-4 pt-3 d-flex align-items-baseline gap-2 puntaje'>
                                         <div className='d-flex align-items-baseline justify-content-start'>
                                             <img className='icono-modal me-2' src={estrella} alt="Estrella" />
                                             <span className='fw-bold text-light'>Puntuación de usuarios:</span>
                                         </div>
                                         <div className='porcentaje-valoracion'>
-                                            <span className={selectedMovie.vote_average * 10 >= 80 ? 'puntaje-verde' : selectedMovie.vote_average * 10 > 60 ? 'puntaje-amarillo' : 'puntaje-rojo'}> {selectedMovie.vote_average ? (selectedMovie.vote_average * 10).toFixed(2) : '0'}%</span>
+                                            <span className={selectedMovie.vote_average * 10 >= 80 ? 'puntaje-verde' : selectedMovie.vote_average * 10 > 60 ? 'puntaje-amarillo' : 'puntaje-rojo'}> {selectedMovie.vote_average ? Math.round(selectedMovie.vote_average * 10) : '0'} %</span>
                                         </div>
 
                                     </div>
@@ -222,7 +222,7 @@ export const PeliculaSingle = () => {
                                     </div>
                                     <div className='me-5  mb-3'>
                                         <div className='fs-2 text-light fw-bold'>Géneros</div>
-                                        <div className='d-flex text-light fs-5'>{selectedMovie.genres && selectedMovie.genres.map((genre, index) => (
+                                        <div className='d-flex flex-wrap text-light fs-5'>{selectedMovie.genres && selectedMovie.genres.map((genre, index) => (
                                             <p className='pe-1' key={genre.id}>{genre.name}{index < selectedMovie.genres.length - 1 ? ', ' : ''}</p>
                                         ))}</div>
                                     </div>
@@ -256,7 +256,7 @@ export const PeliculaSingle = () => {
                                             </div>
                                         </div>
                                     </div> : ''}
-                                <h2 className='pt-4 text-info subtitle-modal'>Más información</h2>
+                                <h2 className='pt-4 text-info subtitle-modal mas-info-single-page'>Más información</h2>
                                 <div className='text-light'>
                                     <div>
                                         <div>
@@ -275,10 +275,10 @@ export const PeliculaSingle = () => {
                                         </div>
                                     </div>
                                     <div className='d-flex flex-column'>
-                                        {selectedMovie.budget > 0 ? <><span className='fw-bold fs-2 mt-3'>Presupuesto:</span> <span className='fs-4'>{new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'USD' }).format(selectedMovie.budget)}</span></> : <><span className='fw-bold fs-2 mt-3'>Presupuesto: </span>No informado</>}
+                                        {selectedMovie.budget > 0 ? <><span className='fw-bold fs-2 mt-3'>Presupuesto:</span> <span className='fs-4'>{new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'USD' }).format(selectedMovie.budget)}</span></> : <><span className='fw-bold fs-2 mt-3'>Presupuesto: </span><span className='fs-4'>No informado</span></>}
                                     </div>
                                     <div className='d-flex flex-column'>
-                                        {selectedMovie.revenue > 0 ? <><span className='fw-bold fs-2 mt-3'>Recaudación:</span><span className='fs-4'> {new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'USD' }).format(selectedMovie.revenue)}</span></> : <><span className='fw-bold fs-2 mt-3'>Recaudación: </span>No informado</>}
+                                        {selectedMovie.revenue > 0 ? <><span className='fw-bold fs-2 mt-3'>Recaudación:</span><span className='fs-4'> {new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'USD' }).format(selectedMovie.revenue)}</span></> : <><span className='fw-bold fs-2 mt-3'>Recaudación: </span><span className='fs-4'>No informado</span></>}
                                     </div>
                                 </div>
 
@@ -311,8 +311,10 @@ export const PeliculaSingle = () => {
                                                                     voteAverage={''}
                                                                     movieType={''}
                                                                     classMovieType={recommend.title ? 'movie-type-movie' : 'movie-type-serie'}
-                                                                    topMovie={''}
+                                                                    topMovie={recommend.vote_average > 7.75 && recommend.vote_count > 99 ? <span className='destacada-recommend'>Destacada</span> : ''}
                                                                     proxEstreno={isUpcoming}
+                                                                    info_multimedia={`${window.location.origin}/pelicula/${recommend.id}`}
+                                                                    verMas={() => window.scrollTo(0, 0)}
                                                                 />
                                                             </div>
                                                         );

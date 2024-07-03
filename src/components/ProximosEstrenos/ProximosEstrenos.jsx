@@ -39,20 +39,42 @@ export const ProximosEstrenos = () => {
     const { store, actions } = useContext(Context);
 
     const fetchNowPlaying = async (page) => {
-        const { data: { results, total_pages } } = await axios.get(`${API_URL}/discover/movie`, {
-            params: {
-                api_key: API_KEY,
-                language: 'es-ES',
-                sort_by: 'popularity',
-                'primary_release_date.gte': formattedTomorrow,
-                page: page,
-            },
-        });
-
+        const fetchMovies = async (currentPage, collectedMovies = []) => {
+            const { data: { results, total_pages } } = await axios.get(`${API_URL}/discover/movie?include_adult=false`, {
+                params: {
+                    api_key: API_KEY,
+                    language: 'es-ES',
+                    sort_by: 'popularity.desc',
+                    'primary_release_date.gte': formattedTomorrow,
+                    page: currentPage,
+                },
+            });
+    
+            // Filtrar resultados para excluir películas en TL, JA, KO
+            const filteredResults = results.filter(movie => !['tl', 'ja', 'ko', 'zh', 'th', 'ar'].includes(movie.original_language));
+    
+            // Combinar las películas válidas con las previamente recopiladas
+            const newCollectedMovies = [...collectedMovies, ...filteredResults];
+    
+            // Si tenemos suficientes películas válidas, devolver las primeras 20
+            if (newCollectedMovies.length >= 20 || currentPage >= total_pages) {
+                return {
+                    movies: newCollectedMovies.slice(0, 20),
+                    total_pages,
+                };
+            }
+    
+            // Si no tenemos suficientes películas válidas, continuar con la siguiente página
+            return fetchMovies(currentPage + 1, newCollectedMovies);
+        };
+    
+        const { movies, total_pages } = await fetchMovies(page);
+    
         setCurrentPage(page);
         setTotalPages(total_pages);
-        setMovies(results);
+        setMovies(movies);
     };
+    
 
     const fetchMovie = async (id) => {
         const { data } = await axios.get(`${API_URL}/movie/${id}?language=es-ES`, {
@@ -116,19 +138,19 @@ export const ProximosEstrenos = () => {
     }, [selectedMovie]);
 
     const goToPreviousPage = () => {
-        if (currentPage > 0) {
+        if (currentPage > 1) { // Asegúrate de que currentPage sea mayor a 1, ya que no hay página 0
             fetchNowPlaying(currentPage - 1);
             window.scrollTo(0, 150);
         }
     };
-
+    
     const goToNextPage = () => {
         if (currentPage < totalPages) {
             fetchNowPlaying(currentPage + 1);
-
+    
             // Seleccionar el contenedor que contiene los elementos desplazables
             const swiper = document.querySelector('.swiper-wrapper-paginas');
-
+    
             // Realizar scroll hacia la izquierda
             if (swiper) {
                 swiper.scrollTo({
@@ -136,11 +158,6 @@ export const ProximosEstrenos = () => {
                     left: 0, // Hacer scroll al inicio del contenedor
                     behavior: 'smooth', // Opcional: hacerlo con animación smooth
                 });
-            }
-
-            if (currentPage > 0) {
-                fetchNowPlaying(currentPage + 1);
-                window.scrollTo(0, 150);
             }
         }
     };
@@ -175,6 +192,7 @@ export const ProximosEstrenos = () => {
                         <Modal
                             key={selectedMovie.id}
                             idModal={`modalEstrenos-${selectedMovie.id}`}
+                            shareUrl={`${window.location.origin}/pelicula/${selectedMovie.id}`}
                             watchlistButtons={
                                 selectedMovie && (
                                     <Tooltip
@@ -208,7 +226,7 @@ export const ProximosEstrenos = () => {
                             originalLanguage={selectedMovie.original_language}
                             overview={selectedMovie.overview ? selectedMovie.overview : <span className='sin-descripcion'>Sin descripción</span>}
                             classPuntaje={`${selectedMovie.vote_average * 10 >= 80 ? 'puntaje-verde' : selectedMovie.vote_average * 10 > 60 ? 'puntaje-amarillo' : 'puntaje-rojo'}`}
-                            voteAverage={selectedMovie.vote_average ? (selectedMovie.vote_average * 10).toFixed(2) : '0'}
+                            voteAverage={selectedMovie.vote_average ? Math.round(selectedMovie.vote_average * 10) : '0'}
                             voteCount={selectedMovie.vote_count ? selectedMovie.vote_count : 0}
                             mapProductionCompanies={selectedMovie.production_companies && selectedMovie.production_companies.length > 0 ? selectedMovie.production_companies.map((company, index) => (
                                 <span key={company.id}>{company.name}{index < selectedMovie.production_companies.length - 1 ? ', ' : ''}</span>
@@ -286,8 +304,10 @@ export const ProximosEstrenos = () => {
                                                                 voteAverage={''}
                                                                 movieType={''}
                                                                 classMovieType={recommend.title ? 'movie-type-movie' : 'movie-type-serie'}
-                                                                topMovie={''}
+                                                                topMovie={recommend.vote_average > 7.75 && recommend.vote_count > 99 ? <span className='destacada-recommend'>Destacada</span> : ''}
                                                                 proxEstreno={isUpcoming}
+                                                                info_multimedia={`${window.location.origin}/pelicula/${recommend.id}`}
+                                                                verMas={() => window.scrollTo(0, 0)}
                                                             />
                                                         </div>
                                                     );

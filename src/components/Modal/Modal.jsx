@@ -141,7 +141,7 @@ export const Modal = ({
                                         <span className='fw-bold'>Puntuación de usuarios:</span>
                                     </div>
                                     <div className='porcentaje-valoracion'>
-                                        <span className={classPuntaje}> {voteAverage}%</span>
+                                        <span className={classPuntaje}> {voteAverage} %</span>
                                     </div>
 
                                 </div>

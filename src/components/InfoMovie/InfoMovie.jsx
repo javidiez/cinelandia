@@ -214,26 +214,26 @@ function InfoMovie() {
               idModal={`topModal-${selectedMovie.id}`}
               watchlistButtons={
                 selectedMovie && (
-                    <Tooltip
+                  <Tooltip
                     content={store.watchlist?.some(movie => movie.id === selectedMovie.id) ? "Quitar de Watchlist" : "Agregar a Watchlist"}
                     trigger="hover"
                     placement="top"
                     className="d-flex align-items-start bg-dark text-light ps-2 pe-0 px-0 fs-5 rounded"
-                >
+                  >
                     <button
-                        className="btn btn-primary"
-                        type="button"
-                        onClick={store.watchlist?.some(movie => movie.id === selectedMovie.id)
-                            ? () => actions.deleteFavouriteMovie(selectedMovie)
-                            : () => actions.addFavouriteMovie(selectedMovie)}
+                      className="btn btn-primary"
+                      type="button"
+                      onClick={store.watchlist?.some(movie => movie.id === selectedMovie.id)
+                        ? () => actions.deleteFavouriteMovie(selectedMovie)
+                        : () => actions.addFavouriteMovie(selectedMovie)}
                     >
-                        {store.watchlist?.some(movie => movie.id === selectedMovie.id)
-                            ? <i className="fa-solid fa-bookmark"></i>
-                            : <i className="fa-regular fa-bookmark"></i>}
+                      {store.watchlist?.some(movie => movie.id === selectedMovie.id)
+                        ? <i className="fa-solid fa-bookmark"></i>
+                        : <i className="fa-regular fa-bookmark"></i>}
                     </button>
-                </Tooltip>
+                  </Tooltip>
                 )
-            }
+              }
               postherPad={selectedMovie.poster_path ? `https://image.tmdb.org/t/p/w500${selectedMovie.poster_path}` : fondoNotFound}
               noImg={fondoNotFound}
               title={selectedMovie.title}
@@ -245,7 +245,7 @@ function InfoMovie() {
               originalLanguage={selectedMovie.original_language}
               overview={selectedMovie.overview ? selectedMovie.overview : <span className='sin-descripcion'>Sin descripción</span>}
               classPuntaje={`${selectedMovie.vote_average * 10 >= 80 ? 'puntaje-verde' : selectedMovie.vote_average * 10 > 60 ? 'puntaje-amarillo' : 'puntaje-rojo'}`}
-              voteAverage={(selectedMovie.vote_average * 10).toFixed(2)}
+              voteAverage={selectedMovie.vote_average ? Math.round(selectedMovie.vote_average * 10) : '0'}
               voteCount={selectedMovie.vote_count}
               mapProductionCompanies={selectedMovie.production_companies && selectedMovie.production_companies.length > 0 ? selectedMovie.production_companies.map((company, index) => (
                 <span className='ps-2' key={company.id}>{company.name}{index < selectedMovie.production_companies.length - 1 ? ', ' : ''}</span>
@@ -325,8 +325,10 @@ function InfoMovie() {
                                 voteAverage={''}
                                 movieType={''}
                                 classMovieType={recommend.title ? 'movie-type-movie' : 'movie-type-serie'}
-                                topMovie={''}
+                                topMovie={recommend.vote_average > 7.75 && recommend.vote_count > 99 ? <span className='destacada-recommend'>Destacada</span> : ''}
                                 proxEstreno={isUpcoming}
+                                info_multimedia={`${window.location.origin}/pelicula/${recommend.id}`}
+                                verMas={() => window.scrollTo(0, 0)}
                               />
                             </div>
                           );
@@ -347,26 +349,26 @@ function InfoMovie() {
               idModal={`topModal-${selectedMovie.id}`}
               watchlistButtons={
                 selectedMovie && (
-                    <Tooltip
+                  <Tooltip
                     content={store.watchlistSerie?.some(movie => movie.id === selectedMovie.id) ? "Quitar de Watchlist" : "Agregar a Watchlist"}
                     trigger="hover"
                     placement="top"
                     className="d-flex align-items-start bg-dark text-light ps-2 pe-0 px-0 fs-5 rounded"
-                >
+                  >
                     <button
-                        className="btn btn-primary"
-                        type="button"
-                        onClick={store.watchlistSerie?.some(movie => movie.id === selectedMovie.id)
-                            ? () => actions.deleteFavouriteSerie(selectedMovie)
-                            : () => actions.addFavouriteSerie(selectedMovie)}
+                      className="btn btn-primary"
+                      type="button"
+                      onClick={store.watchlistSerie?.some(movie => movie.id === selectedMovie.id)
+                        ? () => actions.deleteFavouriteSerie(selectedMovie)
+                        : () => actions.addFavouriteSerie(selectedMovie)}
                     >
-                        {store.watchlistSerie?.some(movie => movie.id === selectedMovie.id)
-                            ? <i className="fa-solid fa-bookmark"></i>
-                            : <i className="fa-regular fa-bookmark"></i>}
+                      {store.watchlistSerie?.some(movie => movie.id === selectedMovie.id)
+                        ? <i className="fa-solid fa-bookmark"></i>
+                        : <i className="fa-regular fa-bookmark"></i>}
                     </button>
-                </Tooltip>
+                  </Tooltip>
                 )
-            }
+              }
               postherPad={selectedMovie.poster_path ? `https://image.tmdb.org/t/p/w500${selectedMovie.poster_path}` : fondoNotFound}
               noImg={fondoNotFound}
               originalName={selectedMovie.name}
@@ -380,7 +382,7 @@ function InfoMovie() {
               originalLanguage={selectedMovie.original_language ? selectedMovie.original_language : <span className='text-lowercase'>Idioma desconocido</span>}
               overview={selectedMovie.overview}
               classPuntaje={`${selectedMovie.vote_average * 10 >= 80 ? 'puntaje-verde' : selectedMovie.vote_average * 10 > 60 ? 'puntaje-amarillo' : 'puntaje-rojo'}`}
-              voteAverage={selectedMovie.vote_average ? (selectedMovie.vote_average * 10).toFixed(2) : '0'}
+              voteAverage={selectedMovie.vote_average ? Math.round(selectedMovie.vote_average * 10) : '0'}
               voteCount={selectedMovie.vote_count ? selectedMovie.vote_count : 0}
               mapProductionCompanies={selectedMovie.production_companies && selectedMovie.production_companies.length > 0 ? selectedMovie.production_companies.map((company, index) => (
                 <span key={company.id}>{company.name}{index < selectedMovie.production_companies.length - 1 ? ', ' : ''}</span>
@@ -530,8 +532,8 @@ function InfoMovie() {
                       image={movie.poster_path}
                       title={movie.title ? movie.title : movie.name}
                       overview={movie.overview}
-                      voteAverage={isUpcoming || isNaN(movie.vote_average) ? <div className='d-flex align-items-baseline gap-2'><img className='icon-filmcard' src={estrella}/> 0 %</div> : <div className='d-flex align-items-baseline gap-2'><img className='icon-filmcard' src={estrella}/> {Math.round(movie.vote_average * 10)} %</div>}
-                      releaseDate={movie.title && movie.release_date ? <div className='d-flex align-items-center gap-2'><img className='icon-filmcard' src={calendar}/>  {formatDate(movie.release_date)}</div> : movie.name && movie.first_air_date ? <div className='d-flex align-items-center gap-2'><img className='icon-filmcard' src={calendar}/>{formatDate(movie.first_air_date)}</div> : 'Fecha no informada'}
+                      voteAverage={isUpcoming || isNaN(movie.vote_average) ? <div className='d-flex align-items-baseline gap-2'><img className='icon-filmcard' src={estrella} /> 0 %</div> : <div className='d-flex align-items-baseline gap-2'><img className='icon-filmcard' src={estrella} /> {Math.round(movie.vote_average * 10)} %</div>}
+                      releaseDate={movie.title && movie.release_date ? <div className='d-flex align-items-center gap-2'><img className='icon-filmcard' src={calendar} />  {formatDate(movie.release_date)}</div> : movie.name && movie.first_air_date ? <div className='d-flex align-items-center gap-2'><img className='icon-filmcard' src={calendar} />{formatDate(movie.first_air_date)}</div> : 'Fecha no informada'}
                       onclick={() => selectMovie(movie)}
                       movieType={movie.title ? 'Película' : 'Serie'}
                       classMovieType={movie.title ? 'movie-type-movie' : 'movie-type-serie'}
@@ -560,8 +562,8 @@ function InfoMovie() {
                 image={movie.poster_path}
                 title={movie.title ? movie.title : movie.name}
                 overview={movie.overview}
-                voteAverage={isUpcoming || isNaN(movie.vote_average) ? <div className='d-flex align-items-baseline gap-2'><img className='icon-filmcard' src={estrella}/> 0 %</div> : <div className='d-flex align-items-baseline gap-2'><img className='icon-filmcard' src={estrella}/> {Math.round(movie.vote_average * 10)} %</div>}
-                releaseDate={movie.title && movie.release_date ? <div className='d-flex align-items-center gap-2'><img className='icon-filmcard' src={calendar}/>  {formatDate(movie.release_date)}</div> : movie.name && movie.first_air_date ? <div className='d-flex align-items-center gap-2'><img className='icon-filmcard' src={calendar}/>{formatDate(movie.first_air_date)}</div> : 'Fecha no informada'}
+                voteAverage={isUpcoming || isNaN(movie.vote_average) ? <div className='d-flex align-items-baseline gap-2'><img className='icon-filmcard' src={estrella} /> 0 %</div> : <div className='d-flex align-items-baseline gap-2'><img className='icon-filmcard' src={estrella} /> {Math.round(movie.vote_average * 10)} %</div>}
+                releaseDate={movie.title && movie.release_date ? <div className='d-flex align-items-center gap-2'><img className='icon-filmcard' src={calendar} />  {formatDate(movie.release_date)}</div> : movie.name && movie.first_air_date ? <div className='d-flex align-items-center gap-2'><img className='icon-filmcard' src={calendar} />{formatDate(movie.first_air_date)}</div> : 'Fecha no informada'}
                 onclick={() => selectMovie(movie)}
                 movieType={movie.title ? 'Película' : 'Serie'}
                 classMovieType={movie.title ? 'movie-type-movie' : 'movie-type-serie'}

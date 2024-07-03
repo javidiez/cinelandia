@@ -12,7 +12,6 @@ export const BloqueProximosEstrenos = ({ img, title, description, date, onclick 
             <div className="d-flex flex-column">
             <div className='snippet_pp_movie_title'>{title}</div>
             <div className='fs-5'>{description}</div>
-            <div className='fs-5 snippet-estrenos-date-text'>Fecha de estreno:</div>
             <div className="fs-5">{date}</div>
             <div className="mt-3">
             <button className="btn btn-success btn-mas-info-estrenos" onClick={onclick}>Más información</button>

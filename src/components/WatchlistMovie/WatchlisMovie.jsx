@@ -123,26 +123,27 @@ export const WatchlistMovie = () => {
                 {selectedMovie && (
                     <Modal
                         key={selectedMovie.id}
+                        shareUrl={`${window.location.origin}/pelicula/${selectedMovie.id}`}
                         watchlistButtons={
                             selectedMovie && (
                                 <Tooltip
-                                content={store.watchlist?.some(movie => movie.id === selectedMovie.id) ? "Quitar de Watchlist" : "Agregar a Watchlist"}
-                                trigger="hover"
-                                placement="top"
-                                className="d-flex align-items-start bg-dark text-light ps-2 pe-0 px-0 fs-5 rounded"
-                            >
-                                <button
-                                    className="btn btn-primary"
-                                    type="button"
-                                    onClick={store.watchlist?.some(movie => movie.id === selectedMovie.id)
-                                        ? () => actions.deleteFavouriteMovie(selectedMovie)
-                                        : () => actions.addFavouriteMovie(selectedMovie)}
+                                    content={store.watchlist?.some(movie => movie.id === selectedMovie.id) ? "Quitar de Watchlist" : "Agregar a Watchlist"}
+                                    trigger="hover"
+                                    placement="top"
+                                    className="d-flex align-items-start bg-dark text-light ps-2 pe-0 px-0 fs-5 rounded"
                                 >
-                                    {store.watchlist?.some(movie => movie.id === selectedMovie.id)
-                                        ? <i className="fa-solid fa-bookmark"></i>
-                                        : <i className="fa-regular fa-bookmark"></i>}
-                                </button>
-                            </Tooltip>
+                                    <button
+                                        className="btn btn-primary"
+                                        type="button"
+                                        onClick={store.watchlist?.some(movie => movie.id === selectedMovie.id)
+                                            ? () => actions.deleteFavouriteMovie(selectedMovie)
+                                            : () => actions.addFavouriteMovie(selectedMovie)}
+                                    >
+                                        {store.watchlist?.some(movie => movie.id === selectedMovie.id)
+                                            ? <i className="fa-solid fa-bookmark"></i>
+                                            : <i className="fa-regular fa-bookmark"></i>}
+                                    </button>
+                                </Tooltip>
                             )
                         }
                         idModal={`modalWatchlist-${selectedMovie.id}`}
@@ -157,7 +158,7 @@ export const WatchlistMovie = () => {
                         originalLanguage={selectedMovie.original_language}
                         overview={selectedMovie.overview ? selectedMovie.overview : <span className='sin-descripcion'>Sin descripción</span>}
                         classPuntaje={`${selectedMovie.vote_average * 10 >= 80 ? 'puntaje-verde' : selectedMovie.vote_average * 10 > 60 ? 'puntaje-amarillo' : 'puntaje-rojo'}`}
-                        voteAverage={selectedMovie.vote_average ? (selectedMovie.vote_average * 10).toFixed(2) : '0'}
+                        voteAverage={selectedMovie.vote_average ? Math.round(selectedMovie.vote_average * 10) : '0'}
                         voteCount={selectedMovie.vote_count ? selectedMovie.vote_count : 0}
                         mapProductionCompanies={selectedMovie.production_companies && selectedMovie.production_companies.map((company, index) => (
                             <span key={company.id}>{company.name}{index < selectedMovie.production_companies.length - 1 ? ', ' : ''}</span>
@@ -229,8 +230,10 @@ export const WatchlistMovie = () => {
                                                             voteAverage={''}
                                                             movieType={''}
                                                             classMovieType={recommend.title ? 'movie-type-movie' : 'movie-type-serie'}
-                                                            topMovie={''}
+                                                            topMovie={recommend.vote_average > 7.75 && recommend.vote_count > 99 ? <span className='destacada-recommend'>Destacada</span> : ''}
                                                             proxEstreno={isUpcoming}
+                                                            info_multimedia={`${window.location.origin}/pelicula/${recommend.id}`}
+                                                            verMas={() => window.scrollTo(0, 0)}
                                                         />
                                                     </div>
                                                 );
@@ -262,26 +265,26 @@ export const WatchlistMovie = () => {
                                             image={fav.poster_path}
                                             title={fav.title ? fav.title : fav.name}
                                             overview={fav.overview}
-                                            voteAverage={isUpcoming || isNaN(fav.vote_average) ? <div className='d-flex align-items-baseline gap-2'><img className='icon-filmcard' src={estrella}/> 0 %</div> : <div className='d-flex align-items-baseline gap-2'><img className='icon-filmcard' src={estrella}/> {Math.round(fav.vote_average * 10)} %</div>}
-                                            releaseDate={fav.title && fav.release_date ? <div className='d-flex align-items-center gap-2'><img className='icon-filmcard' src={calendar}/>  {formatDate(fav.release_date)}</div> : fav.name && fav.first_air_date ? <div className='d-flex align-items-center gap-2'><img className='icon-filmcard' src={calendar}/>{formatDate(fav.first_air_date)}</div> : 'Fecha no informada'}
+                                            voteAverage={isUpcoming || isNaN(fav.vote_average) ? <div className='d-flex align-items-baseline gap-2'><img className='icon-filmcard' src={estrella} /> 0 %</div> : <div className='d-flex align-items-baseline gap-2'><img className='icon-filmcard' src={estrella} /> {Math.round(fav.vote_average * 10)} %</div>}
+                                            releaseDate={fav.title && fav.release_date ? <div className='d-flex align-items-center gap-2'><img className='icon-filmcard' src={calendar} />  {formatDate(fav.release_date)}</div> : fav.name && fav.first_air_date ? <div className='d-flex align-items-center gap-2'><img className='icon-filmcard' src={calendar} />{formatDate(fav.first_air_date)}</div> : 'Fecha no informada'}
                                             onclick={() => selectMovie(fav)}
                                             movieType={''}
                                             classMovieType={fav.title ? 'movie-type-movie' : 'movie-type-serie'}
                                             topMovie={fav.vote_average > 7.75 && fav.vote_count > 99 ? "Destacada" : ''}
                                             proxEstreno={isUpcoming}
                                             saveButton={
-                                                    <button
-                                                        className="btn btn-primary mt-4 fw-bold fs-5"
-                                                        type="button"
-                                                        onClick={store.watchlist?.some(pelicula => pelicula.id === fav.id)
-                                                            ? () => actions.deleteFavouriteMovie(fav)
-                                                            : () => actions.addFavouriteMovie(fav)}
-                                                    >
-                                                        {store.watchlist?.some(pelicula => pelicula.id === fav.id)
-                                                            ? <i className="fa-solid fa-bookmark"></i>
-                                                            : <i className="fa-regular fa-bookmark"></i>}
-                                                    </button>
-                                        }
+                                                <button
+                                                    className="btn btn-primary mt-4 fw-bold fs-5"
+                                                    type="button"
+                                                    onClick={store.watchlist?.some(pelicula => pelicula.id === fav.id)
+                                                        ? () => actions.deleteFavouriteMovie(fav)
+                                                        : () => actions.addFavouriteMovie(fav)}
+                                                >
+                                                    {store.watchlist?.some(pelicula => pelicula.id === fav.id)
+                                                        ? <i className="fa-solid fa-bookmark"></i>
+                                                        : <i className="fa-regular fa-bookmark"></i>}
+                                                </button>
+                                            }
                                         />
                                     </div>
                                 )
