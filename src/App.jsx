@@ -37,8 +37,8 @@ function App() {
         <Route path="/generos" element={<Generos />} />
         <Route path="/personas" element={<Personas />} />
         <Route path="/watchlist" element={<Watchlist />} />
-        <Route path="/pelicula/:id" element={<PeliculaIndividual />} />
-        <Route path="/serie/:id" element={<SerieIndividual />} />
+        <Route path="/pelicula/:id/:movie_name" element={<PeliculaIndividual />} />
+        <Route path="/serie/:id/:serie_name" element={<SerieIndividual />} />
       </Routes>
       <Footer/>
     </Router>

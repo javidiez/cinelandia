@@ -26,7 +26,7 @@ import { FacebookShareButton, TwitterShareButton, WhatsappShareButton, FacebookI
 
 export const SerieSingle = () => {
 
-    const { id } = useParams();
+    const { id, serie_name } = useParams();
 
     const API_URL = "https://api.themoviedb.org/3";
     const API_KEY = "4f5f43495afcc67e9553f6c684a82f84";
@@ -91,6 +91,7 @@ export const SerieSingle = () => {
 
     useEffect(() => {
         fetchSerie(id)
+        window.scrollTo(0, 0)
     }, [id])
 
 
@@ -378,8 +379,8 @@ export const SerieSingle = () => {
                                                                     classMovieType={recommend.title ? 'movie-type-movie' : 'movie-type-serie'}
                                                                     topMovie={recommend.vote_average > 7.75 && recommend.vote_count > 99 ? <span className='destacada-recommend'>Destacada</span> : ''}
                                                                     proxEstreno={isUpcoming}
-                                                                    info_multimedia={`${window.location.origin}/serie/${recommend.id}`}
-                                                                    verMas={() => window.scrollTo(0, 0)}
+                                                                    info_multimedia={`${window.location.origin}/serie/${recommend.id}/${recommend.name}`}
+                                                                     
                                                                 />
                                                             </div>
                                                         );

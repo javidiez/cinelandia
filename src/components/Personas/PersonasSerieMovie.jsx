@@ -225,7 +225,7 @@ export const PersonasSerieMovie = () => {
                                                             topMovie={actor.vote_average > 7.75 && actor.vote_count > 99 ? <span className='destacada-recommend'>Destacada</span> : ''}
                                                             proxEstreno={isUpcoming}
                                                             info_multimedia={`${window.location.origin}/pelicula/${actor.id}`}
-                                                            verMas={() => window.scrollTo(0, 0)}
+                                                             
 
                                                         />
                                                     </div>

@@ -328,7 +328,7 @@ function InfoMovie() {
                                 topMovie={recommend.vote_average > 7.75 && recommend.vote_count > 99 ? <span className='destacada-recommend'>Destacada</span> : ''}
                                 proxEstreno={isUpcoming}
                                 info_multimedia={`${window.location.origin}/pelicula/${recommend.id}`}
-                                verMas={() => window.scrollTo(0, 0)}
+                                 
                               />
                             </div>
                           );
@@ -569,7 +569,7 @@ function InfoMovie() {
                 classMovieType={movie.title ? 'movie-type-movie' : 'movie-type-serie'}
                 topMovie={movie.vote_average > 7.75 && movie.vote_count > 99 ? "Destacada" : ''}
                 proxEstreno={isUpcoming}
-                verMas={() => window.scrollTo(0, 0)}
+                 
                                             
               />
             );

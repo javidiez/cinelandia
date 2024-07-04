@@ -259,8 +259,8 @@ export const BloqueNovedades = () => {
                                                                 classMovieType={recommend.title ? 'movie-type-movie' : 'movie-type-serie'}
                                                                 topMovie={recommend.vote_average > 7.75 && recommend.vote_count > 99 ? <span className='destacada-recommend'>Destacada</span> : ''}
                                                                 proxEstreno={isUpcoming}
-                                                                info_multimedia={`${window.location.origin}/pelicula/${recommend.id}`}
-                                                                verMas={() => window.scrollTo(0, 0)}
+                                                                info_multimedia={`${window.location.origin}/pelicula/${recommend.id}/${recommend.title}`}
+                                                                 
                                                             />
                                                         </div>
                                                     );
@@ -298,22 +298,13 @@ export const BloqueNovedades = () => {
                                         overview={movie.overview}
                                         releaseDate={<div className='d-flex align-items-center gap-2'><img className='icon-filmcard' src={calendar} /> {formatDate(movie.release_date)}</div>}
                                         voteAverage={isUpcoming || isNaN(movie.vote_average) ? <div className='d-flex align-items-baseline gap-2'><img className='icon-filmcard' src={estrella} /> 0 %</div> : <div className='d-flex align-items-baseline gap-2'><img className='icon-filmcard' src={estrella} /> {Math.round(movie.vote_average * 10)} %</div>}
-                                        info_multimedia={`${window.location.origin}/pelicula/${movie.id}`}
+                                        info_multimedia={`${window.location.origin}/pelicula/${movie.id}/${movie.title}`}
                                         movieType={''}
                                         classMovieType={movie.title ? 'movie-type-movie' : 'movie-type-serie'}
                                         topMovie={movie.vote_average > 7.75 && movie.vote_count > 99 ? "Destacada" : ''}
                                         proxEstreno={isUpcoming}
-                                        saveButton={<button
-                                            className="btn btn-primary mt-4 fw-bold fs-5"
-                                            type="button"
-                                            onClick={store.watchlist?.some(pelicula => pelicula.id === movie.id)
-                                                ? () => actions.deleteFavouriteMovie(movie)
-                                                : () => actions.addFavouriteMovie(movie)}
-                                        >
-                                            {store.watchlist?.some(pelicula => pelicula.id === movie.id)
-                                                ? <i className="fa-solid fa-bookmark"></i>
-                                                : <i className="fa-regular fa-bookmark"></i>}
-                                        </button>}
+                                         
+                                        
                                     />
                                 </div>
                             );
@@ -345,26 +336,13 @@ export const BloqueNovedades = () => {
                             overview={movie.overview}
                             releaseDate={<div className='d-flex align-items-center gap-2'><img className='icon-filmcard' src={calendar} /> {formatDate(movie.release_date)}</div>}
                             voteAverage={isUpcoming || isNaN(movie.vote_average) ? <div className='d-flex align-items-baseline gap-2'><img className='icon-filmcard' src={estrella} /> 0 %</div> : <div className='d-flex align-items-baseline gap-2'><img className='icon-filmcard' src={estrella} /> {Math.round(movie.vote_average * 10)} %</div>}
-                            info_multimedia={`${window.location.origin}/pelicula/${movie.id}`}
+                            info_multimedia={`${window.location.origin}/pelicula/${movie.id}/${movie.title}`}
                             movieType={''}
                             classMovieType={movie.title ? 'movie-type-movie' : 'movie-type-serie'}
                             topMovie={movie.vote_average > 7.75 && movie.vote_count > 99 ? "Destacada" : ''}
                             proxEstreno={isUpcoming}
-                            saveButton={
-
-                                <button
-                                    className="btn btn-primary mt-4 fw-bold fs-5"
-                                    type="button"
-                                    onClick={store.watchlist?.some(pelicula => pelicula.id === movie.id)
-                                        ? () => actions.deleteFavouriteMovie(movie)
-                                        : () => actions.addFavouriteMovie(movie)}
-                                >
-                                    {store.watchlist?.some(pelicula => pelicula.id === movie.id)
-                                        ? <i className="fa-solid fa-bookmark"></i>
-                                        : <i className="fa-regular fa-bookmark"></i>}
-                                </button>
-
-                            }
+                             
+                           
                         />
                     );
                 })}

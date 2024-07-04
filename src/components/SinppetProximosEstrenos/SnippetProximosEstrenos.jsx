@@ -268,8 +268,8 @@ export const SnippetProximosEstrenos = () => {
                                                                 classMovieType={recommend.title ? 'movie-type-movie' : 'movie-type-serie'}
                                                                 topMovie={recommend.vote_average > 7.75 && recommend.vote_count > 99 ? <span className='destacada-recommend'>Destacada</span> : ''}
                                                                 proxEstreno={isUpcoming}
-                                                                info_multimedia={`${window.location.origin}/pelicula/${recommend.id}`}
-                                                                verMas={() => window.scrollTo(0, 0)}
+                                                                info_multimedia={`${window.location.origin}/pelicula/${recommend.id}/${recommend.title}`}
+                                                                 
                                                             />
                                                         </div>
                                                     );
@@ -307,8 +307,8 @@ export const SnippetProximosEstrenos = () => {
                                     title={movie.title}
                                     description={''}
                                     date={<div className="d-flex align-items-center"><img style={{ width:'1.5rem' }} src={calendar}/><span className="fs-4 ms-2">{formatDate(movie.release_date)}</span></div>}
-                                    info_multimedia={`${window.location.origin}/pelicula/${movie.id}`}
-                                    verMas={() => window.scrollTo(0, 0)}
+                                    info_multimedia={`${window.location.origin}/pelicula/${movie.id}/${movie.title}`}
+                                     
                                 />
                                 <hr className="border-2 border-top border-secondary mt-4 mb-4" />
                             </>

@@ -342,8 +342,8 @@ function InfoMovie() {
                                 classMovieType={recommend.title ? 'movie-type-movie' : 'movie-type-serie'}
                                 topMovie={''}
                                 proxEstreno={isUpcoming}
-                                info_multimedia={`${window.location.origin}/serie/${recommend.id}`}
-                                verMas={() => window.scrollTo(0, 0)}
+                                info_multimedia={`${window.location.origin}/serie/${recommend.id}/${recommend.name}`}
+                                 
                               />
                             </div>
                           );
@@ -399,8 +399,8 @@ function InfoMovie() {
                       overview={movie.overview}
                       voteAverage={isUpcoming || isNaN(movie.vote_average) ? <div className='d-flex align-items-baseline gap-2'><img className='icon-filmcard' src={estrella} /> 0 %</div> : <div className='d-flex align-items-baseline gap-2'><img className='icon-filmcard' src={estrella} /> {Math.round(movie.vote_average * 10)} %</div>}
                       releaseDate={movie.title && movie.release_date ? <div className='d-flex align-items-center gap-2'><img className='icon-filmcard' src={calendar} />  {formatDate(movie.release_date)}</div> : movie.name && movie.first_air_date ? <div className='d-flex align-items-center gap-2'><img className='icon-filmcard' src={calendar} />{formatDate(movie.first_air_date)}</div> : 'Fecha no informada'}
-                      info_multimedia={`${window.location.origin}/serie/${movie.id}`}
-                      verMas={() => window.scrollTo(0, 0)}
+                      info_multimedia={`${window.location.origin}/serie/${movie.id}/${movie.name}`}
+                       
                       movieType={movie.title ? 'Película' : 'Serie'}
                       classMovieType={movie.title ? 'movie-type-movie' : 'movie-type-serie'}
                       topMovie={movie.vote_average > 7.75 && movie.vote_count > 99 ? "Destacada" : ''}
@@ -431,8 +431,8 @@ function InfoMovie() {
                 overview={movie.overview}
                 voteAverage={isUpcoming || isNaN(movie.vote_average) ? <div className='d-flex align-items-baseline gap-2'><img className='icon-filmcard' src={estrella} /> 0 %</div> : <div className='d-flex align-items-baseline gap-2'><img className='icon-filmcard' src={estrella} /> {Math.round(movie.vote_average * 10)} %</div>}
                 releaseDate={movie.title && movie.release_date ? <div className='d-flex align-items-center gap-2'><img className='icon-filmcard' src={calendar} />  {formatDate(movie.release_date)}</div> : movie.name && movie.first_air_date ? <div className='d-flex align-items-center gap-2'><img className='icon-filmcard' src={calendar} />{formatDate(movie.first_air_date)}</div> : 'Fecha no informada'}
-                info_multimedia={`${window.location.origin}/serie/${movie.id}`}
-                verMas={() => window.scrollTo(0, 0)}
+                info_multimedia={`${window.location.origin}/serie/${movie.id}/${movie.name}`}
+                 
                 movieType={movie.title ? 'Película' : 'Serie'}
                 classMovieType={movie.title ? 'movie-type-movie' : 'movie-type-serie'}
                 topMovie={movie.vote_average > 7.75 && movie.vote_count > 99 ? "Destacada" : ''}

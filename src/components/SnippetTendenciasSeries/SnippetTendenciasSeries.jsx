@@ -291,8 +291,8 @@ export const SnippetTendenciasSeries = () => {
                                                                 classMovieType={recommend.title ? 'movie-type-movie' : 'movie-type-serie'}
                                                                 topMovie={''}
                                                                 proxEstreno={isUpcoming}
-                                                                info_multimedia={`${window.location.origin}/serie/${recommend.id}`}
-                                                                verMas={() => window.scrollTo(0, 0)}
+                                                                info_multimedia={`${window.location.origin}/serie/${movie.id}/${movie.name}`}
+                                                                 
                                                             />
                                                         </div>
                                                     );
@@ -328,8 +328,8 @@ export const SnippetTendenciasSeries = () => {
                                     voteAverage={<div className="d-flex align-items-baseline"><img style={{ width: '1.5rem' }} src={estrella} /><span className="fs-3 ms-2">{Math.round(movie.vote_average * 10)} %</span></div>}
                                     selectedSerie
                                     date={<div className="d-flex align-items-center"><img style={{ width: '1.5rem' }} src={calendar} /><span className="fs-5 ms-2">{formatDate(movie.first_air_date)}</span></div>}
-                                    info_multimedia={`${window.location.origin}/serie/${movie.id}`}
-                                    verMas={() => window.scrollTo(0, 0)}
+                                    info_multimedia={`${window.location.origin}/serie/${movie.id}/${movie.name}`}
+                                     
                                 />
                                 <hr className="border-2 border-top border-secondary mt-4 mb-4" />
                             </>

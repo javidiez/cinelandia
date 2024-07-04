@@ -27,14 +27,13 @@ import { FacebookShareButton, TwitterShareButton, WhatsappShareButton, FacebookI
 
 
 export const PeliculaSingle = () => {
-    const { id } = useParams();
+    const { id, movie_name } = useParams();
 
     const API_URL = "https://api.themoviedb.org/3";
     const API_KEY = "4f5f43495afcc67e9553f6c684a82f84";
     const sixMonthsAgo = new Date();
     sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 2);
 
-    const [movies, setMovies] = useState([]);
     const [selectedMovie, setSelectedMovie] = useState(null);
     const [trailer, setTrailer] = useState(null);
     const [cast, setCast] = useState(null);
@@ -88,6 +87,7 @@ export const PeliculaSingle = () => {
 
     useEffect(() => {
         fetchMovie(id)
+        window.scrollTo(0, 0)
     }, [id])
 
     const handlePlayTrailer = () => {
@@ -142,7 +142,7 @@ export const PeliculaSingle = () => {
                                                     ? <i className="fa-solid fa-bookmark"></i>
                                                     : <i className="fa-regular fa-bookmark"></i>}
                                             </button>
-                                            <WhatsappShareButton url={`${window.location.origin}/pelicula/${selectedMovie.id}`}>
+                                            <WhatsappShareButton url={`${window.location.origin}/pelicula/${selectedMovie.id}/${selectedMovie.title}`}>
                                                 <i class="fa-solid fa-square-share-nodes share-icon text-light"></i>
                                             </WhatsappShareButton>
                                         </div>
@@ -319,8 +319,8 @@ export const PeliculaSingle = () => {
                                                                     classMovieType={recommend.title ? 'movie-type-movie' : 'movie-type-serie'}
                                                                     topMovie={recommend.vote_average > 7.75 && recommend.vote_count > 99 ? <span className='destacada-recommend'>Destacada</span> : ''}
                                                                     proxEstreno={isUpcoming}
-                                                                    info_multimedia={`${window.location.origin}/pelicula/${recommend.id}`}
-                                                                    verMas={() => window.scrollTo(0, 0)}
+                                                                    info_multimedia={`${window.location.origin}/pelicula/${recommend.id}/${recommend.title}`}
+                                                                     
                                                                 />
                                                             </div>
                                                         );
