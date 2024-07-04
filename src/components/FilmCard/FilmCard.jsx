@@ -3,7 +3,7 @@ import './filmcard.css';
 import fondoNotFound from '../../assets/img/fondo-not-found.jpeg';
 import { Link } from "react-router-dom";
 
-export const FilmCard = ({ image, title, releaseDate, voteAverage, onclick,info_multimedia, topMovie, proxEstreno, movieType, classMovieType, size, saveButton }) => {
+export const FilmCard = ({ image, title, releaseDate, voteAverage, verMas,info_multimedia, topMovie, proxEstreno, movieType, classMovieType, size, saveButton }) => {
 
   const truncateText = (text, maxLength) => {
     if (text.length > maxLength) {
@@ -33,7 +33,7 @@ export const FilmCard = ({ image, title, releaseDate, voteAverage, onclick,info_
             <p className="card-text fs-4">{releaseDate}</p>
             <p className="card-text fs-2 mt-2">{voteAverage}</p>
             <div className="d-flex gap-2">
-            <Link to={info_multimedia}><button className="btn btn-success mt-4 fw-bold fs-5" onClick={onclick}>VER MÁS</button></Link>
+            <Link to={info_multimedia}><button className="btn btn-success mt-4 fw-bold fs-5" onClick={verMas}>VER MÁS</button></Link>
             
             </div>
           </div>

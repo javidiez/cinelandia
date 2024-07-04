@@ -308,13 +308,14 @@ export const SnippetProximosEstrenos = () => {
                                     description={''}
                                     date={<div className="d-flex align-items-center"><img style={{ width:'1.5rem' }} src={calendar}/><span className="fs-4 ms-2">{formatDate(movie.release_date)}</span></div>}
                                     info_multimedia={`${window.location.origin}/pelicula/${movie.id}`}
+                                    verMas={() => window.scrollTo(0, 0)}
                                 />
                                 <hr className="border-2 border-top border-secondary mt-4 mb-4" />
                             </>
                         );
                     })}
                     <div className="text-center mb-5 mt-3 ">
-                        <Link to="/peliculas_estrenos"><button className='btn btn-primary botones-ver-mas ps-3 pe-3'>Ver mas</button></Link>
+                        <Link to="/peliculas_estrenos"><button className='btn btn-primary botones-ver-mas fw-bold ps-3 pe-3'>MÁS ESTRENOS</button></Link>
                     </div>
                 </div>
 

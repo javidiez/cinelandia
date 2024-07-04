@@ -569,6 +569,8 @@ function InfoMovie() {
                 classMovieType={movie.title ? 'movie-type-movie' : 'movie-type-serie'}
                 topMovie={movie.vote_average > 7.75 && movie.vote_count > 99 ? "Destacada" : ''}
                 proxEstreno={isUpcoming}
+                verMas={() => window.scrollTo(0, 0)}
+                                            
               />
             );
           })}

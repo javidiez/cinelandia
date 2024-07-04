@@ -1,0 +1,7 @@
+.letra-tabla-seasons{
+    font-size: clamp(0.9rem,4.7vw,1.5rem);
+}
+
+.large-cell-season{
+   min-width: 7.5rem;
+}

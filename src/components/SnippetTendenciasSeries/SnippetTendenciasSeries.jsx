@@ -162,23 +162,23 @@ export const SnippetTendenciasSeries = () => {
                             watchlistButtons={
                                 selectedSerie && (
                                     <Tooltip
-                                    content={store.watchlistSerie?.some(movie => movie.id === selectedSerie.id) ? "Quitar de Watchlist" : "Agregar a Watchlist"}
-                                    trigger="hover"
-                                    placement="top"
-                                    className="d-flex align-items-start bg-dark text-light ps-2 pe-0 px-0 fs-5 rounded"
-                                >
-                                    <button
-                                        className="btn btn-primary"
-                                        type="button"
-                                        onClick={store.watchlistSerie?.some(movie => movie.id === selectedSerie.id)
-                                            ? () => actions.deleteFavouriteSerie(selectedSerie)
-                                            : () => actions.addFavouriteSerie(selectedSerie)}
+                                        content={store.watchlistSerie?.some(movie => movie.id === selectedSerie.id) ? "Quitar de Watchlist" : "Agregar a Watchlist"}
+                                        trigger="hover"
+                                        placement="top"
+                                        className="d-flex align-items-start bg-dark text-light ps-2 pe-0 px-0 fs-5 rounded"
                                     >
-                                        {store.watchlistSerie?.some(movie => movie.id === selectedSerie.id)
-                                            ? <i className="fa-solid fa-bookmark"></i>
-                                            : <i className="fa-regular fa-bookmark"></i>}
-                                    </button>
-                                </Tooltip>
+                                        <button
+                                            className="btn btn-primary"
+                                            type="button"
+                                            onClick={store.watchlistSerie?.some(movie => movie.id === selectedSerie.id)
+                                                ? () => actions.deleteFavouriteSerie(selectedSerie)
+                                                : () => actions.addFavouriteSerie(selectedSerie)}
+                                        >
+                                            {store.watchlistSerie?.some(movie => movie.id === selectedSerie.id)
+                                                ? <i className="fa-solid fa-bookmark"></i>
+                                                : <i className="fa-regular fa-bookmark"></i>}
+                                        </button>
+                                    </Tooltip>
                                 )
                             }
                             postherPad={selectedSerie.poster_path ? `https://image.tmdb.org/t/p/w500${selectedSerie.poster_path}` : fondoNotFound}
@@ -291,6 +291,8 @@ export const SnippetTendenciasSeries = () => {
                                                                 classMovieType={recommend.title ? 'movie-type-movie' : 'movie-type-serie'}
                                                                 topMovie={''}
                                                                 proxEstreno={isUpcoming}
+                                                                info_multimedia={`${window.location.origin}/serie/${recommend.id}`}
+                                                                verMas={() => window.scrollTo(0, 0)}
                                                             />
                                                         </div>
                                                     );
@@ -323,17 +325,18 @@ export const SnippetTendenciasSeries = () => {
                                     img={`${IMAGE_PATH}${movie.poster_path}`}
                                     title={movie.name}
                                     description={''}
-                                    voteAverage={<div className="d-flex align-items-baseline"><img style={{ width:'1.5rem' }} src={estrella}/><span className="fs-3 ms-2">{Math.round(movie.vote_average * 10)} %</span></div>}
+                                    voteAverage={<div className="d-flex align-items-baseline"><img style={{ width: '1.5rem' }} src={estrella} /><span className="fs-3 ms-2">{Math.round(movie.vote_average * 10)} %</span></div>}
                                     selectedSerie
-                                    date={<div className="d-flex align-items-center"><img style={{ width:'1.5rem' }} src={calendar}/><span className="fs-5 ms-2">{formatDate(movie.first_air_date)}</span></div>}
-                                    onclick={() => selectMovie(movie)}
+                                    date={<div className="d-flex align-items-center"><img style={{ width: '1.5rem' }} src={calendar} /><span className="fs-5 ms-2">{formatDate(movie.first_air_date)}</span></div>}
+                                    info_multimedia={`${window.location.origin}/serie/${movie.id}`}
+                                    verMas={() => window.scrollTo(0, 0)}
                                 />
                                 <hr className="border-2 border-top border-secondary mt-4 mb-4" />
                             </>
                         );
                     })}
                     <div className="text-center mb-5 mt-3 ">
-                        <Link to="/series_toprated"><button className='btn btn-primary botones-ver-mas ps-3 pe-3'>Ver mas</button></Link>
+                        <Link to="/series_toprated"><button className='btn btn-primary botones-ver-mas fw-bold ps-3 pe-3'>VER MÁS</button></Link>
                     </div>
                 </div>
 

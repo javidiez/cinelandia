@@ -343,19 +343,7 @@ export const TopRated = () => {
                                                     classMovieType={movie.title ? 'movie-type-movie' : 'movie-type-serie'}
                                                     topMovie={''}
                                                     proxEstreno={isUpcoming}
-                                                    saveButton={
-                                                        <button
-                                                            className="btn btn-primary mt-4 fw-bold fs-5"
-                                                            type="button"
-                                                            onClick={store.watchlist?.some(pelicula => pelicula.id === movie.id)
-                                                                ? () => actions.deleteFavouriteMovie(movie)
-                                                                : () => actions.addFavouriteMovie(movie)}
-                                                        >
-                                                            {store.watchlist?.some(pelicula => pelicula.id === movie.id)
-                                                                ? <i className="fa-solid fa-bookmark"></i>
-                                                                : <i className="fa-regular fa-bookmark"></i>}
-                                                        </button>
-                                                    }
+                                                    verMas={() => window.scrollTo(0, 0)}
                                                 />
                                             </div>
                                         );
@@ -383,19 +371,7 @@ export const TopRated = () => {
                                     classMovieType={""}
                                     topMovie={''}
                                     proxEstreno={isUpcoming}
-                                    saveButton={
-                                        <button
-                                            className="btn btn-primary mt-4 fw-bold fs-5"
-                                            type="button"
-                                            onClick={store.watchlist?.some(pelicula => pelicula.id === movie.id)
-                                                ? () => actions.deleteFavouriteMovie(movie)
-                                                : () => actions.addFavouriteMovie(movie)}
-                                        >
-                                            {store.watchlist?.some(pelicula => pelicula.id === movie.id)
-                                                ? <i className="fa-solid fa-bookmark"></i>
-                                                : <i className="fa-regular fa-bookmark"></i>}
-                                        </button>
-                                    }
+                                    verMas={() => window.scrollTo(0, 0)}
                                 />
                             );
                         })}

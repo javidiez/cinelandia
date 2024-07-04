@@ -281,6 +281,8 @@ export const BloqueSeries = () => {
                                                                 classMovieType={recommend.title ? 'movie-type-movie' : 'movie-type-serie'}
                                                                 topMovie={''}
                                                                 proxEstreno={isUpcoming}
+                                                                info_multimedia={`${window.location.origin}/serie/${recommend.id}`}
+                                                                verMas={() => window.scrollTo(0, 0)}
                                                             />
                                                         </div>
                                                     );
@@ -315,24 +317,16 @@ export const BloqueSeries = () => {
                                         image={movie.poster_path}
                                         title={movie.title ? movie.title : movie.name}
                                         overview={movie.overview}
-                                        voteAverage={isUpcoming || isNaN(movie.vote_average) ? <div className='d-flex align-items-baseline gap-2'><img className='icon-filmcard' src={estrella}/> 0 %</div> : <div className='d-flex align-items-baseline gap-2'><img className='icon-filmcard' src={estrella}/> {Math.round(movie.vote_average * 10)} %</div>}
-                                        releaseDate={movie.title && movie.release_date ? <div className='d-flex align-items-center gap-2'><img className='icon-filmcard' src={calendar}/>  {formatDate(movie.release_date)}</div> : movie.name && movie.first_air_date ? <div className='d-flex align-items-center gap-2'><img className='icon-filmcard' src={calendar}/>{formatDate(movie.first_air_date)}</div> : 'Fecha no informada'}
-                                        onclick={() => selectMovie(movie)}
+                                        voteAverage={isUpcoming || isNaN(movie.vote_average) ? <div className='d-flex align-items-baseline gap-2'><img className='icon-filmcard' src={estrella} /> 0 %</div> : <div className='d-flex align-items-baseline gap-2'><img className='icon-filmcard' src={estrella} /> {Math.round(movie.vote_average * 10)} %</div>}
+                                        releaseDate={movie.title && movie.release_date ? <div className='d-flex align-items-center gap-2'><img className='icon-filmcard' src={calendar} />  {formatDate(movie.release_date)}</div> : movie.name && movie.first_air_date ? <div className='d-flex align-items-center gap-2'><img className='icon-filmcard' src={calendar} />{formatDate(movie.first_air_date)}</div> : 'Fecha no informada'}
+                                        info_multimedia={`${window.location.origin}/serie/${movie.id}`}
+                                        verMas={() => window.scrollTo(0, 0)}
                                         movieType={''}
                                         classMovieType={movie.title ? 'movie-type-movie' : 'movie-type-serie'}
                                         topMovie={movie.vote_average > 7.75 && movie.vote_count > 99 ? "Destacada" : ''}
                                         proxEstreno={isUpcoming}
-                                        saveButton={<button
-                                            className="btn btn-primary mt-4 fw-bold fs-5"
-                                            type="button"
-                                            onClick={store.watchlistSerie?.some(pelicula => pelicula.id === movie.id)
-                                                ? () => actions.deleteFavouriteSerie(movie)
-                                                : () => actions.addFavouriteSerie(movie)}
-                                        >
-                                            {store.watchlistSerie?.some(pelicula => pelicula.id === movie.id)
-                                                ? <i className="fa-solid fa-bookmark"></i>
-                                                : <i className="fa-regular fa-bookmark"></i>}
-                                        </button>}
+                               
+
                                     />
                                 </div>
                             );
@@ -355,28 +349,16 @@ export const BloqueSeries = () => {
                             image={movie.poster_path}
                             title={movie.name}
                             overview={movie.overview}
-                            voteAverage={isUpcoming || isNaN(movie.vote_average) ? <div className='d-flex align-items-baseline gap-2'><img className='icon-filmcard' src={estrella}/> 0 %</div> : <div className='d-flex align-items-baseline gap-2'><img className='icon-filmcard' src={estrella}/> {Math.round(movie.vote_average * 10)} %</div>}
-                            releaseDate={movie.title && movie.release_date ? <div className='d-flex align-items-center gap-2'><img className='icon-filmcard' src={calendar}/>  {formatDate(movie.release_date)}</div> : movie.name && movie.first_air_date ? <div className='d-flex align-items-center gap-2'><img className='icon-filmcard' src={calendar}/>{formatDate(movie.first_air_date)}</div> : 'Fecha no informada'}
-                            onclick={() => selectMovie(movie)}
+                            voteAverage={isUpcoming || isNaN(movie.vote_average) ? <div className='d-flex align-items-baseline gap-2'><img className='icon-filmcard' src={estrella} /> 0 %</div> : <div className='d-flex align-items-baseline gap-2'><img className='icon-filmcard' src={estrella} /> {Math.round(movie.vote_average * 10)} %</div>}
+                            releaseDate={movie.title && movie.release_date ? <div className='d-flex align-items-center gap-2'><img className='icon-filmcard' src={calendar} />  {formatDate(movie.release_date)}</div> : movie.name && movie.first_air_date ? <div className='d-flex align-items-center gap-2'><img className='icon-filmcard' src={calendar} />{formatDate(movie.first_air_date)}</div> : 'Fecha no informada'}
+                            info_multimedia={`${window.location.origin}/serie/${movie.id}`}
+                            verMas={() => window.scrollTo(0, 0)}
                             movieType={''}
                             classMovieType={movie.title ? 'movie-type-movie' : 'movie-type-serie'}
                             topMovie={movie.vote_average > 7.75 && movie.vote_count > 99 ? "Destacada" : ''}
                             proxEstreno={isUpcoming}
-                            saveButton={
                             
-                                    <button
-                                        className="btn btn-primary mt-4 fw-bold fs-5"
-                                        type="button"
-                                        onClick={store.watchlistSerie?.some(pelicula => pelicula.id === movie.id)
-                                            ? () => actions.deleteFavouriteSerie(movie)
-                                            : () => actions.addFavouriteSerie(movie)}
-                                    >
-                                        {store.watchlistSerie?.some(pelicula => pelicula.id === movie.id)
-                                            ? <i className="fa-solid fa-bookmark"></i>
-                                            : <i className="fa-regular fa-bookmark"></i>}
-                                    </button>
-                               
-                        }
+
                         />
 
                     );
@@ -384,7 +366,7 @@ export const BloqueSeries = () => {
             </div>
 
             <div className="container pb-5 mt-5 text-center ">
-                <Link to="/novedades_series"><button className='btn btn-primary botones-ver-mas ps-3 pe-3'>Ver más</button></Link>
+                <Link to="/novedades_series"><button className='btn btn-primary botones-ver-mas fw-bold ps-3 pe-3'>MÁS NOVEDADES</button></Link>
             </div>
 
         </>

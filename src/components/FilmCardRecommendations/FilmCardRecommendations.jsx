@@ -35,8 +35,10 @@ export const FilmCardRecommendations = ({ image, title, releaseDate, verMas, inf
           <div className="overlay text-center p-3">
             <div className={classMovieType}>{movieType}</div>
             <p className="card-text card-text-recommend fw-bold text-uppercase truncate-text-recommend">{truncateText(title,34)}</p>
-            <a href={info_multimedia}><button className="btn btn-success fw-bold p-1 px-2 mt-1" onClick={verMas}>VER MÁS</button></a>
-            <p className="card-text"><span className="fw-bold"></span>{voteAverage}</p>
+            <p className="card-text"><span className="fw-bold"></span>{releaseDate}</p>
+            <p className="card-text mt-1"><span className="fw-bold"></span>{voteAverage}</p>
+            <a href={info_multimedia}><button className="btn btn-success ver-mas-recommend fw-bold p-1 px-2 mt-3" onClick={verMas}>VER MÁS</button></a>
+           
           </div>
         </div>
         <div className="position-absolute top-movie"><p>{topMovie}</p></div>

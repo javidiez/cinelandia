@@ -1,7 +1,8 @@
 import React from "react";
 import '../SinppetProximosEstrenos/snippet_pp.css'
+import { Link } from "react-router-dom";
 
-export const BloqueTendenciasSeries = ({ img, title, description, date, onclick, voteAverage }) => {
+export const BloqueTendenciasSeries = ({ img, title, description, date, onclick, voteAverage, info_multimedia, verMas }) => {
     return (
 
         <div className='text-light d-flex'>
@@ -15,7 +16,7 @@ export const BloqueTendenciasSeries = ({ img, title, description, date, onclick,
             <div className="fs-5">{voteAverage}</div>
             <div className="fs-5">{date}</div>
             <div className="mt-3">
-            <button className="btn btn-success btn-mas-info-estrenos" onClick={onclick}>Más información</button>
+            <Link to={info_multimedia}><button className="btn btn-success btn-mas-info-estrenos fw-bold" onClick={verMas}>VER MÁS</button></Link>
             </div>
             </div>
             

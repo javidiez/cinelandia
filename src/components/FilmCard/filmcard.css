@@ -115,6 +115,10 @@ p {
     width: clamp(1.7rem, 5vw, 1.8rem)
 }
 
+.icon-filmcard-recommend{
+    width: clamp(1.5rem, 5vw, 1.5rem)
+}
+
 .truncate-text {
     display: inline-block;
     white-space: nowrap; /* Evita que el texto haga un wrap (salto de línea) */
