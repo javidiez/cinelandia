@@ -1,15 +1,7 @@
-import { Context } from "../../store/appContext";
-import { useEffect, useState, useContext } from 'react';
-import axios from 'axios';
+import React, { useEffect, useState, useContext } from 'react';
+import { Context } from '../../store/appContext';
 import { FilmCard } from '../FilmCard/FilmCard';
-import { Modal } from '../Modal/Modal';
-import { CardActores } from '../CardActores/CardActores';
-import { FilmCardRecommendations } from '../FilmCardRecommendations/FilmCardRecommendations';
 import estrella from '../../assets/img/estrella.png';
-import lapiz from '../../assets/img/lapiz.png';
-import smartTv from '../../assets/img/smart-tv.png';
-import fondoNotFound from '../../assets/img/fondo-not-found.jpeg';
-import avatar from '../../assets/img/avatar.webp';
 import calendar from '../../assets/img/calendar.png';
 import '../Novedades/novedades.css';
 import '../FilmCard/filmcard.css';
@@ -20,8 +12,6 @@ import '../BloqueSeriesHome/BloqueSeriesHome.css'
 import '../../../node_modules/swiper/swiper-bundle.min.css';
 import '../WatchlistSerieMovie/watchlistSerieMovie.css';
 import Swiper from 'swiper';
-import { Tooltip } from "flowbite-react";
-import { Link } from 'react-router-dom';
 
 
 export const WatchlistMovie = () => {

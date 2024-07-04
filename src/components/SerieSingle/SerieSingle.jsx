@@ -1,7 +1,6 @@
-import { useEffect, useState, useContext, useRef } from 'react';
+import React, { useEffect, useState, useContext, useRef } from 'react';
 import { Context } from '../../store/appContext';
 import axios from 'axios';
-import { FilmCard } from '../FilmCard/FilmCard';
 import { FilmCardRecommendations } from '../FilmCardRecommendations/FilmCardRecommendations';
 import { CardActores } from '../CardActores/CardActores';
 import estrella from '../../assets/img/estrella.png';
@@ -366,7 +365,7 @@ export const SerieSingle = () => {
 
                                                         return (
 
-                                                            <div className='me-4 film-card-recommend'>
+                                                            <div className='me-4 film-card-recommend' key={recommend.id}>
                                                                 <FilmCardRecommendations
                                                                     key={recommend.id}
                                                                     size={{ width: '13rem' }}

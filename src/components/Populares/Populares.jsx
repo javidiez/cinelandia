@@ -1,21 +1,12 @@
-import { useEffect, useState, useContext } from 'react';
-import { Context } from '../../store/appContext';
+import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import { FilmCard } from '../FilmCard/FilmCard';
-import { FilmCardRecommendations } from '../FilmCardRecommendations/FilmCardRecommendations';
-import { Modal } from '../Modal/Modal';
-import { CardActores } from '../CardActores/CardActores';
 import estrella from '../../assets/img/estrella.png';
-import lapiz from '../../assets/img/lapiz.png';
-import smartTv from '../../assets/img/smart-tv.png';
-import fondoNotFound from '../../assets/img/fondo-not-found.jpeg';
-import avatar from '../../assets/img/avatar.webp';
 import calendar from '../../assets/img/calendar.png';
 import '../Novedades/novedades.css';
 import '../FilmCard/filmcard.css';
 import '../InfoMovie/infoMovie.css';
 import '../SnippetNovedades/bloque_novedades.css'
-import { Tooltip } from "flowbite-react";
 import '../../../node_modules/swiper/swiper-bundle.min.css';
 import Swiper from 'swiper';
 
@@ -117,7 +108,7 @@ export const Populares = () => {
 
 
                                 return (
-                                    <div className='swiper-slide-paginas ps-4 pt-3 fade-in'>
+                                    <div className='swiper-slide-paginas ps-4 pt-3 fade-in' key={movie.id}>
                                         <FilmCard
                                             key={movie.id}
                                             size={{ width: 'clamp(15rem,20vw,18rem)' }}
@@ -148,6 +139,7 @@ export const Populares = () => {
                         const isUpcoming = releaseDate > today ? "Próximo estreno" : "";
 
                         return (
+                            <React.Fragment key={movie.id}>
                             <FilmCard
                                 key={movie.id}
                                 size={{ width: 'clamp(16rem,20vw,18rem)' }}
@@ -163,6 +155,7 @@ export const Populares = () => {
                                 proxEstreno={isUpcoming}
                                  
                             />
+                            </React.Fragment>
                         );
                     })}
                 </div>

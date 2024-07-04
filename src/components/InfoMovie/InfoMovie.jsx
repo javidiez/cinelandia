@@ -1,20 +1,10 @@
-import { useEffect, useState, useContext } from 'react';
-import { Context } from '../../store/appContext';
+import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios'
 import { FilmCard } from '../FilmCard/FilmCard';
-import { FilmCardRecommendations } from '../FilmCardRecommendations/FilmCardRecommendations';
-import { ModalSerie } from '../ModalSerie/ModalSerie';
-import { Modal } from '../Modal/Modal';
 import './infoMovie.css'
-import { CardActores } from '../CardActores/CardActores';
 import estrella from '../../assets/img/estrella.png';
-import lapiz from '../../assets/img/lapiz.png';
-import smartTv from '../../assets/img/smart-tv.png';
-import fondoNotFound from '../../assets/img/fondo-not-found.jpeg';
-import avatar from '../../assets/img/avatar.webp';
 import calendar from '../../assets/img/calendar.png';
 import '../SnippetNovedades/bloque_novedades.css'
-import { Tooltip } from "flowbite-react";
 import '../../../node_modules/swiper/swiper-bundle.min.css';
 import Swiper from 'swiper';
 import '../Buscador/buscador.css'
@@ -173,7 +163,7 @@ function InfoMovie() {
 
 
                 return (
-                  <div className='swiper-slide-paginas ps-4 pt-3 fade-in'>
+                  <div className='swiper-slide-paginas ps-4 pt-3 fade-in' key={movie.id}>
                     <FilmCard
                       key={movie.id}
                       size={{ width: 'clamp(15rem,20vw,18rem)' }}
@@ -182,7 +172,7 @@ function InfoMovie() {
                       overview={movie.overview}
                       voteAverage={isUpcoming || isNaN(movie.vote_average) ? <div className='d-flex align-items-baseline gap-2'><img className='icon-filmcard' src={estrella} /> 0 %</div> : <div className='d-flex align-items-baseline gap-2'><img className='icon-filmcard' src={estrella} /> {Math.round(movie.vote_average * 10)} %</div>}
                       releaseDate={movie.title && movie.release_date ? <div className='d-flex align-items-center gap-2'><img className='icon-filmcard' src={calendar} />  {formatDate(movie.release_date)}</div> : movie.name && movie.first_air_date ? <div className='d-flex align-items-center gap-2'><img className='icon-filmcard' src={calendar} />{formatDate(movie.first_air_date)}</div> : 'Fecha no informada'}
-                      onclick={() => selectMovie(movie)}
+                      info_multimedia={movie.title ? `${window.location.origin}/pelicula/${movie.id}/${movie.title}` : `${window.location.origin}/serie/${movie.id}/${movie.name}`}
                       movieType={movie.title ? 'Película' : 'Serie'}
                       classMovieType={movie.title ? 'movie-type-movie' : 'movie-type-serie'}
                       topMovie={movie.vote_average > 7.75 && movie.vote_count > 99 ? "Destacada" : ''}
@@ -203,7 +193,7 @@ function InfoMovie() {
             const isUpcoming = releaseDate > today ? "Próximo estreno" : "";
 
             return (
-
+              <React.Fragment key={movie.id}>
               <FilmCard
                 key={movie.id}
                 size={{ width: 'clamp(16rem,20vw,18rem)' }}
@@ -218,6 +208,7 @@ function InfoMovie() {
                 topMovie={movie.vote_average > 7.75 && movie.vote_count > 99 ? "Destacada" : ''}
                 proxEstreno={isUpcoming}
               />
+              </React.Fragment>
             );
           })}
 

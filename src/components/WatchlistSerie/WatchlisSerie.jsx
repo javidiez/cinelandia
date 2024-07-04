@@ -3,13 +3,7 @@ import { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import { FilmCard } from '../FilmCard/FilmCard';
 import { ModalSerie } from '../ModalSerie/ModalSerie';
-import { CardActores } from '../CardActores/CardActores';
-import { FilmCardRecommendations } from '../FilmCardRecommendations/FilmCardRecommendations';
 import estrella from '../../assets/img/estrella.png';
-import lapiz from '../../assets/img/lapiz.png';
-import smartTv from '../../assets/img/smart-tv.png';
-import fondoNotFound from '../../assets/img/fondo-not-found.jpeg';
-import avatar from '../../assets/img/avatar.webp';
 import calendar from '../../assets/img/calendar.png';
 import '../Novedades/novedades.css';
 import '../FilmCard/filmcard.css';
@@ -19,12 +13,9 @@ import '../SwitchPeliSerie/SwitchPeliSerie.css'
 import '../BloqueSeriesHome/BloqueSeriesHome.css'
 import '../../../node_modules/swiper/swiper-bundle.min.css';
 import Swiper from 'swiper';
-import { Tooltip } from "flowbite-react";
-import { Link } from 'react-router-dom';
 
 export const WatchlistSerie = () => {
-    const API_URL = "https://api.themoviedb.org/3";
-    const API_KEY = "4f5f43495afcc67e9553f6c684a82f84";
+
     const sixMonthsAgo = new Date();
     sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 2);
 

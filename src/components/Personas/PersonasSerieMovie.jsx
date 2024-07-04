@@ -343,7 +343,7 @@ export const PersonasSerieMovie = () => {
                             {persons.map((actor) => {
 
                                 return (
-                                    <div className='film-card-modal swiper-slide m-4'>
+                                    <div className='film-card-modal swiper-slide m-4' key={actor.id}>
                                         <CardPersonas
                                             castImg={`https://image.tmdb.org/t/p/w200${actor.profile_path}`}
                                             castName={actor.name}
@@ -362,7 +362,7 @@ export const PersonasSerieMovie = () => {
                 <div className="container-fluid gap-3 mx-auto mt-5 mb-3 bloque-cards-desktop-person person-block">
                     {persons.map((actor) => {
                         return (
-                            <div className='film-card-modal mb-4'>
+                            <div className='film-card-modal mb-4' key={actor.id}>
                                 <CardPersonas
                                     castImg={`https://image.tmdb.org/t/p/w200${actor.profile_path}`}
                                     castName={actor.name}

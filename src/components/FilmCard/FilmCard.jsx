@@ -30,8 +30,8 @@ export const FilmCard = ({ image, title, releaseDate, voteAverage, verMas,info_m
             <p className="card-text pb-4 fw-bold text-uppercase truncate-text">
               {truncateText(title,40)}
             </p>
-            <p className="card-text fs-4">{releaseDate}</p>
-            <p className="card-text fs-2 mt-2">{voteAverage}</p>
+            <div className="card-text fs-4">{releaseDate}</div>
+            <div className="card-text fs-2 mt-2">{voteAverage}</div>
             <div className="d-flex gap-2">
             <Link to={info_multimedia}><button className="btn btn-success mt-4 fw-bold fs-5" onClick={verMas}>VER MÁS</button></Link>
             

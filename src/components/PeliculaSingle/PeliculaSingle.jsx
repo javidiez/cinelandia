@@ -1,8 +1,7 @@
 
-import { useEffect, useState, useContext, useRef } from 'react';
+import React, { useEffect, useState, useContext, useRef } from 'react';
 import { Context } from '../../store/appContext';
 import axios from 'axios';
-import { FilmCard } from '../FilmCard/FilmCard';
 import { FilmCardRecommendations } from '../FilmCardRecommendations/FilmCardRecommendations';
 import { CardActores } from '../CardActores/CardActores';
 import estrella from '../../assets/img/estrella.png';
@@ -17,7 +16,6 @@ import '../InfoMovie/infoMovie.css'
 import '../SnippetNovedades/bloque_novedades.css'
 import { Tooltip } from "flowbite-react";
 import '../../../node_modules/swiper/swiper-bundle.min.css';
-import Swiper from 'swiper';
 import '../Navbar/navbar.css'
 import './peliculaSingle.css'
 import { useParams } from 'react-router-dom';
@@ -306,7 +304,7 @@ export const PeliculaSingle = () => {
 
                                                         return (
 
-                                                            <div className='me-4 film-card-recommend'>
+                                                            <div className='me-4 film-card-recommend' key={recommend.id}>
                                                                 <FilmCardRecommendations
                                                                     key={recommend.id}
                                                                     size={{ width: '13rem' }}
