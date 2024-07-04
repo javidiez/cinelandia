@@ -55,20 +55,21 @@
         margin-top: 15px;
     }
 
-    .save-button-single-multimedia{
-        position: absolute;
-        top: 25px;
-        right: 10px;
+    .save-button-single-multimedia {
+        position: fixed;
+        top: 108px;
+        right: 20px;
         padding: 0px 10px;
         font-size: 1.6rem;
+        z-index: 1000;
     }
-
-    .share-icon{
-        position: absolute;
-        top: 75px;
-        right: 10px;
-        font-size: 2.8rem;
-
+    
+    .share-icon {
+        position: fixed;
+        top: 155px;
+        right: 20px;
+        font-size: 2.9rem;
+        z-index: 1000;
     }
     
 }

@@ -128,8 +128,8 @@ export const SerieSingle = () => {
         return selectedSerie.seasons.map((season, index) => (
             <tr key={season.id}>
                 <td className="large-cell-season">{season.name}</td>
-                <td className=''>{season.episode_count > 0 ? season.episode_count : 'Sin definir'}</td>
-                <td>{formatDate(season.air_date) === '01/01/1970' ? 'Sin definir' : formatDate(season.air_date)}</td>
+                <td className=''>{season.episode_count > 0 ? season.episode_count : 'No informado'}</td>
+                <td>{formatDate(season.air_date) === '01/01/1970' ? 'No informado' : formatDate(season.air_date)}</td>
             </tr>
         ));
     };

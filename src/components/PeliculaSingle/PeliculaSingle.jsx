@@ -184,7 +184,7 @@ export const PeliculaSingle = () => {
                                 <div className='d-flex flex-wrap mt-4'>
                                     <div className='me-5 mb-3'>
                                         <div className='fs-2 text-light fw-bold'>Duración</div>
-                                        <div className='text-light fs-5'>{selectedMovie.runtime > 0 ? `${selectedMovie.runtime} minutos` : 'Duración no informada'}</div>
+                                        <div className='text-light fs-5'>{selectedMovie.runtime > 0 ? `${selectedMovie.runtime} minutos` : 'No informada'}</div>
                                     </div>
                                     <div className='me-5  mb-3'>
                                         <div className='fs-2 text-light fw-bold'>Géneros</div>

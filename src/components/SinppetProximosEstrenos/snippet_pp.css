@@ -23,7 +23,7 @@
 
 .btn-mas-info-estrenos{
     font-weight: 500;
-    font-size: clamp(0.7rem,3.5vw, 1rem);
+    font-size: clamp(0.8rem,5vw, 1rem);
 }
 
 .snippet_tendencias_title{
