@@ -30,7 +30,7 @@ export const WatchlistMovie = () => {
     const API_KEY = "4f5f43495afcc67e9553f6c684a82f84";
     const sixMonthsAgo = new Date();
     sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 2);
-    
+
     const { store, actions } = useContext(Context);
 
     const formatDate = (dateString) => {

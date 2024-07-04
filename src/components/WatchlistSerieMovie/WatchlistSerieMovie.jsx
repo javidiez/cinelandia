@@ -8,9 +8,14 @@ import '../Modal/modal.css';
 import '../BloqueSeriesHome/BloqueSeriesHome.css'
 import '../../../node_modules/swiper/swiper-bundle.min.css';
 import './watchlistSerieMovie.css';
+import { useEffect } from 'react';
 
 
 export const WatchlistSerieMovie = () => {
+
+    useEffect(() =>{
+      window.scrollTo(0, 0)
+    },[])
 
     return (
 
