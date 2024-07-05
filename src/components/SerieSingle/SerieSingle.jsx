@@ -10,6 +10,7 @@ import fondoNotFound from '../../assets/img/fondo-not-found.jpeg';
 import avatar from '../../assets/img/avatar.webp';
 import calendar from '../../assets/img/calendar.png';
 import '../Novedades/novedades.css';
+import '../WatchlistSerieMovie/watchlistSerieMovie.css';
 import '../FilmCard/filmcard.css';
 import '../InfoMovie/infoMovie.css'
 import '../SnippetNovedades/bloque_novedades.css'
@@ -276,7 +277,8 @@ export const SerieSingle = () => {
 
                                     </div>
                                 </div>
-
+                                {selectedSerie.number_of_seasons && selectedSerie.number_of_seasons > 1 ?
+                                <>
                                 <h2 className='pt-3 pb-3 text-info subtitle-modal'>Información sobre Temporadas</h2>
                                 <div className="table-responsive d-flex justify-content-center overflow-hidden">
                                     <table className="table">
@@ -293,7 +295,7 @@ export const SerieSingle = () => {
                                             {mapSeasonsSeasonRows()}
                                         </tbody>
                                     </table>
-                                </div>
+                                </div></> : ''}
 
                                 {cast && cast.length > 0 ?
 
@@ -310,6 +312,7 @@ export const SerieSingle = () => {
                                                             castName={actor.name}
                                                             noImg={avatar}
                                                             castCharacter={actor.character ? ` (${actor.character})` : ''}
+                                                            verMas={`${window.location.origin}/persona/${actor.id}/${actor.name.replace(/[ ]/gi, "-")}`}
                                                         />
                                                     </div>
                                                 ))}

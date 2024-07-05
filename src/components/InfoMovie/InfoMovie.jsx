@@ -9,6 +9,7 @@ import '../../../node_modules/swiper/swiper-bundle.min.css';
 import Swiper from 'swiper';
 import '../Buscador/buscador.css'
 import '../Novedades/novedades.css';
+import '../WatchlistSerieMovie/watchlistSerieMovie.css';
 import { Context } from '../../store/appContext';
 
 function InfoMovie() {
@@ -196,21 +197,45 @@ function InfoMovie() {
 
             return (
               <React.Fragment key={movie.id}>
-              <FilmCard
-                key={movie.id}
-                size={{ width: 'clamp(16rem,20vw,18rem)' }}
-                image={movie.poster_path}
-                title={movie.title ? movie.title : movie.name}
-                overview={movie.overview}
-                voteAverage={isUpcoming || isNaN(movie.vote_average) ? <div className='d-flex align-items-baseline gap-2'><img className='icon-filmcard' src={estrella} /> 0 %</div> : <div className='d-flex align-items-baseline gap-2'><img className='icon-filmcard' src={estrella} /> {Math.round(movie.vote_average * 10)} %</div>}
-                releaseDate={movie.title && movie.release_date ? <div className='d-flex align-items-center gap-2'><img className='icon-filmcard' src={calendar} />  {formatDate(movie.release_date)}</div> : movie.name && movie.first_air_date ? <div className='d-flex align-items-center gap-2'><img className='icon-filmcard' src={calendar} />{formatDate(movie.first_air_date)}</div> : 'Fecha no informada'}
-                info_multimedia={movie.title ? `${window.location.origin}/pelicula/${movie.id}/${movie.title.replace(/[ ]/gi, "-")}` : `${window.location.origin}/serie/${movie.id}/${movie.name.replace(/[ ]/gi, "-")}`}
-                movieType={movie.title ? 'Película' : 'Serie'}
-                classMovieType={movie.title ? 'movie-type-movie' : 'movie-type-serie'}
-                topMovie={movie.vote_average > 7.75 && movie.vote_count > 99 ? "Destacada" : ''}
-                proxEstreno={isUpcoming}
-                
-              />
+                <FilmCard
+                  key={movie.id}
+                  size={{ width: 'clamp(16rem,20vw,18rem)' }}
+                  image={movie.poster_path}
+                  title={movie.title ? movie.title : movie.name}
+                  overview={movie.overview}
+                  voteAverage={isUpcoming || isNaN(movie.vote_average) ? <div className='d-flex align-items-baseline gap-2'><img className='icon-filmcard' src={estrella} /> 0 %</div> : <div className='d-flex align-items-baseline gap-2'><img className='icon-filmcard' src={estrella} /> {Math.round(movie.vote_average * 10)} %</div>}
+                  releaseDate={movie.title && movie.release_date ? <div className='d-flex align-items-center gap-2'><img className='icon-filmcard' src={calendar} />  {formatDate(movie.release_date)}</div> : movie.name && movie.first_air_date ? <div className='d-flex align-items-center gap-2'><img className='icon-filmcard' src={calendar} />{formatDate(movie.first_air_date)}</div> : 'Fecha no informada'}
+                  info_multimedia={movie.title ? `${window.location.origin}/pelicula/${movie.id}/${movie.title.replace(/[ ]/gi, "-")}` : `${window.location.origin}/serie/${movie.id}/${movie.name.replace(/[ ]/gi, "-")}`}
+                  movieType={movie.title ? 'Película' : 'Serie'}
+                  classMovieType={movie.title ? 'movie-type-movie' : 'movie-type-serie'}
+                  topMovie={movie.vote_average > 7.75 && movie.vote_count > 99 ? "Destacada" : ''}
+                  proxEstreno={isUpcoming}
+                  saveButton={movie.title ?
+                    <button
+                      className="btn btn-primary save-button-watchlist mt-4 fw-bold"
+                      type="button"
+                      onClick={store.watchlist?.some(pelicula => pelicula.id === movie.id)
+                        ? () => actions.deleteFavouriteMovie(movie)
+                        : () => actions.addFavouriteMovie(movie)}
+                    >
+                      {store.watchlist?.some(pelicula => pelicula.id === movie.id)
+                        ? <i className="fa-solid fa-bookmark"></i>
+                        : <i className="fa-regular fa-bookmark"></i>}
+                    </button>
+                    :
+                    <button
+                      className="btn btn-primary save-button-watchlist mt-4 fw-bold"
+                      type="button"
+                      onClick={store.watchlistSerie?.some(pelicula => pelicula.id === movie.id)
+                        ? () => actions.deleteFavouriteSerie(movie)
+                        : () => actions.addFavouriteSerie(movie)}
+                    >
+                      {store.watchlistSerie?.some(pelicula => pelicula.id === movie.id)
+                        ? <i className="fa-solid fa-bookmark"></i>
+                        : <i className="fa-regular fa-bookmark"></i>}
+                    </button>
+                  }
+                />
               </React.Fragment>
             );
           })}

@@ -9,6 +9,7 @@ import '../InfoMovie/infoMovie.css'
 import '../SnippetNovedades/bloque_novedades.css'
 import '../SwitchPeliSerie/SwitchPeliSerie.css'
 import './BloqueSeriesHome.css'
+import '../WatchlistSerieMovie/watchlistSerieMovie.css';
 import '../../../node_modules/swiper/swiper-bundle.min.css';
 import Swiper from 'swiper';
 import { Link } from 'react-router-dom';

@@ -9,6 +9,7 @@ import '../BloqueSeriesHome/BloqueSeriesHome.css'
 import '../../../node_modules/swiper/swiper-bundle.min.css';
 import '../BloqueGeneros/bloquegeneros.css'
 import '../Novedades/novedades.css'
+import '../WatchlistSerieMovie/watchlistSerieMovie.css';
 import Swiper from 'swiper';
 import { Context } from '../../store/appContext';
 

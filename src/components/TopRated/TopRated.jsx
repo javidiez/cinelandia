@@ -6,6 +6,7 @@ import calendar from '../../assets/img/calendar.png';
 import '../Novedades/novedades.css';
 import '../FilmCard/filmcard.css';
 import '../InfoMovie/infoMovie.css';
+import '../WatchlistSerieMovie/watchlistSerieMovie.css';
 import '../SnippetNovedades/bloque_novedades.css'
 import '../../../node_modules/swiper/swiper-bundle.min.css';
 import Swiper from 'swiper';

@@ -62,25 +62,6 @@ export const PersonasSerieMovie = () => {
         setPersonsSearch(results);
     };
 
-    const fetchPersonas = async (id) => {
-        const { data } = await axios.get(`${API_URL}/person/${id}?language=es-ES`, {
-            params: {
-                api_key: API_KEY,
-                append_to_response: 'combined_credits',
-            },
-        });
-        if (data.combined_credits && data.combined_credits.cast) {
-            const personsCredits = data.combined_credits.cast;
-            setCombinedCredits(personsCredits);
-        }
-        setSelectedPerson(data);
-        const modal = new bootstrap.Modal(document.getElementById(`modalPersona-${id}`));
-        modal.show();
-    };
-
-    const selectPersona = async (persona) => {
-        await fetchPersonas(persona.id);
-    };
 
     useEffect(() => {
         fetchPersonasSerieMovie(currentPage);
@@ -162,18 +143,6 @@ export const PersonasSerieMovie = () => {
         }
     };
 
-    const formatDate = (dateString) => {
-        const date = new Date(dateString);
-        const day = String(date.getDate()).padStart(2, '0');
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const year = date.getFullYear();
-        return `${day}/${month}/${year}`;
-    };
-
-    const handleCloseModal = () => {
-        setSelectedPerson(null); // Cierra el modal
-    };
-
     useEffect(() => {
         const swiper = new Swiper('.swiper-container', {
             slidesPerView: 'auto', // Mostrará tantos slides como quepan en el contenedor
@@ -185,63 +154,6 @@ export const PersonasSerieMovie = () => {
 
     return (
         <>
-
-            <main>
-                {selectedPerson && (
-                    <ModalPersonas
-                        key={selectedPerson.id}
-                        idModal={`modalPersona-${selectedPerson.id}`}
-                        profilePad={selectedPerson.profile_path ? `https://image.tmdb.org/t/p/w500${selectedPerson.profile_path}` : avatar}
-                        noImg={fondoNotFound}
-                        name={selectedPerson.name}
-                        birthday={selectedPerson.birthday && selectedPerson.birthday.length > 0 ? <><span className='fw-bold'>Fecha de nacimiento:</span> {formatDate(selectedPerson.birthday)}</> : ''}
-                        deathday={selectedPerson.deathday && selectedPerson.deathday.length > 0 ? <><span className='fw-bold'>Fecha de fallecimiento:</span> {formatDate(selectedPerson.deathday)}</> : ''}
-                        place_of_birth={selectedPerson.place_of_birth && selectedPerson.place_of_birth.length > 0 ? <><span className='fw-bold'>Lugar de nacimiento:</span> {selectedPerson.place_of_birth}</> : ''}
-                        biography={selectedPerson.biography && selectedPerson.biography.length > 0 ? selectedPerson.biography : 'Biografía no informada'}
-                        onClose={handleCloseModal}
-                        moviesSeriesActing={combinedCredits && combinedCredits.length > 0 ? (
-                            <>
-                                <h2 className='pt-5 text-info subtitle-modal'>Actúa en</h2>
-
-                                <div className='d-flex flex-wrap gap-4'>
-                                    <div className="swiper-container">
-                                        <div className="swiper-wrapper scrollableDiv">
-                                            {combinedCredits.map((actor) => {
-                                                const releaseDate = new Date(actor.release_date);
-                                                const today = new Date();
-                                                const isUpcoming = releaseDate > today ? "Próximo estreno" : "";
-
-
-                                                return (
-                                                    <div className='film-card-modal swiper-slide gap-5 me-5 ms-3'>
-                                                        <FilmCardRecommendations
-                                                            key={actor.id}
-                                                            size={{ width: '13rem' }}
-                                                            image={actor.poster_path}
-                                                            title={actor.media_type == "movie" ? actor.original_title : actor.name}
-                                                            overview={actor.overview}
-                                                            releaseDate={actor.title && actor.release_date ? <div className='d-flex align-items-center gap-2'><img className='icon-filmcard' src={calendar} />  {formatDate(actor.release_date)}</div> : actor.name && actor.first_air_date ? <div className='d-flex align-items-center gap-2'><img className='icon-filmcard' src={calendar} />{formatDate(actor.first_air_date)}</div> : 'Fecha no informada'}
-                                                            voteAverage={isUpcoming || isNaN(actor.vote_average) ? <div className='d-flex align-items-baseline gap-2'><img className='icon-filmcard-recommend' src={estrella} /> 0 %</div> : <div className='d-flex align-items-baseline gap-2'><img className='icon-filmcard-recommend' src={estrella} /> {Math.round(actor.vote_average * 10)} %</div>}
-                                                            movieType={actor.media_type == "movie" ? 'Película' : 'Serie'}
-                                                            classMovieType={actor.media_type == "movie" ? 'movie-type-movie-person' : 'movie-type-serie-person'}
-                                                            topMovie={actor.vote_average > 7.75 && actor.vote_count > 99 ? <span className='destacada-recommend'>Destacada</span> : ''}
-                                                            proxEstreno={isUpcoming}
-                                                            info_multimedia={`${window.location.origin}/pelicula/${actor.id}/${actor.title}`}
-                                                             
-
-                                                        />
-                                                    </div>
-                                                );
-
-                                            })}
-                                        </div>
-                                    </div>
-                                </div>
-                            </>
-                        ) : ''}
-                    />
-                )}
-            </main>
 
             <a href="/personas" className='text-decoration-none'><h2 className="text-center text-light novedades-title">Personas</h2></a>
 
@@ -286,7 +198,7 @@ export const PersonasSerieMovie = () => {
                                             castName={actor.name}
                                             noImg={avatar}
                                             castCharacter={''}
-                                            verMas={() => selectPersona(actor)}
+                                            verMas={`${window.location.origin}/persona/${actor.id}/${actor.name.replace(/[ ]/gi, "-")}`}
                                         />
                                     </div>
                                 );
@@ -295,7 +207,7 @@ export const PersonasSerieMovie = () => {
                     </div>
                 </div>
 
-                <div className="container-fluid gap-3 mx-auto mt-5 mb-3 bloque-cards-desktop-person person-block">
+                <div className="container-fluid mx-auto mt-5 mb-3 bloque-cards-desktop-person person-block">
                     {personsSearch.map((actor) => {
 
                         const releaseDate = new Date(actor.release_date);
@@ -309,7 +221,7 @@ export const PersonasSerieMovie = () => {
                                     castName={actor.name}
                                     noImg={avatar}
                                     castCharacter={''}
-                                    verMas={() => selectPersona(actor)}
+                                    verMas={`${window.location.origin}/persona/${actor.id}/${actor.name.replace(/[ ]/gi, "-")}`}
                                 />
                             </div>
                         );
@@ -345,13 +257,13 @@ export const PersonasSerieMovie = () => {
                             {persons.map((actor) => {
 
                                 return (
-                                    <div className='film-card-modal swiper-slide m-4' key={actor.id}>
+                                    <div className='film-card-modal swiper-slide my-3 mx-2' key={actor.id}>
                                         <CardPersonas
                                             castImg={`https://image.tmdb.org/t/p/w200${actor.profile_path}`}
                                             castName={actor.name}
                                             noImg={avatar}
                                             castCharacter={''}
-                                            verMas={() => selectPersona(actor)}
+                                            verMas={`${window.location.origin}/persona/${actor.id}/${actor.name.replace(/[ ]/gi, "-")}`}
                                         />
                                     </div>
                                 );
@@ -361,7 +273,7 @@ export const PersonasSerieMovie = () => {
                 </div>
 
 
-                <div className="container-fluid gap-3 mx-auto mt-5 mb-3 bloque-cards-desktop-person person-block">
+                <div className="container-fluid mx-auto mt-5 mb-3 bloque-cards-desktop-person person-block">
                     {persons.map((actor) => {
                         return (
                             <div className='film-card-modal mb-4' key={actor.id}>
@@ -370,7 +282,7 @@ export const PersonasSerieMovie = () => {
                                     castName={actor.name}
                                     noImg={avatar}
                                     castCharacter={''}
-                                    verMas={() => selectPersona(actor)}
+                                    verMas={`${window.location.origin}/persona/${actor.id}/${actor.name.replace(/[ ]/gi, "-")}`}
                                 />
                             </div>
                         );

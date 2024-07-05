@@ -1,13 +1,12 @@
 import { Navbar } from "../Navbar/Navbar"
-import { WatchlistSerieMovie } from "../WatchlistSerieMovie/WatchlistSerieMovie"
-
+import { PersonaSingle } from "../PersonaSingle/PersonaSingle"
 
 function PersonaIndividual() {
 
   return (
     <>
       <Navbar/>
-      <WatchlistSerieMovie/>
+      <PersonaSingle/>
     </>
   )
 }

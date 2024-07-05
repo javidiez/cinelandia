@@ -8,6 +8,7 @@ import '../FilmCard/filmcard.css';
 import '../InfoMovie/infoMovie.css'
 import '../SnippetNovedades/bloque_novedades.css'
 import '../../../node_modules/swiper/swiper-bundle.min.css';
+import '../WatchlistSerieMovie/watchlistSerieMovie.css';
 import Swiper from 'swiper';
 import { Context } from '../../store/appContext';
 

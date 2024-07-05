@@ -7,6 +7,7 @@ import './novedades.css';
 import '../FilmCard/filmcard.css';
 import '../InfoMovie/infoMovie.css'
 import '../SnippetNovedades/bloque_novedades.css'
+import '../WatchlistSerieMovie/watchlistSerieMovie.css';
 import '../../../node_modules/swiper/swiper-bundle.min.css';
 import Swiper from 'swiper';
 import '../Navbar/navbar.css'

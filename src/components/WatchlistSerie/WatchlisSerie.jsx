@@ -12,6 +12,7 @@ import '../SnippetNovedades/bloque_novedades.css'
 import '../SwitchPeliSerie/SwitchPeliSerie.css'
 import '../BloqueSeriesHome/BloqueSeriesHome.css'
 import '../../../node_modules/swiper/swiper-bundle.min.css';
+import '../WatchlistSerieMovie/watchlistSerieMovie.css';
 import Swiper from 'swiper';
 
 export const WatchlistSerie = () => {

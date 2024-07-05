@@ -1,0 +1,23 @@
+.img-posther_path_person{
+    width: clamp(12rem, 15vw, 18rem);
+}
+
+.share-icon-person{
+    font-size: 2.9rem;
+}
+
+@media screen and (max-width: 650px){
+    .container-posther_path_person {
+        display: flex;
+        justify-content: center;
+    
+    }
+    .share-icon-person {
+        position: absolute;
+        top: 23px;
+        right: 5px;
+        font-size: 2.9rem;
+        z-index: 1000;
+    }
+    
+}

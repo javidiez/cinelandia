@@ -8,6 +8,7 @@ import '../SnippetNovedades/bloque_novedades.css'
 import '../BloqueSeriesHome/BloqueSeriesHome.css'
 import '../../../node_modules/swiper/swiper-bundle.min.css';
 import '../BloqueGeneros/bloquegeneros.css'
+import '../WatchlistSerieMovie/watchlistSerieMovie.css';
 import '../FilmCard/filmcard.css';
 import Swiper from 'swiper';
 import '../Novedades/novedades.css'

@@ -13,6 +13,7 @@ import calendar from '../../assets/img/calendar.png';
 import '../Novedades/novedades.css';
 import '../FilmCard/filmcard.css';
 import '../InfoMovie/infoMovie.css'
+import '../WatchlistSerieMovie/watchlistSerieMovie.css';
 import '../SnippetNovedades/bloque_novedades.css'
 import { Tooltip } from "flowbite-react";
 import '../../../node_modules/swiper/swiper-bundle.min.css';
@@ -254,6 +255,7 @@ export const PeliculaSingle = () => {
                                                             castName={actor.name}
                                                             noImg={avatar}
                                                             castCharacter={actor.character ? ` (${actor.character})` : ''}
+                                                            verMas={`${window.location.origin}/persona/${actor.id}/${actor.name.replace(/[ ]/gi, "-")}`}
                                                         />
                                                     </div>
                                                 ))}

@@ -10,7 +10,7 @@
 .movie-type-serie-person {
     position: absolute;
     background-color: #0ea700;
-    font-size: 0.9rem;
+    font-size: 1.1rem;
     top: 5px;
     left: 5px;
     font-weight: 500;
@@ -21,7 +21,7 @@
 .movie-type-movie-person {
     position: absolute;
     background-color: #0072a7;
-    font-size: 0.9rem;
+    font-size: 1.1rem;
     top: 5px;
     left: 5px;
     font-weight: 500;

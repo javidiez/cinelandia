@@ -4,6 +4,7 @@ import { FilmCard } from '../FilmCard/FilmCard';
 import estrella from '../../assets/img/estrella.png';
 import calendar from '../../assets/img/calendar.png';
 import '../Novedades/novedades.css';
+import '../WatchlistSerieMovie/watchlistSerieMovie.css';
 import '../FilmCard/filmcard.css';
 import '../InfoMovie/infoMovie.css'
 import '../SnippetNovedades/bloque_novedades.css'

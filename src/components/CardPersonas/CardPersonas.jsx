@@ -1,8 +1,10 @@
+import { Link } from "react-router-dom";
+
 export const CardPersonas = ({castImg, castName, noImg,verMas}) => {
     return(
-        <button className="btn" onClick={verMas}>
-        <div className="card" style={{ width: '15rem' }}>
-            <img src={castImg || noImg} className="card-img-top" style={{ height: '22rem' }} onError={(e) => {
+        <Link className="btn" to={verMas}>
+        <div className="card" style={{ width: '13rem' }}>
+            <img src={castImg || noImg} className="card-img-top" style={{ height: '20rem' }} onError={(e) => {
                 e.target.onerror = null;
                 e.target.src = noImg;
             }} alt="Cast" />
@@ -10,6 +12,6 @@ export const CardPersonas = ({castImg, castName, noImg,verMas}) => {
                 <p className="text-start fw-bold fs-5">{castName}</p>
             </div>
         </div>
-        </button>
+        </Link>
     )
 }

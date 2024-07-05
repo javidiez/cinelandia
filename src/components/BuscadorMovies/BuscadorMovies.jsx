@@ -9,6 +9,7 @@ import '../../../node_modules/swiper/swiper-bundle.min.css';
 import Swiper from 'swiper';
 import '../Buscador/buscador.css'
 import '../Novedades/novedades.css';
+import '../WatchlistSerieMovie/watchlistSerieMovie.css';
 import { Context } from '../../store/appContext';
 
 function InfoMovie() {
