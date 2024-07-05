@@ -91,7 +91,7 @@ export const SnippetProximosEstrenos = () => {
                                     title={movie.title}
                                     description={''}
                                     date={<div className="d-flex align-items-center"><img style={{ width:'1.5rem' }} src={calendar}/><span className="fs-4 ms-2">{formatDate(movie.release_date)}</span></div>}
-                                    info_multimedia={`${window.location.origin}/pelicula/${movie.id}/${movie.title}`}
+                                    info_multimedia={`${window.location.origin}/pelicula/${movie.id}/${movie.title.replace(/[ ]/gi, "-")}`}
                                      
                                 />
                                 <hr className="border-2 border-top border-secondary mt-4 mb-4" />

@@ -39,6 +39,7 @@ function App() {
         <Route path="/watchlist" element={<Watchlist />} />
         <Route path="/pelicula/:id/:movie_name" element={<PeliculaIndividual />} />
         <Route path="/serie/:id/:serie_name" element={<SerieIndividual />} />
+        <Route path="*" element={<h1 className='text-center text-light mt-5'>Not found!</h1>} />
       </Routes>
       <Footer/>
     </Router>

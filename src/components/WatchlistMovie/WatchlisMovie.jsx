@@ -59,7 +59,7 @@ export const WatchlistMovie = () => {
                                             overview={fav.overview}
                                             voteAverage={isUpcoming || isNaN(fav.vote_average) ? <div className='d-flex align-items-baseline gap-2'><img className='icon-filmcard' src={estrella} /> 0 %</div> : <div className='d-flex align-items-baseline gap-2'><img className='icon-filmcard' src={estrella} /> {Math.round(fav.vote_average * 10)} %</div>}
                                             releaseDate={fav.title && fav.release_date ? <div className='d-flex align-items-center gap-2'><img className='icon-filmcard' src={calendar} />  {formatDate(fav.release_date)}</div> : fav.name && fav.first_air_date ? <div className='d-flex align-items-center gap-2'><img className='icon-filmcard' src={calendar} />{formatDate(fav.first_air_date)}</div> : 'Fecha no informada'}
-                                            info_multimedia={`${window.location.origin}/pelicula/${fav.id}/${fav.title}`}
+                                            info_multimedia={`${window.location.origin}/pelicula/${fav.id}/${fav.title.replace(/[ ]/gi, "-")}`}
                                             movieType={''}
                                             classMovieType={fav.title ? 'movie-type-movie' : 'movie-type-serie'}
                                             topMovie={fav.vote_average > 7.75 && fav.vote_count > 99 ? "Destacada" : ''}

@@ -103,7 +103,7 @@ export const TopRatedSerie = () => {
                                                     overview={movie.overview}
                                                     voteAverage={isUpcoming || isNaN(movie.vote_average) ? <div className='d-flex align-items-baseline gap-2'><img className='icon-filmcard' src={estrella} /> 0 %</div> : <div className='d-flex align-items-baseline gap-2'><img className='icon-filmcard' src={estrella} /> {Math.round(movie.vote_average * 10)} %</div>}
                                                     releaseDate={movie.title && movie.release_date ? <div className='d-flex align-items-center gap-2'><img className='icon-filmcard' src={calendar} />  {formatDate(movie.release_date)}</div> : movie.name && movie.first_air_date ? <div className='d-flex align-items-center gap-2'><img className='icon-filmcard' src={calendar} />{formatDate(movie.first_air_date)}</div> : 'Fecha no informada'}
-                                                    info_multimedia={`${window.location.origin}/serie/${movie.id}/${movie.name}`}
+                                                    info_multimedia={`${window.location.origin}/serie/${movie.id}/${movie.name.replace(/[ ]/gi, "-")}`}
                                                      
                                                     movieType={''}
                                                     classMovieType={''}
@@ -134,7 +134,7 @@ export const TopRatedSerie = () => {
                                         overview={movie.overview}
                                         voteAverage={isUpcoming || isNaN(movie.vote_average) ? <div className='d-flex align-items-baseline gap-2'><img className='icon-filmcard' src={estrella} /> 0 %</div> : <div className='d-flex align-items-baseline gap-2'><img className='icon-filmcard' src={estrella} /> {Math.round(movie.vote_average * 10)} %</div>}
                                         releaseDate={movie.title && movie.release_date ? <div className='d-flex align-items-center gap-2'><img className='icon-filmcard' src={calendar} />  {formatDate(movie.release_date)}</div> : movie.name && movie.first_air_date ? <div className='d-flex align-items-center gap-2'><img className='icon-filmcard' src={calendar} />{formatDate(movie.first_air_date)}</div> : 'Fecha no informada'}
-                                        info_multimedia={`${window.location.origin}/serie/${movie.id}/${movie.name}`}
+                                        info_multimedia={`${window.location.origin}/serie/${movie.id}/${movie.name.replace(/[ ]/gi, "-")}`}
                                          
                                         movieType={''}
                                         classMovieType={''}

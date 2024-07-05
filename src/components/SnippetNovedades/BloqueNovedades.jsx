@@ -83,7 +83,7 @@ export const BloqueNovedades = () => {
                                         overview={movie.overview}
                                         releaseDate={<div className='d-flex align-items-center gap-2'><img className='icon-filmcard' src={calendar} /> {formatDate(movie.release_date)}</div>}
                                         voteAverage={isUpcoming || isNaN(movie.vote_average) ? <div className='d-flex align-items-baseline gap-2'><img className='icon-filmcard' src={estrella} /> 0 %</div> : <div className='d-flex align-items-baseline gap-2'><img className='icon-filmcard' src={estrella} /> {Math.round(movie.vote_average * 10)} %</div>}
-                                        info_multimedia={`${window.location.origin}/pelicula/${movie.id}/${movie.title}`}
+                                        info_multimedia={`${window.location.origin}/pelicula/${movie.id}/${movie.title.replace(/[ ]/gi, "-")}`}
                                         movieType={''}
                                         classMovieType={movie.title ? 'movie-type-movie' : 'movie-type-serie'}
                                         topMovie={movie.vote_average > 7.75 && movie.vote_count > 99 ? "Destacada" : ''}
@@ -122,7 +122,7 @@ export const BloqueNovedades = () => {
                             overview={movie.overview}
                             releaseDate={<div className='d-flex align-items-center gap-2'><img className='icon-filmcard' src={calendar} /> {formatDate(movie.release_date)}</div>}
                             voteAverage={isUpcoming || isNaN(movie.vote_average) ? <div className='d-flex align-items-baseline gap-2'><img className='icon-filmcard' src={estrella} /> 0 %</div> : <div className='d-flex align-items-baseline gap-2'><img className='icon-filmcard' src={estrella} /> {Math.round(movie.vote_average * 10)} %</div>}
-                            info_multimedia={`${window.location.origin}/pelicula/${movie.id}/${movie.title}`}
+                            info_multimedia={`${window.location.origin}/pelicula/${movie.id}/${movie.title.replace(/[ ]/gi, "-")}`}
                             movieType={''}
                             classMovieType={movie.title ? 'movie-type-movie' : 'movie-type-serie'}
                             topMovie={movie.vote_average > 7.75 && movie.vote_count > 99 ? "Destacada" : ''}
