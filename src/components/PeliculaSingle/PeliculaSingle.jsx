@@ -186,17 +186,17 @@ export const PeliculaSingle = () => {
                                     </div>
                                     <div className='me-5  mb-3'>
                                         <div className='fs-2 text-light fw-bold'>Géneros</div>
-                                        <div className='d-flex flex-wrap text-light fs-5'>{selectedMovie.genres && selectedMovie.genres.map((genre, index) => (
+                                        <div className='d-flex flex-wrap text-light fs-5'>{selectedMovie.genres && selectedMovie.genres.length > 0 ? selectedMovie.genres.map((genre, index) => (
                                             <p className='pe-1' key={genre.id}>{genre.name}{index < selectedMovie.genres.length - 1 ? ', ' : ''}</p>
-                                        ))}</div>
+                                        )): 'No informado'}</div>
                                     </div>
                                     <div className='me-5  mb-3'>
                                         <div className='fs-2 text-light fw-bold'>Fecha de estreno</div>
-                                        <div className='text-light fs-5'>{formatDate(selectedMovie.release_date)}</div>
+                                        <div className='text-light fs-5'>{selectedMovie.release_date ? formatDate(selectedMovie.release_date) : 'No informada'}</div>
                                     </div>
                                     <div className='me-5  mb-3'>
                                         <div className='fs-2 text-light fw-bold'>Idioma</div>
-                                        <div className='text-light text-uppercase fs-5'>{selectedMovie.original_language}</div>
+                                        <div className='text-light text-uppercase fs-5'>{selectedMovie.original_language && selectedMovie.original_language.length > 0 ? selectedMovie.original_language : 'No informado'}</div>
                                     </div>
                                 </div>
                                 <div>
@@ -265,17 +265,17 @@ export const PeliculaSingle = () => {
                                     <div>
                                         <div>
                                             <p className='fs-2 fw-bold mt-3'>Productoras:</p>
-                                            {selectedMovie.production_companies && selectedMovie.production_companies.map((company, index) => (
+                                            {selectedMovie.production_companies && selectedMovie.production_companies.length >0 ? selectedMovie.production_companies.map((company, index) => (
                                                 <span className='fs-4' key={company.id}>{company.name}{index < selectedMovie.production_companies.length - 1 ? ', ' : ''}</span>
-                                            ))}
+                                            )) : <span className='fs-4'>No informado</span>}
                                         </div>
                                     </div>
                                     <div>
                                         <p className='fs-2 fw-bold mt-3'>País:</p>
                                         <div>
-                                            {selectedMovie.production_countries && selectedMovie.production_countries.map((country, index) => (
+                                            {selectedMovie.production_countries && selectedMovie.production_countries.length > 0 ? selectedMovie.production_countries.map((country, index) => (
                                                 <span className='fs-4' key={country.iso_3166_1}>{country.name}{index < selectedMovie.production_countries.length - 1 ? ', ' : ''}</span>
-                                            ))}
+                                            )) : <span className='fs-4'>No informado</span>}
                                         </div>
                                     </div>
                                     <div className='d-flex flex-column'>

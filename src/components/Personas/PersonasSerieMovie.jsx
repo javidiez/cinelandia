@@ -3,6 +3,8 @@ import axios from 'axios';
 import { FilmCardRecommendations } from '../FilmCardRecommendations/FilmCardRecommendations';
 import fondoNotFound from '../../assets/img/fondo-not-found.jpeg';
 import avatar from '../../assets/img/avatar.webp';
+import calendar from '../../assets/img/calendar.png';
+import estrella from '../../assets/img/estrella.png';
 import '../Novedades/novedades.css';
 import '../FilmCard/filmcard.css';
 import '../InfoMovie/infoMovie.css';
@@ -211,20 +213,20 @@ export const PersonasSerieMovie = () => {
 
 
                                                 return (
-                                                    <div className='film-card-modal swiper-slide gap-5'>
+                                                    <div className='film-card-modal swiper-slide gap-5 me-5 ms-3'>
                                                         <FilmCardRecommendations
                                                             key={actor.id}
-                                                            size={{ width: '9rem' }}
+                                                            size={{ width: '13rem' }}
                                                             image={actor.poster_path}
                                                             title={actor.media_type == "movie" ? actor.original_title : actor.name}
                                                             overview={actor.overview}
-                                                            releaseDate={actor.media_type == "movie" ? <><span className='fw-bold'>Fecha</span> {formatDate(actor.release_date)}</> : <><span className='fw-bold'>Fecha</span> {formatDate(actor.first_air_date)}</>}
-                                                            voteAverage={''}
+                                                            releaseDate={actor.title && actor.release_date ? <div className='d-flex align-items-center gap-2'><img className='icon-filmcard' src={calendar} />  {formatDate(actor.release_date)}</div> : actor.name && actor.first_air_date ? <div className='d-flex align-items-center gap-2'><img className='icon-filmcard' src={calendar} />{formatDate(actor.first_air_date)}</div> : 'Fecha no informada'}
+                                                            voteAverage={isUpcoming || isNaN(actor.vote_average) ? <div className='d-flex align-items-baseline gap-2'><img className='icon-filmcard-recommend' src={estrella} /> 0 %</div> : <div className='d-flex align-items-baseline gap-2'><img className='icon-filmcard-recommend' src={estrella} /> {Math.round(actor.vote_average * 10)} %</div>}
                                                             movieType={actor.media_type == "movie" ? 'Película' : 'Serie'}
                                                             classMovieType={actor.media_type == "movie" ? 'movie-type-movie-person' : 'movie-type-serie-person'}
                                                             topMovie={actor.vote_average > 7.75 && actor.vote_count > 99 ? <span className='destacada-recommend'>Destacada</span> : ''}
                                                             proxEstreno={isUpcoming}
-                                                            info_multimedia={`${window.location.origin}/pelicula/${actor.id}`}
+                                                            info_multimedia={`${window.location.origin}/pelicula/${actor.id}/${actor.title}`}
                                                              
 
                                                         />

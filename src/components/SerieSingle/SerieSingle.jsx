@@ -209,21 +209,21 @@ export const SerieSingle = () => {
                                 <div className='d-flex flex-wrap mt-4'>
                                     <div className='me-5 mb-3'>
                                         <div className='fs-2 text-light fw-bold'>Temporadas</div>
-                                        <div className='text-light fs-5'>{selectedSerie.number_of_seasons > 1 ? `${selectedSerie.number_of_seasons} temporadas` : selectedSerie.number_of_seasons ? `${selectedSerie.number_of_seasons} temporada` : 'Temporadas desconocidas'}</div>
+                                        <div className='text-light fs-5'>{selectedSerie.number_of_seasons > 1 ? `${selectedSerie.number_of_seasons} temporadas` : selectedSerie.number_of_seasons ? `${selectedSerie.number_of_seasons} temporada` : 'No informado'}</div>
                                     </div>
                                     <div className='me-5 mb-3'>
                                         <div className='fs-2 text-light fw-bold'>Episodios</div>
-                                        <div className='text-light fs-5'>{selectedSerie.number_of_episodes > 1 ? `${selectedSerie.number_of_episodes} episodios` : selectedSerie.number_of_episodes ? `${selectedSerie.number_of_episodes} episodio` : 'Episodios desconocidos'}</div>
+                                        <div className='text-light fs-5'>{selectedSerie.number_of_episodes > 1 ? `${selectedSerie.number_of_episodes} episodios` : selectedSerie.number_of_episodes ? `${selectedSerie.number_of_episodes} episodio` : 'No informado'}</div>
                                     </div>
                                     <div className='me-5  mb-3'>
                                         <div className='fs-2 text-light fw-bold'>Géneros</div>
-                                        <div className='d-flex flex-wrap text-light fs-5'>{selectedSerie.genres && selectedSerie.genres.map((genre, index) => (
+                                        <div className='d-flex flex-wrap text-light fs-5'>{selectedSerie.genres && selectedSerie.genres.length > 0 ? selectedSerie.genres.map((genre, index) => (
                                             <p className='pe-1' key={genre.id}>{genre.name}{index < selectedSerie.genres.length - 1 ? ', ' : ''}</p>
-                                        ))}</div>
+                                        )) : 'No informado'}</div>
                                     </div>
                                     <div className='me-5  mb-3'>
                                         <div className='fs-2 text-light fw-bold'>Fecha de estreno</div>
-                                        <div className='text-light fs-5'>{selectedSerie.first_air_date ? formatDate(selectedSerie.first_air_date) : 'Desconocida'}</div>
+                                        <div className='text-light fs-5'>{selectedSerie.first_air_date ? formatDate(selectedSerie.first_air_date) : 'No informada'}</div>
 
                                     </div>
                                     <div className='me-5  mb-3'>
@@ -233,7 +233,7 @@ export const SerieSingle = () => {
                                     </div>
                                     <div className='me-5  mb-3'>
                                         <div className='fs-2 text-light fw-bold'>Idioma</div>
-                                        <div className='text-light text-uppercase fs-5'>{selectedSerie.original_language}</div>
+                                        <div className='text-light text-uppercase fs-5'>{selectedSerie.original_language && selectedSerie.original_language.length > 0 ? selectedSerie.original_language : 'No informado'}</div>
                                     </div>
                                 </div>
                                 <div>
