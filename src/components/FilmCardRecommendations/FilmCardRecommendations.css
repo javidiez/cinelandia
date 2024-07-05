@@ -16,7 +16,7 @@ hr{
     text-overflow: ellipsis; /* Añade puntos suspensivos al final del texto truncado */
     width: 180px;
     text-wrap: balance;
-    font-size: clamp(1.5rem,0.5vw,2.7rem);
+    font-size: clamp(1.25rem,0.3vw,2.4rem);
     margin-bottom: 15px;
 }
 

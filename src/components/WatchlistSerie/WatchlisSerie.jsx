@@ -53,7 +53,7 @@ export const WatchlistSerie = () => {
                                     <div key={index} className='fade-in novedades mb-4'>
                                         <FilmCard
                                             key={fav.id}
-                                            size={{ width: 'clamp(15rem,20vw,18rem)' }}
+                                            size={{ width: 'clamp(15rem,20vw,16rem)' }}
                                             image={fav.poster_path}
                                             title={fav.title ? fav.title : fav.name}
                                             overview={fav.overview}
