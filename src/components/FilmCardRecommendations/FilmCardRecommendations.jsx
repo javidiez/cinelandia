@@ -3,7 +3,7 @@ import './FilmCardRecommendations.css';
 import fondoNotFound from '../../assets/img/fondo-not-found.jpeg'
 
 
-export const FilmCardRecommendations = ({ image, title, releaseDate, verMas, info_multimedia, voteAverage, topMovie, proxEstreno, movieType, classMovieType, size }) => {
+export const FilmCardRecommendations = ({ image, title, releaseDate, verMas, info_multimedia, voteAverage, topMovie, proxEstreno, movieType, classMovieType, size, saveButton }) => {
 
   const truncateText = (text, maxLength) => {
     if (!text) {
@@ -33,6 +33,7 @@ export const FilmCardRecommendations = ({ image, title, releaseDate, verMas, inf
             }}
           />
           <div className="overlay text-center p-3">
+            {saveButton}
             <div className={classMovieType}>{movieType}</div>
             <p className="card-text card-text-recommend fw-bold text-uppercase truncate-text-recommend">{truncateText(title,34)}</p>
             <p className="card-text"><span className="fw-bold"></span>{releaseDate}</p>

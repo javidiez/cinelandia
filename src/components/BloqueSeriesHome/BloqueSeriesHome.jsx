@@ -12,6 +12,7 @@ import './BloqueSeriesHome.css'
 import '../../../node_modules/swiper/swiper-bundle.min.css';
 import Swiper from 'swiper';
 import { Link } from 'react-router-dom';
+import { Context } from '../../store/appContext';
 
 export const BloqueSeries = () => {
     const API_URL = "https://api.themoviedb.org/3";
@@ -22,6 +23,8 @@ export const BloqueSeries = () => {
     const [movies, setMovies] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
+
+    const { store, actions } = useContext(Context);
 
     const fetchNovedadesSerie = async (page) => {
         const { data: { results, total_pages } } = await axios.get(`${API_URL}/discover/tv`, {
@@ -96,7 +99,19 @@ export const BloqueSeries = () => {
                                         classMovieType={movie.title ? 'movie-type-movie' : 'movie-type-serie'}
                                         topMovie={movie.vote_average > 7.75 && movie.vote_count > 99 ? "Destacada" : ''}
                                         proxEstreno={isUpcoming}
-                               
+                                        saveButton={
+                                            <button
+                                                className="btn btn-primary save-button-watchlist mt-4 fw-bold"
+                                                type="button"
+                                                onClick={store.watchlistSerie?.some(pelicula => pelicula.id === movie.id)
+                                                    ? () => actions.deleteFavouriteSerie(movie)
+                                                    : () => actions.addFavouriteSerie(movie)}
+                                            >
+                                                {store.watchlistSerie?.some(pelicula => pelicula.id === movie.id)
+                                                    ? <i className="fa-solid fa-bookmark"></i>
+                                                    : <i className="fa-regular fa-bookmark"></i>}
+                                            </button>
+                                        }
 
                                     />
                                 </div>
@@ -128,7 +143,19 @@ export const BloqueSeries = () => {
                             classMovieType={movie.title ? 'movie-type-movie' : 'movie-type-serie'}
                             topMovie={movie.vote_average > 7.75 && movie.vote_count > 99 ? "Destacada" : ''}
                             proxEstreno={isUpcoming}
-                            
+                            saveButton={
+                                <button
+                                    className="btn btn-primary save-button-watchlist mt-4 fw-bold"
+                                    type="button"
+                                    onClick={store.watchlistSerie?.some(pelicula => pelicula.id === movie.id)
+                                        ? () => actions.deleteFavouriteSerie(movie)
+                                        : () => actions.addFavouriteSerie(movie)}
+                                >
+                                    {store.watchlistSerie?.some(pelicula => pelicula.id === movie.id)
+                                        ? <i className="fa-solid fa-bookmark"></i>
+                                        : <i className="fa-regular fa-bookmark"></i>}
+                                </button>
+                            }
 
                         />
 

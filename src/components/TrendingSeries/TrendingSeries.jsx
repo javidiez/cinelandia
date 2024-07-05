@@ -9,6 +9,7 @@ import '../InfoMovie/infoMovie.css'
 import '../SnippetNovedades/bloque_novedades.css'
 import '../../../node_modules/swiper/swiper-bundle.min.css';
 import Swiper from 'swiper';
+import { Context } from '../../store/appContext';
 
 export const TrendingSerie = () => {
     const API_URL = "https://api.themoviedb.org/3";
@@ -19,6 +20,8 @@ export const TrendingSerie = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [loading, setLoading] = useState(true);
+
+    const { store, actions } = useContext(Context);
 
     const fetchTrendingSerie = async (page) => {
         setLoading(true);
@@ -144,7 +147,19 @@ export const TrendingSerie = () => {
                                             classMovieType={""}
                                             topMovie={movie.vote_average > 7.75 && movie.vote_count > 99 ? "Destacada" : ''}
                                             proxEstreno={isUpcoming}
-
+                                            saveButton={
+                                                <button
+                                                    className="btn btn-primary save-button-watchlist mt-4 fw-bold"
+                                                    type="button"
+                                                    onClick={store.watchlistSerie?.some(pelicula => pelicula.id === movie.id)
+                                                        ? () => actions.deleteFavouriteSerie(movie)
+                                                        : () => actions.addFavouriteSerie(movie)}
+                                                >
+                                                    {store.watchlistSerie?.some(pelicula => pelicula.id === movie.id)
+                                                        ? <i className="fa-solid fa-bookmark"></i>
+                                                        : <i className="fa-regular fa-bookmark"></i>}
+                                                </button>
+                                            }
                                         />
                                     </div>
                                 );
@@ -175,7 +190,19 @@ export const TrendingSerie = () => {
                                 classMovieType={""}
                                 topMovie={movie.vote_average > 7.75 && movie.vote_count > 99 ? "Destacada" : ''}
                                 proxEstreno={isUpcoming}
-
+                                saveButton={
+                                    <button
+                                        className="btn btn-primary save-button-watchlist mt-4 fw-bold"
+                                        type="button"
+                                        onClick={store.watchlistSerie?.some(pelicula => pelicula.id === movie.id)
+                                            ? () => actions.deleteFavouriteSerie(movie)
+                                            : () => actions.addFavouriteSerie(movie)}
+                                    >
+                                        {store.watchlistSerie?.some(pelicula => pelicula.id === movie.id)
+                                            ? <i className="fa-solid fa-bookmark"></i>
+                                            : <i className="fa-regular fa-bookmark"></i>}
+                                    </button>
+                                }
                             />
                             </React.Fragment>
                         );

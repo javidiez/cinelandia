@@ -379,6 +379,19 @@ export const SerieSingle = () => {
                                                                     topMovie={recommend.vote_average > 7.75 && recommend.vote_count > 99 ? <span className='destacada-recommend'>Destacada</span> : ''}
                                                                     proxEstreno={isUpcoming}
                                                                     info_multimedia={`${window.location.origin}/serie/${recommend.id}/${recommend.name}`}
+                                                                    saveButton={
+                                                                        <button
+                                                                            className="btn btn-primary save-button-watchlist mt-4 fw-bold"
+                                                                            type="button"
+                                                                            onClick={store.watchlistSerie?.some(pelicula => pelicula.id === recommend.id)
+                                                                                ? () => actions.deleteFavouriteSerie(recommend)
+                                                                                : () => actions.addFavouriteSerie(recommend)}
+                                                                        >
+                                                                            {store.watchlistSerie?.some(pelicula => pelicula.id === recommend.id)
+                                                                                ? <i className="fa-solid fa-bookmark"></i>
+                                                                                : <i className="fa-regular fa-bookmark"></i>}
+                                                                        </button>
+                                                                    }
                                                                      
                                                                 />
                                                             </div>

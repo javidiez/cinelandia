@@ -11,6 +11,7 @@ import '../BloqueGeneros/bloquegeneros.css'
 import '../FilmCard/filmcard.css';
 import Swiper from 'swiper';
 import '../Novedades/novedades.css'
+import { Context } from '../../store/appContext';
 
 
 const API_KEY = '4f5f43495afcc67e9553f6c684a82f84';
@@ -22,6 +23,8 @@ const BloqueGenerosSerie = () => {
     const [movies, setMovies] = useState([]);
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
+
+    const { store, actions } = useContext(Context);
 
     const fetchGenresSeries = async () => {
         try {
@@ -178,6 +181,19 @@ const BloqueGenerosSerie = () => {
                                                 classMovieType={movie.title ? 'movie-type-movie' : 'movie-type-serie'}
                                                 topMovie={movie.vote_average > 7.75 && movie.vote_count > 99 ? "Destacada" : ''}
                                                 proxEstreno={isUpcoming}
+                                                saveButton={
+                                                    <button
+                                                        className="btn btn-primary save-button-watchlist mt-4 fw-bold"
+                                                        type="button"
+                                                        onClick={store.watchlistSerie?.some(pelicula => pelicula.id === movie.id)
+                                                            ? () => actions.deleteFavouriteSerie(recommend)
+                                                            : () => actions.addFavouriteSerie(recommend)}
+                                                    >
+                                                        {store.watchlistSerie?.some(pelicula => pelicula.id === movie.id)
+                                                            ? <i className="fa-solid fa-bookmark"></i>
+                                                            : <i className="fa-regular fa-bookmark"></i>}
+                                                    </button>
+                                                }
 
 
                                             />
@@ -210,6 +226,19 @@ const BloqueGenerosSerie = () => {
                                         classMovieType={movie.title ? 'movie-type-movie' : 'movie-type-serie'}
                                         topMovie={movie.vote_average > 7.75 && movie.vote_count > 99 ? "Destacada" : ''}
                                         proxEstreno={isUpcoming}
+                                        saveButton={
+                                            <button
+                                                className="btn btn-primary save-button-watchlist mt-4 fw-bold"
+                                                type="button"
+                                                onClick={store.watchlistSerie?.some(pelicula => pelicula.id === movie.id)
+                                                    ? () => actions.deleteFavouriteSerie(movie)
+                                                    : () => actions.addFavouriteSerie(movie)}
+                                            >
+                                                {store.watchlistSerie?.some(pelicula => pelicula.id === movie.id)
+                                                    ? <i className="fa-solid fa-bookmark"></i>
+                                                    : <i className="fa-regular fa-bookmark"></i>}
+                                            </button>
+                                        }
 
                                     />
                                 </div>

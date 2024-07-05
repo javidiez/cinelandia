@@ -26,6 +26,7 @@ export const FilmCard = ({ image, title, releaseDate, voteAverage, verMas,info_m
             }}
           />
           <div className="overlay text-center p-3 no-select">
+            {saveButton}
              <div className={classMovieType}>{movieType}</div>
             <p className="card-text pb-4 fw-bold text-uppercase truncate-text">
               {truncateText(title,40)}
@@ -34,7 +35,6 @@ export const FilmCard = ({ image, title, releaseDate, voteAverage, verMas,info_m
             <div className="card-text fs-2 mt-2">{voteAverage}</div>
             <div className="d-flex gap-2">
             <Link to={info_multimedia}><button className="btn btn-success mt-4 fw-bold fs-5" onClick={verMas}>VER MÁS</button></Link>
-            
             </div>
           </div>
         </div>

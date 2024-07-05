@@ -9,6 +9,7 @@ import '../../../node_modules/swiper/swiper-bundle.min.css';
 import Swiper from 'swiper';
 import '../Buscador/buscador.css'
 import '../Novedades/novedades.css';
+import { Context } from '../../store/appContext';
 
 function InfoMovie() {
     const API_URL = "https://api.themoviedb.org/3";
@@ -22,6 +23,8 @@ function InfoMovie() {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [showNoResults, setShowNoResults] = useState(false);
+
+    const { store, actions } = useContext(Context);
 
 
     const fetchMovies = async (searchKey = "", page = 1) => {
@@ -174,7 +177,19 @@ function InfoMovie() {
                                             classMovieType={movie.title ? 'movie-type-movie' : 'movie-type-serie'}
                                             topMovie={movie.vote_average > 7.75 && movie.vote_count > 99 ? "Destacada" : ''}
                                             proxEstreno={isUpcoming}
-                                             
+                                            saveButton={
+                                                <button
+                                                    className="btn btn-primary save-button-watchlist mt-4 fw-bold"
+                                                    type="button"
+                                                    onClick={store.watchlist?.some(pelicula => pelicula.id === movie.id)
+                                                        ? () => actions.deleteFavouriteMovie(movie)
+                                                        : () => actions.addFavouriteMovie(movie)}
+                                                >
+                                                    {store.watchlist?.some(pelicula => pelicula.id === movie.id)
+                                                        ? <i className="fa-solid fa-bookmark"></i>
+                                                        : <i className="fa-regular fa-bookmark"></i>}
+                                                </button>
+                                            }
                                         />
                                     </div>
                                 );
@@ -205,7 +220,19 @@ function InfoMovie() {
                                 classMovieType={movie.title ? 'movie-type-movie' : 'movie-type-serie'}
                                 topMovie={movie.vote_average > 7.75 && movie.vote_count > 99 ? "Destacada" : ''}
                                 proxEstreno={isUpcoming}
-                                 
+                                saveButton={
+                                    <button
+                                        className="btn btn-primary save-button-watchlist mt-4 fw-bold"
+                                        type="button"
+                                        onClick={store.watchlist?.some(pelicula => pelicula.id === movie.id)
+                                            ? () => actions.deleteFavouriteMovie(movie)
+                                            : () => actions.addFavouriteMovie(movie)}
+                                    >
+                                        {store.watchlist?.some(pelicula => pelicula.id === movie.id)
+                                            ? <i className="fa-solid fa-bookmark"></i>
+                                            : <i className="fa-regular fa-bookmark"></i>}
+                                    </button>
+                                }
                             />
                             </React.Fragment>
                         );

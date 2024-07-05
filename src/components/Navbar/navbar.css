@@ -71,6 +71,8 @@
 
 .navbar-watchlist-icon{
     margin-right: 7px;
+    font-size: 1.3rem;
+    padding: 3px 9px 0px 9px;
 }
 
 @media screen and (max-width: 575px){

@@ -9,6 +9,7 @@ import '../InfoMovie/infoMovie.css';
 import '../SnippetNovedades/bloque_novedades.css'
 import '../../../node_modules/swiper/swiper-bundle.min.css';
 import Swiper from 'swiper';
+import { Context } from '../../store/appContext';
 
 export const TopRated = () => {
     const API_URL = "https://api.themoviedb.org/3";
@@ -19,6 +20,7 @@ export const TopRated = () => {
     const [totalPages, setTotalPages] = useState(1);
     const [loading, setLoading] = useState(true);
 
+    const { store, actions } = useContext(Context);
 
     const fetchTopRatedMovies = async (page) => {
         setLoading(true);
@@ -131,7 +133,19 @@ export const TopRated = () => {
                                                     classMovieType={movie.title ? 'movie-type-movie' : 'movie-type-serie'}
                                                     topMovie={''}
                                                     proxEstreno={isUpcoming}
-                                                     
+                                                    saveButton={
+                                                        <button
+                                                            className="btn btn-primary save-button-watchlist mt-4 fw-bold"
+                                                            type="button"
+                                                            onClick={store.watchlist?.some(pelicula => pelicula.id === movie.id)
+                                                                ? () => actions.deleteFavouriteMovie(movie)
+                                                                : () => actions.addFavouriteMovie(movie)}
+                                                        >
+                                                            {store.watchlist?.some(pelicula => pelicula.id === movie.id)
+                                                                ? <i className="fa-solid fa-bookmark"></i>
+                                                                : <i className="fa-regular fa-bookmark"></i>}
+                                                        </button>
+                                                    }
                                                 />
                                             </div>
                                         );
@@ -160,7 +174,19 @@ export const TopRated = () => {
                                     classMovieType={""}
                                     topMovie={''}
                                     proxEstreno={isUpcoming}
-                                     
+                                    saveButton={
+                                        <button
+                                            className="btn btn-primary save-button-watchlist mt-4 fw-bold"
+                                            type="button"
+                                            onClick={store.watchlist?.some(pelicula => pelicula.id === movie.id)
+                                                ? () => actions.deleteFavouriteMovie(movie)
+                                                : () => actions.addFavouriteMovie(movie)}
+                                        >
+                                            {store.watchlist?.some(pelicula => pelicula.id === movie.id)
+                                                ? <i className="fa-solid fa-bookmark"></i>
+                                                : <i className="fa-regular fa-bookmark"></i>}
+                                        </button>
+                                    }
                                 />
                                 </React.Fragment>
                             );
