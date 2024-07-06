@@ -9,7 +9,7 @@ export const CardActores = ({castImg, castName, noImg, castCharacter, verMas}) =
                 e.target.onerror = null;
                 e.target.src = noImg;
             }} alt="Cast" />
-            <div className="card-body">
+            <div className="card-body text-start">
                 <p className="card-text"><span className="fw-bold">{castName}</span>{castCharacter}</p>
             </div>
         </div>
