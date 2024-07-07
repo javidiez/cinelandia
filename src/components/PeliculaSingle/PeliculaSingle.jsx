@@ -141,7 +141,7 @@ export const PeliculaSingle = () => {
                                                     ? <i className="fa-solid fa-bookmark"></i>
                                                     : <i className="fa-regular fa-bookmark"></i>}
                                             </button>
-                                            <WhatsappShareButton url={`${window.location.origin}/pelicula/${selectedMovie.id}/${selectedMovie.title}`}>
+                                            <WhatsappShareButton url={`${window.location.origin}/pelicula/${selectedMovie.id}/${selectedMovie.title.replace(/[ ]/gi, "-")}`} title={selectedMovie.title.toUpperCase()} separator=' : '>
                                                 <i class="fa-solid fa-square-share-nodes share-icon text-light"></i>
                                             </WhatsappShareButton>
                                         </div>

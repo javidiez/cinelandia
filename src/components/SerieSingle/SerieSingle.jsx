@@ -168,7 +168,7 @@ export const SerieSingle = () => {
                                                     ? <i className="fa-solid fa-bookmark"></i>
                                                     : <i className="fa-regular fa-bookmark"></i>}
                                             </button>
-                                            <WhatsappShareButton url={`${window.location.origin}/serie/${selectedSerie.id}`}>
+                                            <WhatsappShareButton url={`${window.location.origin}/serie/${selectedSerie.id}/${selectedSerie.name.replace(/[ ]/gi, "-")}`} title={selectedSerie.name.toUpperCase()} separator=' : '>
                                                 <i className="fa-solid fa-square-share-nodes share-icon text-light"></i>
                                             </WhatsappShareButton>
                                         </div>
