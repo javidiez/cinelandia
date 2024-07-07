@@ -108,7 +108,7 @@ export const PeliculaSingle = () => {
 
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
         const shareOnWhatsApp = () => {
-            const message = selectedMovie.title.replace(/[ ]/gi, "-").toUpperCase() + ' : ';
+            const message = selectedMovie.title.toUpperCase() + ' : ';
             const url = `${window.location.origin}/pelicula/${selectedMovie.id}/${selectedMovie.title.replace(/[ ]/gi, "-")}`
             const whatsappUrl = `https://${isMobile ? 'api' : 'web'}.whatsapp.com/send?text=${encodeURIComponent(message + url)}`;
 
