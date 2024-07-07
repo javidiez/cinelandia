@@ -149,12 +149,15 @@ export const SerieSingle = () => {
         }
     };
 
+    const posterPath = selectedSerie?.poster_path ? `https://image.tmdb.org/t/p/w500${selectedSerie.poster_path}` : fondoNotFound;
+
+
 
     return (
         <>
 
             <Helmet>
-                <meta property="og:image" content={selectedSerie && selectedSerie.poster_path ? `https://image.tmdb.org/t/p/w500${selectedSerie.poster_path}` : fondoNotFound} />
+                <meta property="og:image" content={posterPath} />
                 <meta property="og:type" content="website" />
             </Helmet>
             {selectedSerie && (
