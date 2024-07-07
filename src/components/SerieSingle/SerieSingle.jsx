@@ -135,40 +135,28 @@ export const SerieSingle = () => {
         ));
     };
 
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
     const shareOnWhatsApp = () => {
-        if (!selectedSerie) return;
+        const message = selectedSerie.name.toUpperCase() + ' : ';
+        const url = `${window.location.origin}/serie/${selectedSerie.id}/${selectedSerie.name.replace(/[ ]/gi, "-")}`
+        const whatsappUrl = `https://${isMobile ? 'api' : 'web'}.whatsapp.com/send?text=${encodeURIComponent(message + url)}`;
 
-        const message = `${selectedSerie.name.toUpperCase()}: `;
-        const url = `${window.location.origin}/serie/${selectedSerie.id}/${selectedSerie.name.replace(/[ ]/gi, "-")}`;
-
-
-        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-
-        // Construir la URL de WhatsApp con el mensaje y la imagen
-        let whatsappUrl;
+        // Si es móvil, usa el enlace deeplink
         if (isMobile) {
-            whatsappUrl = `whatsapp://send?text=${encodeURIComponent(message + url)}&abid=1`;
+            window.location.href = `whatsapp://send?text=${encodeURIComponent(message + url)}`;
         } else {
-            whatsappUrl = `https://web.whatsapp.com/send?text=${encodeURIComponent(message + url)}&abid=1`;
+            window.open(whatsappUrl, '_blank');
         }
-
-        // Abrir enlace de WhatsApp en una nueva ventana
-        window.open(whatsappUrl, '_blank');
     };
+
 
     return (
         <>
 
             <Helmet>
-                <meta property="og:title" content={selectedSerie ? selectedSerie.name : "Título de tu página web"} />
-                <meta property="og:description" content="Descripción de tu página web" />
-                {selectedSerie && selectedSerie.poster_path && (
-                    <meta property="og:image" content={`${IMAGE_PATH}${selectedSerie.poster_path}`} />
-                )}
-                <meta property="og:url" content={window.location.href} />
+                <meta property="og:image" content={selectedSerie.poster_path ? `https://image.tmdb.org/t/p/w500${selectedSerie.poster_path}` : fondoNotFound} />
                 <meta property="og:type" content="website" />
             </Helmet>
-
             {selectedSerie && (
                 <>
 
