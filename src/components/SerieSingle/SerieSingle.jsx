@@ -135,23 +135,40 @@ export const SerieSingle = () => {
         ));
     };
 
-    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
     const shareOnWhatsApp = () => {
-        const message = selectedSerie.name.toUpperCase() + ' : ';
-        const url = `${window.location.origin}/serie/${selectedSerie.id}/${selectedSerie.name.replace(/[ ]/gi, "-")}`
-        const whatsappUrl = `https://${isMobile ? 'api' : 'web'}.whatsapp.com/send?text=${encodeURIComponent(message + url)}`;
+        if (!selectedSerie) return;
 
-        // Si es móvil, usa el enlace deeplink
+        const message = `${selectedSerie.name.toUpperCase()}: `;
+        const url = `${window.location.origin}/serie/${selectedSerie.id}/${selectedSerie.name.replace(/[ ]/gi, "-")}`;
+
+
+        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+        // Construir la URL de WhatsApp con el mensaje y la imagen
+        let whatsappUrl;
         if (isMobile) {
-            window.location.href = `whatsapp://send?text=${encodeURIComponent(message + url)}`;
+            whatsappUrl = `whatsapp://send?text=${encodeURIComponent(message + url)}&abid=1`;
         } else {
-            window.open(whatsappUrl, '_blank');
+            whatsappUrl = `https://web.whatsapp.com/send?text=${encodeURIComponent(message + url)}&abid=1`;
         }
-    };
 
+        // Abrir enlace de WhatsApp en una nueva ventana
+        window.open(whatsappUrl, '_blank');
+    };
 
     return (
         <>
+
+            <Helmet>
+                <meta property="og:title" content={selectedSerie ? selectedSerie.name : "Título de tu página web"} />
+                <meta property="og:description" content="Descripción de tu página web" />
+                {selectedSerie && selectedSerie.poster_path && (
+                    <meta property="og:image" content={`${IMAGE_PATH}${selectedSerie.poster_path}`} />
+                )}
+                <meta property="og:url" content={window.location.href} />
+                <meta property="og:type" content="website" />
+            </Helmet>
+
             {selectedSerie && (
                 <>
 
