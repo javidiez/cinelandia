@@ -135,19 +135,36 @@ export const SerieSingle = () => {
         ));
     };
 
-    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+    const ShareButton = ({ dynamicImageUrl }) => {
+        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
         const shareOnWhatsApp = () => {
-            const message = selectedSerie.name.toUpperCase() + ' : ';
-            const url = `${window.location.origin}/serie/${selectedSerie.id}/${selectedSerie.name.replace(/[ ]/gi, "-")}`
+            const message = `${selectedSerie.name.toUpperCase()}: `;
+            const url = `${window.location.origin}/serie/${selectedSerie.id}/${selectedSerie.name.replace(/[ ]/gi, "-")}`;
             const whatsappUrl = `https://${isMobile ? 'api' : 'web'}.whatsapp.com/send?text=${encodeURIComponent(message + url)}`;
 
-            // Si es móvil, usa el enlace deeplink
             if (isMobile) {
                 window.location.href = `whatsapp://send?text=${encodeURIComponent(message + url)}`;
             } else {
                 window.open(whatsappUrl, '_blank');
             }
         };
+
+        return (
+            <>
+                <Helmet>
+                    <meta property="og:title" content={selectedSerie.name} />
+                    <meta property="og:image" content={dynamicImageUrl} />
+                    <meta property="og:url" content={`${window.location.origin}/serie/${selectedSerie.id}/${selectedSerie.name.replace(/[ ]/gi, "-")}`} />
+                    <meta property="og:type" content="website" />
+                </Helmet>
+                <i className="fa-solid fa-square-share-nodes share-icon text-light" onClick={shareOnWhatsApp}></i>
+            </>
+        );
+    };
+
+
         return (
             <>
                 {selectedSerie && (
@@ -183,7 +200,10 @@ export const SerieSingle = () => {
                                                         : <i className="fa-regular fa-bookmark"></i>}
                                                 </button>
 
-                                                <i class="fa-solid fa-square-share-nodes share-icon text-light" onClick={shareOnWhatsApp}></i>
+                                                <ShareButton dynamicImageUrl={`${IMAGE_PATH}${selectedSerie.poster_path}`} />
+
+
+                                                {/* <i class="fa-solid fa-square-share-nodes share-icon text-light" onClick={shareOnWhatsApp}></i> */}
 
                                             </div>
 
