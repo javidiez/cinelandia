@@ -106,13 +106,18 @@ export const PeliculaSingle = () => {
         return `${day}/${month}/${year}`;
     };
 
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
         const shareOnWhatsApp = () => {
             const message = selectedMovie.title.replace(/[ ]/gi, "-").toUpperCase() + ' : ';
             const url = `${window.location.origin}/pelicula/${selectedMovie.id}/${selectedMovie.title.replace(/[ ]/gi, "-")}`
-            const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message + url)}`;
-    
-            // Abre WhatsApp en una nueva ventana o pestaña
-            window.open(whatsappUrl, '_blank');
+            const whatsappUrl = `https://${isMobile ? 'api' : 'web'}.whatsapp.com/send?text=${encodeURIComponent(message + url)}`;
+
+            // Si es móvil, usa el enlace deeplink
+            if (isMobile) {
+                window.location.href = `whatsapp://send?text=${encodeURIComponent(message + url)}`;
+            } else {
+                window.open(whatsappUrl, '_blank');
+            }
         };
 
 
