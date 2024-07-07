@@ -185,17 +185,7 @@ export const SerieSingle = () => {
                                                     : <i className="fa-regular fa-bookmark"></i>}
                                             </button>
 
-                                            <WhatsappShareButton
-                                                url={`${window.location.origin}/serie/${selectedSerie.id}/${selectedSerie.name.replace(/[ ]/gi, "-")}`}
-                                                title={selectedSerie.name}
-                                                separator=" : "
-                                                image={`${IMAGE_PATH}${selectedSerie.poster_path}`}
-                                                
-                                            >
-                                                <i className="fa-solid fa-square-share-nodes share-icon text-light"></i>
-                                            </WhatsappShareButton>
-
-                                            {/* <i class="fa-solid fa-square-share-nodes share-icon text-light" onClick={shareOnWhatsApp}></i> */}
+                                            <i class="fa-solid fa-square-share-nodes share-icon text-light" onClick={shareOnWhatsApp}></i>
 
                                         </div>
 
