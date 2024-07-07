@@ -106,6 +106,15 @@ export const PeliculaSingle = () => {
         return `${day}/${month}/${year}`;
     };
 
+        const shareOnWhatsApp = () => {
+            const message = selectedMovie.title.replace(/[ ]/gi, "-").toUpperCase() + ' : ';
+            const url = `${window.location.origin}/pelicula/${selectedMovie.id}/${selectedMovie.title.replace(/[ ]/gi, "-")}`
+            const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message + url)}`;
+    
+            // Abre WhatsApp en una nueva ventana o pestaña
+            window.open(whatsappUrl, '_blank');
+        };
+
 
     return (
         <>
@@ -141,9 +150,9 @@ export const PeliculaSingle = () => {
                                                     ? <i className="fa-solid fa-bookmark"></i>
                                                     : <i className="fa-regular fa-bookmark"></i>}
                                             </button>
-                                            <WhatsappShareButton url={`${window.location.origin}/pelicula/${selectedMovie.id}/${selectedMovie.title.replace(/[ ]/gi, "-")}`} title={selectedMovie.title.toUpperCase()} separator=' : ' onShareWindowClose={() => history.back()}>
-                                                <i class="fa-solid fa-square-share-nodes share-icon text-light"></i>
-                                            </WhatsappShareButton>
+                                    
+                                                <i class="fa-solid fa-square-share-nodes share-icon text-light" onClick={shareOnWhatsApp}></i>
+                                            
                                         </div>
 
                                     </div>
