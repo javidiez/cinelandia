@@ -37,7 +37,7 @@ export const Navbar = ({ reload }) => {
             <nav className="navbar navbar-expand-lg sticky-top">
                 <div className="container-fluid">
                     <div className="d-flex justify-content-between">
-                        <Link className="navbar-brand d-flex align-items-center" to="/home" onClick={reload}>
+                        <Link className="navbar-brand d-flex align-items-center" to="/" onClick={reload}>
                             <img src={logo} className="logo user-select-none" />
                             <p className="text-light fw-bold ps-3 user-select-none">CINELANDIA</p>
                         </Link>
@@ -49,7 +49,7 @@ export const Navbar = ({ reload }) => {
                         <div className="collapse navbar-collapse" id="navbarNav">
                             <ul className="navbar-nav pe-3">
                                 <li className="nav-item">
-                                    <Link className="nav-link text-light fs-3 fw-bold" aria-current="page" onClick={reload} to="/home">Home</Link>
+                                    <Link className="nav-link text-light fs-3 fw-bold" aria-current="page" onClick={reload} to="/">Home</Link>
                                 </li>
                                 <li className="nav-item dropdown">
                                     <Link className="nav-link dropdown-toggle text-light fs-3 fw-bold" to="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -88,7 +88,7 @@ export const Navbar = ({ reload }) => {
                                 </Link>
                             </div>
                             <div className="d-flex pe-5">
-                                <Link to="/home#search-focus" id="search-icon">
+                                <Link to="/#search-focus" id="search-icon">
                                     <button className="btn text-light p-2 btn-lupa" onClick={handleLupaClick}>
                                         <i className="fa-solid fa-magnifying-glass fs-4"></i>
                                     </button>
@@ -153,7 +153,7 @@ export const Navbar = ({ reload }) => {
                                 </li>
                             </ul>
                             <div className="d-flex pe-5">
-                                <a href="/home#search-focus" id="search-icon">
+                                <a href="/#search-focus" id="search-icon">
                                     <button className="btn text-light p-2 btn-lupa" onClick={handleLupaClick}>
                                         <i className="fa-solid fa-magnifying-glass fs-4"></i>
                                     </button>

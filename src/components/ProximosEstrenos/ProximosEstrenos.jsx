@@ -27,42 +27,25 @@ export const ProximosEstrenos = () => {
     const { store, actions } = useContext(Context);
 
     const fetchNowPlaying = async (page) => {
-        const fetchMovies = async (currentPage, collectedMovies = []) => {
-            const { data: { results, total_pages } } = await axios.get(`${API_URL}/discover/movie?include_adult=false`, {
-                params: {
-                    api_key: API_KEY,
-                    language: 'es-ES',
-                    sort_by: 'popularity.desc',
-                    'primary_release_date.gte': formattedTomorrow,
-                    page: currentPage,
-                },
-            });
+        const { data: { results, total_pages } } = await axios.get(`${API_URL}/discover/movie?include_adult=false`, {
+            params: {
+                api_key: API_KEY,
+                language: 'es-ES',
+                sort_by: 'popularity.desc',
+                'primary_release_date.gte': formattedTomorrow,
+                page: page,  // Usar la página actual que se pasa como parámetro
+                with_original_language: 'en'
+            },
+        });
     
-            // Filtrar resultados para excluir películas en TL, JA, KO
-            const filteredResults = results.filter(movie => !['tl', 'ja', 'ko', 'zh', 'th', 'ar'].includes(movie.original_language));
-    
-            // Combinar las películas válidas con las previamente recopiladas
-            const newCollectedMovies = [...collectedMovies, ...filteredResults];
-    
-            // Si tenemos suficientes películas válidas, devolver las primeras 20
-            if (newCollectedMovies.length >= 20 || currentPage >= total_pages) {
-                return {
-                    movies: newCollectedMovies.slice(0, 20),
-                    total_pages,
-                };
-            }
-    
-            // Si no tenemos suficientes películas válidas, continuar con la siguiente página
-            return fetchMovies(currentPage + 1, newCollectedMovies);
-        };
-    
-        const { movies, total_pages } = await fetchMovies(page);
     
         setCurrentPage(page);
         setTotalPages(total_pages);
-        setMovies(movies);
+        setMovies(results);
     };
     
+
+
     useEffect(() => {
         fetchNowPlaying(currentPage);
     }, [currentPage]);
@@ -77,6 +60,7 @@ export const ProximosEstrenos = () => {
     const goToNextPage = () => {
         if (currentPage < totalPages) {
             fetchNowPlaying(currentPage + 1);
+            window.scrollTo(0, 150);
     
             // Seleccionar el contenedor que contiene los elementos desplazables
             const swiper = document.querySelector('.swiper-wrapper-paginas');
