@@ -22,7 +22,7 @@ export const Navbar = ({ reload }) => {
 
     const handleLupaClick = (e) => {
         e.preventDefault();
-        window.location.href = "index.html#search-focus";
+        window.location.href = "/index.html#search-focus";
         setTimeout(() => {
             const buscador = document.getElementById('buscador');
             if (buscador) {
