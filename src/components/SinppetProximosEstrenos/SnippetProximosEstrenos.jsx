@@ -32,19 +32,23 @@ export const SnippetProximosEstrenos = () => {
             params: {
                 api_key: API_KEY,
                 language: 'es-ES',
-                sort_by: 'popularity.desc',
+                sort_by: 'primary_release_date.asc',
                 'primary_release_date.gte': formattedTomorrow,
                 page: page,
             },
         });
 
         const filteredResults = results.filter(movie => {
-            return !['tl', 'ja', 'ko', 'th', 'ar'].includes(movie.original_language);
+            return !['tl', 'ja', 'ko', 'th', 'ar', 'hy', 'pt', 'zh'].includes(movie.original_language);
+        });
+
+        const resultsWithImagesAndDescription = filteredResults.filter(movie => {
+            return movie.poster_path; // Verificar que poster_path y overview no sean null ni cadenas vacías
         });
 
         setCurrentPage(page);
         setTotalPages(total_pages);
-        setMovies(filteredResults);
+        setMovies(resultsWithImagesAndDescription);
     };
 
     useEffect(() => {

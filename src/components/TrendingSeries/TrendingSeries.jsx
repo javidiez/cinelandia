@@ -35,7 +35,6 @@ export const TrendingSerie = () => {
                 },
             });
 
-
             setTotalPages(total_pages);
 
             // Filtrar duplicados y asegurar 20 resultados únicos
