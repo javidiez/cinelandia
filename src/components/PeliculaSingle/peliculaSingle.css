@@ -44,6 +44,11 @@
     font-size: 1.6rem;
 }
 
+.overview-single{
+    font-size: clamp(1.3rem, 5vw, 1.4rem);
+    text-wrap: pretty;
+}
+
 @media screen and (max-width: 650px){
     .container-posther_path {
         display: flex;

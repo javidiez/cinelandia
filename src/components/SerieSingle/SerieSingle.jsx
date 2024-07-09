@@ -190,7 +190,7 @@ export const SerieSingle = () => {
                                         </div>
 
                                     </div>
-                                    <p className='text-light fs-5'>{selectedSerie.overview ? selectedSerie.overview : <span className='sin-descripcion fs-5'>Sin descripción</span>}</p>
+                                    <p className='text-light overview-single'>{selectedSerie.overview ? selectedSerie.overview : <span className='sin-descripcion fs-5'>Sin descripción</span>}</p>
                                     <div className='fs-4 pt-3 d-flex align-items-baseline gap-2 puntaje'>
                                         <div className='d-flex align-items-baseline justify-content-start'>
                                             <img className='icono-modal me-2' src={estrella} alt="Estrella" />

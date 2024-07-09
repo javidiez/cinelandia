@@ -37,11 +37,15 @@ export const ProximosEstrenos = () => {
                 with_original_language: 'en'
             },
         });
+
+        const filteredResults = results.filter(movie => {
+            return !['tl', 'ja', 'ko', 'th', 'ar', 'hy', 'pt', 'zh'].includes(movie.original_language);
+        }).sort((a, b) =>  new Date(a.release_date) - new Date(b.release_date));
     
     
         setCurrentPage(page);
         setTotalPages(total_pages);
-        setMovies(results);
+        setMovies(filteredResults);
     };
     
 
