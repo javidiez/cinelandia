@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { FilmCard } from '../FilmCard/FilmCard';
 import '../InfoMovie/infoMovie.css'
@@ -29,7 +30,6 @@ const BloqueGenerosMovie = () => {
     const [totalPagesDestacada, setTotalPagesDestacada] = useState(1);
 
     const { store, actions } = useContext(Context);
-
 
     // Obtener lista de géneros al montar el componente
     const fetchGenres = async () => {
@@ -117,7 +117,10 @@ const BloqueGenerosMovie = () => {
     const goToNextPage = () => {
         if (page < totalPages) {
             setPage(page + 1);
-            window.scrollTo(0, 150);
+           
+            if (window.innerWidth >= 768) {
+                window.scrollTo(0, 150);
+            }
 
             // Seleccionar el contenedor que contiene los elementos desplazables
             const swiper = document.querySelector('.swiper-wrapper-paginas');
@@ -125,7 +128,6 @@ const BloqueGenerosMovie = () => {
             // Realizar scroll hacia la izquierda
             if (swiper) {
                 swiper.scrollTo({
-                    top: 200,
                     left: 0, // Hacer scroll al inicio del contenedor
                     behavior: 'smooth', // Opcional: hacerlo con animación smooth
                 });
@@ -142,11 +144,15 @@ const BloqueGenerosMovie = () => {
     const goToNextPageDestacada = () => {
         if (pageDestacada < totalPagesDestacada) {
             setPageDestacada(pageDestacada + 1);
-            window.scrollTo(0, 150);
-
+            
+            // Scroll hacia arriba solo en dispositivos móviles
+            if (window.innerWidth >= 768) {
+                window.scrollTo(0, 150);
+            }
+    
             // Seleccionar el contenedor que contiene los elementos desplazables
             const swiper = document.querySelector('.swiper-wrapper-paginas_destacada');
-
+    
             // Realizar scroll hacia la izquierda
             if (swiper) {
                 swiper.scrollTo({
@@ -185,7 +191,7 @@ const BloqueGenerosMovie = () => {
         <>
 
             <div className='row container-fluid justify-content-center bloque-generos ms-1 switcheo_destacada'>
-                <div className='col-12 col-lg-2'>
+                <div className='col-12 col-lg-2 select-generos'>
                     <p className='mb-3 text-light title-select-generos'>Géneros Peliculas</p>
                     <select className='form-select form-select-lg' value={selectedGenre} onChange={handleGenreChange}>
                         {genres.map(genre => (

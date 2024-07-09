@@ -128,7 +128,10 @@ const BloqueGenerosSerie = () => {
     const goToNextPage = () => {
         if (page < totalPages) {
             setPage(page + 1);
-            window.scrollTo(0, 150);
+
+            if (window.innerWidth >= 768) {
+                window.scrollTo(0, 150);
+            }
         }
     };
     useEffect(() => {
@@ -155,11 +158,15 @@ const BloqueGenerosSerie = () => {
     const goToNextPageDestacada = () => {
         if (pageDestacada < totalPagesDestacada) {
             setPageDestacada(pageDestacada + 1);
-            window.scrollTo(0, 150);
-
+            
+            // Scroll hacia arriba solo en dispositivos móviles
+            if (window.innerWidth >= 768) {
+                window.scrollTo(0, 150);
+            }
+    
             // Seleccionar el contenedor que contiene los elementos desplazables
             const swiper = document.querySelector('.swiper-wrapper-paginas_destacada');
-
+    
             // Realizar scroll hacia la izquierda
             if (swiper) {
                 swiper.scrollTo({
@@ -169,7 +176,6 @@ const BloqueGenerosSerie = () => {
             }
         }
     };
-
 
     const formatDate = (dateString) => {
         const date = new Date(dateString);
@@ -289,7 +295,7 @@ const BloqueGenerosSerie = () => {
                                     <button onClick={goToPreviousPageDestacada} disabled={pageDestacada <= 1} className='btn btn-dark botones-paginacion ps-3 pe-3'>Anterior</button>
                                     <button onClick={goToNextPageDestacada} disabled={pageDestacada >= totalPagesDestacada} className='btn btn-dark botones-paginacion ps-3 pe-3'>Siguiente</button>
                                 </div>
-                                <div className="swiper-wrapper-paginas scrollableDiv-paginas d-flex novedades">
+                                <div className="swiper-wrapper-paginas_destacada scrollableDiv-paginas d-flex novedades">
                                     {destacadas.map((movie) => {
                                         const releaseDate = new Date(movie.release_date);
                                         const today = new Date();
