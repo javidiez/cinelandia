@@ -1,0 +1,14 @@
+.switcheo_destacada{
+    overflow-x: hidden;
+}
+
+
+.switcheo_destacada .hide_destacada {
+    display: none;
+    
+}
+
+.switcheo_destacada .show_destacada {
+    display: flex;
+    
+}

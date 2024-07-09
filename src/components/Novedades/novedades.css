@@ -50,6 +50,14 @@
     
 }
 
+.swiper-wrapper-paginas_destacada::-webkit-scrollbar {
+    width: 1px;
+    height: 5px;
+    border-radius: 5px;
+    display: none;
+    
+}
+
 .swiper-wrapper-paginas::-webkit-scrollbar-track {
     background: transparent;
 }
@@ -77,6 +85,9 @@
 
 @media screen and (max-width: 700px){
     .swiper-wrapper-paginas:hover::-webkit-scrollbar {
+        display: none;
+    }
+    .swiper-wrapper-paginas_destacada:hover::-webkit-scrollbar {
         display: none;
     }
 }
