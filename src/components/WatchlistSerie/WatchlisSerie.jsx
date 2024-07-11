@@ -67,6 +67,8 @@ const handleGenreChangeSerie = (event) => {
     setSelectedGenreSerie(event.target.value);
 };
 
+const hola = "hola"
+
 
     return (
         <>
