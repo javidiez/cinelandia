@@ -21,9 +21,9 @@ export const WatchlistSerie = () => {
     sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 2);
 
     const { store, actions } = useContext(Context);
-    const [selectedGenre, setSelectedGenre] = useState('');
+    const [selectedGenreSerie, setSelectedGenreSerie] = useState('');
     const [genres, setGenres] = useState([]);
-    const [filteredMovies, setFilteredMovies] = useState([]);
+    const [filteredSeries, setFilteredSeries] = useState([]);
 
     const formatDate = (dateString) => {
         const date = new Date(dateString);
@@ -56,15 +56,15 @@ export const WatchlistSerie = () => {
     }, []);
 
 useEffect(() => {
-    if (selectedGenre) {
-        setFilteredMovies(store.watchlistSerie.filter(movie => movie.genre_ids.includes(parseInt(selectedGenre))));
+    if (selectedGenreSerie) {
+        setFilteredSeries(store.watchlistSerie.filter(movie => movie.genre_ids.includes(parseInt(selectedGenreSerie))));
     } else {
-        setFilteredMovies(store.watchlistSerie);
+        setFilteredSeries(store.watchlistSerie);
     }
-}, [selectedGenre, store.watchlistSerie]);
+}, [selectedGenreSerie, store.watchlistSerie]);
 
-const handleGenreChange = (event) => {
-    setSelectedGenre(event.target.value);
+const handleGenreChangeSerie = (event) => {
+    setSelectedGenreSerie(event.target.value);
 };
 
 
@@ -75,7 +75,7 @@ const handleGenreChange = (event) => {
                     <h2 className="ms-3 title-watchlist text-light">Series</h2>
 
                     <p className=' ms-3 mb-3 text-light fs-4 mt-4'>Filtro por Géneros</p>
-                    <select className='form-select select-genre-watchlist ms-3' value={selectedGenre} onChange={handleGenreChange}>
+                    <select className='form-select select-genre-watchlist ms-3' value={selectedGenreSerie} onChange={handleGenreChangeSerie}>
                         <option value=''>Todos</option>
                         {genres.map(genre => (
                             <option key={genre.id} value={genre.id} className='fs-4'>{genre.name}</option>
@@ -83,8 +83,8 @@ const handleGenreChange = (event) => {
                     </select>
 
                     <div className="swiper-wrapper-watchlist scrollableDiv-watchlist gap-5 pt-5 mb-5">
-                        {filteredMovies && filteredMovies.length > 0 ? (
-                            filteredMovies.map((fav, index) => {
+                        {filteredSeries && filteredSeries.length > 0 ? (
+                            filteredSeries.map((fav, index) => {
                                 const releaseDate = new Date(fav.release_date);
                                 const today = new Date();
                                 const isUpcoming = releaseDate > today ? "Próximo estreno" : "";

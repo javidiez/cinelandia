@@ -79,14 +79,14 @@ export const WatchlistMovie = () => {
                         ))}
                     </select>
 
-                    <div className="swiper-wrapper-watchlist scrollableDiv-watchlist pt-5 gap-5 mb-5 novedades">
+                    <div className="swiper-wrapper-watchlist scrollableDiv-watchlist pt-5 gap-5 mb-5">
                         {filteredMovies && filteredMovies.length > 0 ? (
                             filteredMovies.map((fav, index) => {
                                 const releaseDate = new Date(fav.release_date);
                                 const today = new Date();
                                 const isUpcoming = releaseDate > today ? "Próximo estreno" : "";
                                 return (
-                                    <div key={index} className='fade-in mb-4'>
+                                    <div key={index} className='fade-in mb-4 novedades'>
                                         <FilmCard
                                             key={fav.id}
                                             size={{ width: 'clamp(15rem,20vw,16rem)' }}
