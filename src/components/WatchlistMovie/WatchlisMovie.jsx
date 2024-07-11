@@ -13,15 +13,15 @@ import '../../../node_modules/swiper/swiper-bundle.min.css';
 import '../WatchlistSerieMovie/watchlistSerieMovie.css';
 import Swiper from 'swiper';
 
-
 export const WatchlistMovie = () => {
 
     const API_URL = "https://api.themoviedb.org/3";
     const API_KEY = "4f5f43495afcc67e9553f6c684a82f84";
-    const sixMonthsAgo = new Date();
-    sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 2);
 
     const { store, actions } = useContext(Context);
+    const [selectedGenre, setSelectedGenre] = useState('');
+    const [genres, setGenres] = useState([]);
+    const [filteredMovies, setFilteredMovies] = useState([]);
 
     const formatDate = (dateString) => {
         const date = new Date(dateString);
@@ -33,24 +33,60 @@ export const WatchlistMovie = () => {
 
     useEffect(() => {
         const swiper = new Swiper('.swiper-container', {
-            slidesPerView: 'auto', // Mostrará tantos slides como quepan en el contenedor
-            spaceBetween: 20, // Espacio entre las tarjeta
+            slidesPerView: 'auto',
+            spaceBetween: 20,
         });
-    }, []);
+
+        const options = {
+            method: 'GET',
+            headers: {
+              accept: 'application/json',
+              Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmMjFhZTY4YTkwMDljZjI5YWIyNWUwNzNkNzJjYTc2ZCIsIm5iZiI6MTcyMDY4NDUyNS42MDg4MTgsInN1YiI6IjY2NTFmNGM0NDUwOTg2YjE3ZjE3MGI5ZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.jw8RayQMSSz19qT6jjCgOPRYnuIgAGQfeZMhYref8gE'
+            }
+          };
+          
+
+        // Fetch genres from API
+        fetch('https://api.themoviedb.org/3/genre/movie/list?language=es', options)
+            .then(response => response.json())
+            .then(data => setGenres(data.genres))
+            .catch(error => console.error('Error fetching genres:', error));
+    }, []); 
+
+    useEffect(() => {
+        if (selectedGenre) {
+            setFilteredMovies(store.watchlist.filter(movie => movie.genre_ids.includes(parseInt(selectedGenre))));
+        } else {
+            setFilteredMovies(store.watchlist);
+        }
+    }, [selectedGenre, store.watchlist]);
+
+    const handleGenreChange = (event) => {
+        setSelectedGenre(event.target.value);
+    };
 
     return (
         <>
             <div className="mt-4 bloque-card-mobile-watchlist fade-in">
                 <div className="swiper-container-watchlist">
                     <h2 className="ms-3 title-watchlist text-light mt-5">Películas</h2>
-                    <div className="swiper-wrapper-watchlist scrollableDiv-watchlist pt-5 gap-5 mb-5">
-                        {store.watchlist && store.watchlist.length > 0 ? (
-                            store.watchlist.map((fav, index) => {
+
+                    <p className=' ms-3 mb-3 text-light fs-4 mt-4'>Filtro por Géneros</p>
+                    <select className='form-select select-genre-watchlist ms-3' value={selectedGenre} onChange={handleGenreChange}>
+                        <option value=''>Todos</option>
+                        {genres.map(genre => (
+                            <option key={genre.id} value={genre.id} className='fs-4'>{genre.name}</option>
+                        ))}
+                    </select>
+
+                    <div className="swiper-wrapper-watchlist scrollableDiv-watchlist pt-5 gap-5 mb-5 novedades">
+                        {filteredMovies && filteredMovies.length > 0 ? (
+                            filteredMovies.map((fav, index) => {
                                 const releaseDate = new Date(fav.release_date);
                                 const today = new Date();
                                 const isUpcoming = releaseDate > today ? "Próximo estreno" : "";
                                 return (
-                                    <div key={index} className='fade-in novedades mb-4'>
+                                    <div key={index} className='fade-in mb-4'>
                                         <FilmCard
                                             key={fav.id}
                                             size={{ width: 'clamp(15rem,20vw,16rem)' }}
@@ -77,7 +113,6 @@ export const WatchlistMovie = () => {
                                                         : <i className="fa-regular fa-bookmark"></i>}
                                                 </button>
                                             }
-
                                         />
                                     </div>
                                 )
@@ -89,5 +124,4 @@ export const WatchlistMovie = () => {
             </div>
         </>
     )
-
 }

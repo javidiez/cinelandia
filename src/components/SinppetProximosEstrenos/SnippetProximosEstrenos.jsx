@@ -70,6 +70,13 @@ export const SnippetProximosEstrenos = () => {
         });
     }, []);
 
+    const truncateText = (text, maxLength) => {
+        if (text.length > maxLength) {
+          return text.slice(0, maxLength) + '...';
+        }
+        return text;
+      };
+
     return (
         <>
             <div>
@@ -88,9 +95,9 @@ export const SnippetProximosEstrenos = () => {
                                 <BloqueProximosEstrenos
                                     key={movie.id}
                                     img={`${IMAGE_PATH}${movie.poster_path}`}
-                                    title={movie.title}
+                                    title={truncateText(movie.title,30)}
                                     description={''}
-                                    date={<div className="d-flex align-items-center"><img style={{ width:'1.5rem' }} src={calendar}/><span className="fs-4 ms-2">{formatDate(movie.release_date)}</span></div>}
+                                    date={<div className="d-flex align-items-center"><img style={{ width:'1.5rem' }} src={calendar}/><span className="ms-2">{formatDate(movie.release_date)}</span></div>}
                                     info_multimedia={`${window.location.origin}/pelicula/${movie.id}/${movie.title.replace(/[ ]/gi, "-")}`}
                                      
                                 />

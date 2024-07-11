@@ -353,7 +353,7 @@ export const SerieSingle = () => {
                                             )) : <span className='fs-4'>No informado</span>}
                                         </div>
                                     </div>
-                                    <div className='d-flex flex-column'>
+                                    <div>
                                         <p className='fs-2 fw-bold mt-3'>Creador:</p>
                                         {selectedSerie.created_by && selectedSerie.created_by.length > 0
                                             ? selectedSerie.created_by.map((createdBy, index) => (

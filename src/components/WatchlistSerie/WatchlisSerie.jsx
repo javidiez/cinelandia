@@ -21,6 +21,9 @@ export const WatchlistSerie = () => {
     sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 2);
 
     const { store, actions } = useContext(Context);
+    const [selectedGenre, setSelectedGenre] = useState('');
+    const [genres, setGenres] = useState([]);
+    const [filteredMovies, setFilteredMovies] = useState([]);
 
     const formatDate = (dateString) => {
         const date = new Date(dateString);
@@ -36,7 +39,33 @@ export const WatchlistSerie = () => {
             spaceBetween: 20, // Espacio entre las tarjeta
 
         });
+        const options = {
+            method: 'GET',
+            headers: {
+              accept: 'application/json',
+              Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmMjFhZTY4YTkwMDljZjI5YWIyNWUwNzNkNzJjYTc2ZCIsIm5iZiI6MTcyMDY4NDUyNS42MDg4MTgsInN1YiI6IjY2NTFmNGM0NDUwOTg2YjE3ZjE3MGI5ZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.jw8RayQMSSz19qT6jjCgOPRYnuIgAGQfeZMhYref8gE'
+            }
+          };
+          
+    
+        // Fetch genres from API
+        fetch('https://api.themoviedb.org/3/genre/tv/list?language=es', options)
+            .then(response => response.json())
+            .then(data => setGenres(data.genres))
+            .catch(error => console.error('Error fetching genres:', error));
     }, []);
+
+useEffect(() => {
+    if (selectedGenre) {
+        setFilteredMovies(store.watchlistSerie.filter(movie => movie.genre_ids.includes(parseInt(selectedGenre))));
+    } else {
+        setFilteredMovies(store.watchlistSerie);
+    }
+}, [selectedGenre, store.watchlistSerie]);
+
+const handleGenreChange = (event) => {
+    setSelectedGenre(event.target.value);
+};
 
 
     return (
@@ -44,9 +73,18 @@ export const WatchlistSerie = () => {
             <div className="mt-4 bloque-card-mobile-watchlist fade-in ">
                 <div className="swiper-container-watchlist">
                     <h2 className="ms-3 title-watchlist text-light">Series</h2>
+
+                    <p className=' ms-3 mb-3 text-light fs-4 mt-4'>Filtro por Géneros</p>
+                    <select className='form-select select-genre-watchlist ms-3' value={selectedGenre} onChange={handleGenreChange}>
+                        <option value=''>Todos</option>
+                        {genres.map(genre => (
+                            <option key={genre.id} value={genre.id} className='fs-4'>{genre.name}</option>
+                        ))}
+                    </select>
+
                     <div className="swiper-wrapper-watchlist scrollableDiv-watchlist gap-5 pt-5 mb-5">
-                        {store.watchlistSerie && store.watchlistSerie.length > 0 ? (
-                            store.watchlistSerie.map((fav, index) => {
+                        {filteredMovies && filteredMovies.length > 0 ? (
+                            filteredMovies.map((fav, index) => {
                                 const releaseDate = new Date(fav.release_date);
                                 const today = new Date();
                                 const isUpcoming = releaseDate > today ? "Próximo estreno" : "";
