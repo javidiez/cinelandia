@@ -72,7 +72,7 @@ export const WatchlistMovie = () => {
                     <h2 className="ms-3 title-watchlist text-light mt-5">Películas</h2>
 
                     <p className=' ms-3 mb-3 text-light fs-4 mt-4'>Filtro por Géneros</p>
-                    <select className='form-select select-genre-watchlist ms-3' value={selectedGenre} onChange={handleGenreChange}>
+                    <select className='form-select select-genre-watchlist ms-3' id="genreMovie" value={selectedGenre} onChange={handleGenreChange}>
                         <option value=''>Todos</option>
                         {genres.map(genre => (
                             <option key={genre.id} value={genre.id} className='fs-4'>{genre.name}</option>

@@ -75,7 +75,7 @@ const handleGenreChangeSerie = (event) => {
                     <h2 className="ms-3 title-watchlist text-light">Series</h2>
 
                     <p className=' ms-3 mb-3 text-light fs-4 mt-4'>Filtro por Géneros</p>
-                    <select className='form-select select-genre-watchlist ms-3' value={selectedGenreSerie} onChange={handleGenreChangeSerie}>
+                    <select className='form-select select-genre-watchlist ms-3' id="genreSerie" value={selectedGenreSerie} onChange={handleGenreChangeSerie}>
                         <option value=''>Todos</option>
                         {genres.map(genre => (
                             <option key={genre.id} value={genre.id} className='fs-4'>{genre.name}</option>
