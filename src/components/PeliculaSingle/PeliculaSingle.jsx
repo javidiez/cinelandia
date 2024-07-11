@@ -23,8 +23,6 @@ import { useParams } from 'react-router-dom';
 import YouTube from 'react-youtube';
 import { FacebookShareButton, TwitterShareButton, WhatsappShareButton, FacebookIcon, TwitterIcon, WhatsappIcon } from 'react-share';
 
-
-
 export const PeliculaSingle = () => {
     const { id, movie_name } = useParams();
 
@@ -107,18 +105,20 @@ export const PeliculaSingle = () => {
     };
 
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-        const shareOnWhatsApp = () => {
-            const message = selectedMovie.title.toUpperCase() + ' : ';
-            const url = `${window.location.origin}/pelicula/${selectedMovie.id}/${selectedMovie.title.replace(/[ ]/gi, "-")}`
-            const whatsappUrl = `https://${isMobile ? 'api' : 'web'}.whatsapp.com/send?text=${encodeURIComponent(message + url)}`;
+    const shareOnWhatsApp = () => {
+        const message = selectedMovie.title.toUpperCase() + ' : ';
+        const url = `${window.location.origin}/pelicula/${selectedMovie.id}/${selectedMovie.title.replace(/[ ]/gi, "-")}`
+        const whatsappUrl = `https://${isMobile ? 'api' : 'web'}.whatsapp.com/send?text=${encodeURIComponent(message + url)}`;
 
-            // Si es móvil, usa el enlace deeplink
-            if (isMobile) {
-                window.location.href = `whatsapp://send?text=${encodeURIComponent(message + url)}`;
-            } else {
-                window.open(whatsappUrl, '_blank');
-            }
-        };
+        // Si es móvil, usa el enlace deeplink
+        if (isMobile) {
+            window.location.href = `whatsapp://send?text=${encodeURIComponent(message + url)}`;
+        } else {
+            window.open(whatsappUrl, '_blank');
+        }
+    };
+
+
 
 
     return (
@@ -155,9 +155,9 @@ export const PeliculaSingle = () => {
                                                     ? <i className="fa-solid fa-bookmark"></i>
                                                     : <i className="fa-regular fa-bookmark"></i>}
                                             </button>
-                                    
-                                                <i class="fa-solid fa-square-share-nodes share-icon text-light" onClick={shareOnWhatsApp}></i>
-                                            
+
+                                            <i class="fa-solid fa-square-share-nodes share-icon text-light" onClick={shareOnWhatsApp}></i>
+
                                         </div>
 
                                     </div>
@@ -203,7 +203,7 @@ export const PeliculaSingle = () => {
                                         <div className='fs-2 text-light fw-bold'>Géneros</div>
                                         <div className='d-flex flex-wrap text-light fs-5'>{selectedMovie.genres && selectedMovie.genres.length > 0 ? selectedMovie.genres.map((genre, index) => (
                                             <p className='pe-1' key={genre.id}>{genre.name}{index < selectedMovie.genres.length - 1 ? ', ' : ''}</p>
-                                        )): 'No informado'}</div>
+                                        )) : 'No informado'}</div>
                                     </div>
                                     <div className='me-5  mb-3'>
                                         <div className='fs-2 text-light fw-bold'>Fecha de estreno</div>
@@ -281,7 +281,7 @@ export const PeliculaSingle = () => {
                                     <div>
                                         <div>
                                             <p className='fs-2 fw-bold mt-3'>Productoras:</p>
-                                            {selectedMovie.production_companies && selectedMovie.production_companies.length >0 ? selectedMovie.production_companies.map((company, index) => (
+                                            {selectedMovie.production_companies && selectedMovie.production_companies.length > 0 ? selectedMovie.production_companies.map((company, index) => (
                                                 <span className='fs-4' key={company.id}>{company.name}{index < selectedMovie.production_companies.length - 1 ? ', ' : ''}</span>
                                             )) : <span className='fs-4'>No informado</span>}
                                         </div>
@@ -348,7 +348,7 @@ export const PeliculaSingle = () => {
                                                                         </button>
                                                                     }
 
-                                                                     
+
                                                                 />
                                                             </div>
                                                         );

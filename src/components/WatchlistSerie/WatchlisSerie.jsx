@@ -67,9 +67,6 @@ const handleGenreChangeSerie = (event) => {
     setSelectedGenreSerie(event.target.value);
 };
 
-const hola = "hola"
-
-
     return (
         <>
             <div className="mt-4 bloque-card-mobile-watchlist fade-in ">
