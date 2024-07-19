@@ -55,11 +55,12 @@ export const WatchlistMovie = () => {
 
     useEffect(() => {
         if (selectedGenre) {
-            setFilteredMovies(store.watchlist.filter(movie => movie.genre_ids.includes(parseInt(selectedGenre))));
+            setFilteredMovies(store.watchlist.filter(movie => Array.isArray(movie.genre_ids) && movie.genre_ids.includes(parseInt(selectedGenre))));
         } else {
             setFilteredMovies(store.watchlist);
         }
     }, [selectedGenre, store.watchlist]);
+    
 
     const handleGenreChange = (event) => {
         setSelectedGenre(event.target.value);
