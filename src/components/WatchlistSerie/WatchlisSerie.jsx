@@ -57,7 +57,7 @@ export const WatchlistSerie = () => {
 
 useEffect(() => {
     if (selectedGenreSerie) {
-        setFilteredSeries(store.watchlistSerie.filter(movie => movie.genre_ids.includes(parseInt(selectedGenreSerie))));
+        setFilteredSeries(store.watchlistSerie.filter(movie => Array.isArray(movie.genre_ids) && movie.genre_ids.includes(parseInt(selectedGenreSerie))));
     } else {
         setFilteredSeries(store.watchlistSerie);
     }
