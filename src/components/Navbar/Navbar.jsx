@@ -83,9 +83,7 @@ export const Navbar = ({ reload }) => {
                             <div className="d-flex pe-3">
                                 <Link to="/watchlist">
                                     <button className="btn btn-primary fw-bold fs-5">
-                                        Watchlist <span class="material-symbols-outlined ps-2">
-                                            bookmark
-                                        </span>
+                                        Watchlist <i class="bi bi-bookmark-fill pt-2"></i>
                                     </button>
                                 </Link>
                             </div>
