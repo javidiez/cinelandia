@@ -37,7 +37,6 @@
 .share-icon{
     font-size: 2.8rem;
     cursor: pointer;
-    display: none;
 }
 
 .save-button-single-multimedia{
@@ -76,7 +75,6 @@
         right: 20px;
         font-size: 2.9rem;
         z-index: 1000;
-        display: none;
     }
     
 }
