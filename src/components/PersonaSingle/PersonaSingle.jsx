@@ -158,8 +158,8 @@ export const PersonaSingle = () => {
                                                                             : () => actions.addFavouriteMovie(actor)}
                                                                     >
                                                                         {store.watchlist?.some(pelicula => pelicula.id === actor.id)
-                                                                            ? <i className="fa-solid fa-bookmark"></i>
-                                                                            : <i className="fa-regular fa-bookmark"></i>}
+                                                                            ? <i class="bi bi-bookmark-fill"></i>
+                                                                            : <i class="bi bi-bookmark"></i>}
                                                                     </button>
                                                                     :
                                                                     <button
@@ -170,8 +170,8 @@ export const PersonaSingle = () => {
                                                                             : () => actions.addFavouriteSerie(actor)}
                                                                     >
                                                                         {store.watchlistSerie?.some(pelicula => pelicula.id === actor.id)
-                                                                            ? <i className="fa-solid fa-bookmark"></i>
-                                                                            : <i className="fa-regular fa-bookmark"></i>}
+                                                                            ? <i class="bi bi-bookmark-fill"></i>
+                                                                            : <i class="bi bi-bookmark"></i>}
                                                                     </button>
                                                                 }
 

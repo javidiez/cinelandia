@@ -189,8 +189,8 @@ function InfoMovie() {
                             : () => actions.addFavouriteMovie(movie)}
                         >
                           {store.watchlist?.some(pelicula => pelicula.id === movie.id)
-                            ? <i className="fa-solid fa-bookmark"></i>
-                            : <i className="fa-regular fa-bookmark"></i>}
+                            ? <i class="bi bi-bookmark-fill"></i>
+                            : <i class="bi bi-bookmark"></i>}
                         </button>
                         :
                         <button
@@ -201,8 +201,8 @@ function InfoMovie() {
                             : () => actions.addFavouriteSerie(movie)}
                         >
                           {store.watchlistSerie?.some(pelicula => pelicula.id === movie.id)
-                            ? <i className="fa-solid fa-bookmark"></i>
-                            : <i className="fa-regular fa-bookmark"></i>}
+                            ? <i class="bi bi-bookmark-fill"></i>
+                            : <i class="bi bi-bookmark"></i>}
                         </button>
                       }
                     />
@@ -244,8 +244,8 @@ function InfoMovie() {
                         : () => actions.addFavouriteMovie(movie)}
                     >
                       {store.watchlist?.some(pelicula => pelicula.id === movie.id)
-                        ? <i className="fa-solid fa-bookmark"></i>
-                        : <i className="fa-regular fa-bookmark"></i>}
+                        ? <i class="bi bi-bookmark-fill"></i>
+                        : <i class="bi bi-bookmark"></i>}
                     </button>
                     :
                     <button
@@ -256,8 +256,8 @@ function InfoMovie() {
                         : () => actions.addFavouriteSerie(movie)}
                     >
                       {store.watchlistSerie?.some(pelicula => pelicula.id === movie.id)
-                        ? <i className="fa-solid fa-bookmark"></i>
-                        : <i className="fa-regular fa-bookmark"></i>}
+                        ? <i class="bi bi-bookmark-fill"></i>
+                        : <i class="bi bi-bookmark"></i>}
                     </button>
                   }
                 />

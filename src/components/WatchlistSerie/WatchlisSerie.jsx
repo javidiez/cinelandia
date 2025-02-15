@@ -111,8 +111,8 @@ const handleGenreChangeSerie = (event) => {
                                                         : () => actions.addFavouriteSerie(fav)}
                                                 >
                                                     {store.watchlistSerie?.some(pelicula => pelicula.id === fav.id)
-                                                        ? <i className="fa-solid fa-bookmark"></i>
-                                                        : <i className="fa-regular fa-bookmark"></i>}
+                                                        ? <i class="bi bi-bookmark-fill"></i>
+                                                        : <i class="bi bi-bookmark"></i>}
                                                 </button>
                                             }
                                             

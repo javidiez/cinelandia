@@ -147,8 +147,8 @@ export const NovedadesSerie = () => {
                                                     : () => actions.addFavouriteSerie(movie)}
                                             >
                                                 {store.watchlistSerie?.some(pelicula => pelicula.id === movie.id)
-                                                    ? <i className="fa-solid fa-bookmark"></i>
-                                                    : <i className="fa-regular fa-bookmark"></i>}
+                                                    ? <i class="bi bi-bookmark-fill"></i>
+                                                    : <i class="bi bi-bookmark"></i>}
                                             </button>
                                         }
                                     />
@@ -191,8 +191,8 @@ export const NovedadesSerie = () => {
                                         : () => actions.addFavouriteSerie(movie)}
                                 >
                                     {store.watchlistSerie?.some(pelicula => pelicula.id === movie.id)
-                                        ? <i className="fa-solid fa-bookmark"></i>
-                                        : <i className="fa-regular fa-bookmark"></i>}
+                                        ? <i class="bi bi-bookmark-fill"></i>
+                                        : <i class="bi bi-bookmark"></i>}
                                 </button>
                             }
                         />

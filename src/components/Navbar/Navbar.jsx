@@ -83,7 +83,9 @@ export const Navbar = ({ reload }) => {
                             <div className="d-flex pe-3">
                                 <Link to="/watchlist">
                                     <button className="btn btn-primary fw-bold fs-5">
-                                        Watchlist <i className="fa-solid fa-bookmark ps-2"></i>
+                                        Watchlist <span class="material-symbols-outlined ps-2">
+                                            bookmark
+                                        </span>
                                     </button>
                                 </Link>
                             </div>
@@ -107,10 +109,10 @@ export const Navbar = ({ reload }) => {
                         <p className="text-light fw-bold ps-3 user-select-none">CINELANDIA</p>
                     </a>
                     <div className='d-flex'>
-                    <Link to="/watchlist"><button className='btn btn-primary navbar-watchlist-icon'><i className="fa-solid fa-bookmark"></i></button></Link>
-                    <button className="navbar-toggler custom-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
-                        <span className="navbar-toggler-icon"></span>
-                    </button>
+                        <Link to="/watchlist"><button className='btn btn-primary navbar-watchlist-icon'><i class="bi bi-bookmark-fill"></i></button></Link>
+                        <button className="navbar-toggler custom-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+                            <span className="navbar-toggler-icon"></span>
+                        </button>
                     </div>
                     <div className="offcanvas offcanvas-end" tabIndex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
                         <div className="offcanvas-header">

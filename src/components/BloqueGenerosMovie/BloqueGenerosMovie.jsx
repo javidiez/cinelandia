@@ -256,8 +256,8 @@ const BloqueGenerosMovie = () => {
                                                                 : () => actions.addFavouriteMovie(movie)}
                                                         >
                                                             {store.watchlist?.some(pelicula => pelicula.id === movie.id)
-                                                                ? <i className="fa-solid fa-bookmark"></i>
-                                                                : <i className="fa-regular fa-bookmark"></i>}
+                                                                ? <i class="bi bi-bookmark-fill"></i>
+                                                                : <i class="bi bi-bookmark"></i>}
                                                         </button>
                                                     }
 
@@ -316,8 +316,8 @@ const BloqueGenerosMovie = () => {
                                                                 : () => actions.addFavouriteMovie(movie)}
                                                         >
                                                             {store.watchlist?.some(pelicula => pelicula.id === movie.id)
-                                                                ? <i className="fa-solid fa-bookmark"></i>
-                                                                : <i className="fa-regular fa-bookmark"></i>}
+                                                                ? <i class="bi bi-bookmark-fill"></i>
+                                                                : <i class="bi bi-bookmark"></i>}
                                                         </button>
                                                     }
 
@@ -377,8 +377,8 @@ const BloqueGenerosMovie = () => {
                                                         : () => actions.addFavouriteMovie(movie)}
                                                 >
                                                     {store.watchlist?.some(pelicula => pelicula.id === movie.id)
-                                                        ? <i className="fa-solid fa-bookmark"></i>
-                                                        : <i className="fa-regular fa-bookmark"></i>}
+                                                        ? <i class="bi bi-bookmark-fill"></i>
+                                                        : <i class="bi bi-bookmark"></i>}
                                                 </button>
                                             }
                                         />
@@ -432,8 +432,8 @@ const BloqueGenerosMovie = () => {
                                                         : () => actions.addFavouriteMovie(movie)}
                                                 >
                                                     {store.watchlist?.some(pelicula => pelicula.id === movie.id)
-                                                        ? <i className="fa-solid fa-bookmark"></i>
-                                                        : <i className="fa-regular fa-bookmark"></i>}
+                                                        ? <i class="bi bi-bookmark-fill"></i>
+                                                        : <i class="bi bi-bookmark"></i>}
                                                 </button>
                                             }
                                         />

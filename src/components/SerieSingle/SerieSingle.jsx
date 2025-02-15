@@ -181,8 +181,8 @@ export const SerieSingle = () => {
                                                     : () => actions.addFavouriteSerie(selectedSerie)}
                                             >
                                                 {store.watchlistSerie?.some(movie => movie.id === selectedSerie.id)
-                                                    ? <i className="fa-solid fa-bookmark"></i>
-                                                    : <i className="fa-regular fa-bookmark"></i>}
+                                                    ? <i class="bi bi-bookmark-fill"></i>
+                                                    : <i class="bi bi-bookmark"></i>}
                                             </button>
 
                                             <i class="fa-solid fa-square-share-nodes share-icon text-light" onClick={shareOnWhatsApp}></i>
@@ -407,8 +407,8 @@ export const SerieSingle = () => {
                                                                                 : () => actions.addFavouriteSerie(recommend)}
                                                                         >
                                                                             {store.watchlistSerie?.some(pelicula => pelicula.id === recommend.id)
-                                                                                ? <i className="fa-solid fa-bookmark"></i>
-                                                                                : <i className="fa-regular fa-bookmark"></i>}
+                                                                                ? <i class="bi bi-bookmark-fill"></i>
+                                                                                : <i class="bi bi-bookmark"></i>}
                                                                         </button>
                                                                     }
 
