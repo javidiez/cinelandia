@@ -92,7 +92,7 @@ export const Navbar = ({ reload }) => {
                             <div className="d-flex pe-5">
                                 <Link to="/#search-focus" id="search-icon">
                                     <button className="btn text-light p-2 btn-lupa" onClick={handleLupaClick}>
-                                        <i className="fa-solid fa-magnifying-glass fs-4"></i>
+                                        <i className="bi bi-search"></i>
                                     </button>
                                 </Link>
                             </div>
@@ -157,7 +157,7 @@ export const Navbar = ({ reload }) => {
                             <div className="d-flex pe-5">
                                 <a href="/#search-focus" id="search-icon">
                                     <button className="btn text-light p-2 btn-lupa" onClick={handleLupaClick}>
-                                        <i className="fa-solid fa-magnifying-glass fs-4"></i>
+                                        <i className="bi bi-search"></i>
                                     </button>
                                 </a>
                             </div>

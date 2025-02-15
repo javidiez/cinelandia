@@ -118,7 +118,7 @@ export const WatchlistMovie = () => {
                                     </div>
                                 )
                             })) :
-                            <p className="text-light fs-1">Ninguna película en Watchlist, haga clic en <i className="btn btn-primary fa-regular fa-bookmark fs-1"></i> para guardar películas</p>
+                            <p className="text-light fs-1">Ninguna película en Watchlist, haga clic en <i className="btn btn-primary bi bi-bookmark fs-1"></i> para guardar películas</p>
                         }
                     </div>
                 </div>

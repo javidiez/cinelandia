@@ -120,7 +120,7 @@ const handleGenreChangeSerie = (event) => {
                                     </div>
                                 )
                             })) :
-                            <p className="text-light fs-1">Ninguna serie en Watchlist, haga clic en <span className="btn btn-primary fa-regular fa-bookmark fs-1"></span> para guardar series</p>
+                            <p className="text-light fs-1">Ninguna serie en Watchlist, haga clic en <span className="btn btn-primary bi bi-bookmark fs-1"></span> para guardar series</p>
                         }
                     </div>
                 </div>
